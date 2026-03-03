@@ -87,11 +87,11 @@ public class StockStatsResourceImpl implements StockStatsResource {
 			// Classify the tweets
 			sentimentService.classify(tweets);
 			
-				tweets.forEach(tweet -> {
+			for (Tweet tweet : tweets) {
 				if (stockStats != null) { // We won't have stats for weekend days
 					stockStats.getSocialStats().addTweet(tweet);
 				}
-			});
+			}
 			
 			return stockStats;
 		} catch (WebApplicationException e) {
