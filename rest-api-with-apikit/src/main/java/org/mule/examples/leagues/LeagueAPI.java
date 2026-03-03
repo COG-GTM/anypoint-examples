@@ -24,6 +24,7 @@ import org.mule.module.apikit.exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LeagueAPI {
 
@@ -43,16 +44,16 @@ public class LeagueAPI {
     }
 
     public Teams getTeams(String city) {
-        List<Team> teamsList = new ArrayList<Team>();
-        List<org.mule.examples.leagues.model.Team> teams = league.getTeams(city);
-        for(org.mule.examples.leagues.model.Team team : teams) {
-            Team teamResp = new Team();
-            teamResp.setId(team.getId());
-            teamResp.setName(team.getName());
-            teamResp.setHomeCity(team.getHomeCity());
-            teamResp.setStadium(team.getStadium());
-            teamsList.add(teamResp);
-        }
+        List<Team> teamsList = league.getTeams(city).stream()
+                .map(team -> {
+                    Team teamResp = new Team();
+                    teamResp.setId(team.getId());
+                    teamResp.setName(team.getName());
+                    teamResp.setHomeCity(team.getHomeCity());
+                    teamResp.setStadium(team.getStadium());
+                    return teamResp;
+                })
+                .collect(Collectors.toList());
 
         Teams teamsResp = new Teams();
         teamsResp.setTeams(teamsList);
@@ -92,7 +93,7 @@ public class LeagueAPI {
     public Positions getPositions() throws MuleRestException {
         Positions positions = new Positions();
         List<org.mule.examples.leagues.model.Team> teams = league.orderTeamsByPosition();
-        List<Position> positionsList = new ArrayList<Position>();
+        List<Position> positionsList = new ArrayList<>();
 
         int positionIndex = 1;
         for(org.mule.examples.leagues.model.Team team : teams) {
@@ -117,17 +118,17 @@ public class LeagueAPI {
     public Fixture getFixture() {
         Fixture fixture = new Fixture();
         List<org.mule.examples.leagues.model.Match> matches = league.getMatches();
-        List<Match> matchesList = new ArrayList<Match>();
-
-        for(org.mule.examples.leagues.model.Match match : matches) {
-            Match matchResp = new Match();
-            matchResp.setHomeTeam(match.getHomeTeam().getId());
-            matchResp.setAwayTeam(match.getAwayTeam().getId());
-            matchResp.setDate(match.getDate());
-            matchResp.setHomeTeamScore(match.getHomeTeamScore());
-            matchResp.setAwayTeamScore(match.getAwayTeamScore());
-            matchesList.add(matchResp);
-        }
+        List<Match> matchesList = matches.stream()
+                .map(match -> {
+                    Match matchResp = new Match();
+                    matchResp.setHomeTeam(match.getHomeTeam().getId());
+                    matchResp.setAwayTeam(match.getAwayTeam().getId());
+                    matchResp.setDate(match.getDate());
+                    matchResp.setHomeTeamScore(match.getHomeTeamScore());
+                    matchResp.setAwayTeamScore(match.getAwayTeamScore());
+                    return matchResp;
+                })
+                .collect(Collectors.toList());
 
         fixture.setFixture(matchesList);
         return fixture;

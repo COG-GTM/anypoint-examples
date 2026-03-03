@@ -10,7 +10,6 @@ package stockstats.impl.sentiment140;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +47,8 @@ public class Sentiment140SentimentService implements SentimentService {
 		WebTarget webTarget = client.target(BASE_URL + "bulkClassifyJson");
 		
 		BulkClassifyRequest bulkRequest = new BulkClassifyRequest();
-		Map<String,Tweet> idToTweet = new HashMap<String, Tweet>();
-		List<ClassifyRequest> data = new ArrayList<ClassifyRequest>();
+		Map<String,Tweet> idToTweet = new HashMap<>();
+		List<ClassifyRequest> data = new ArrayList<>();
 		for (Tweet tweet: tweets) {
 			ClassifyRequest request = new ClassifyRequest();
 			request.setId(tweet.getId());

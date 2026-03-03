@@ -60,7 +60,7 @@ public class HttpOauthProviderIT extends FunctionalTestCase
     
     @Before
     public void setUp() {				
-    	ArrayList<String> cliArgsCap = new ArrayList<String>();
+    	ArrayList<String> cliArgsCap = new ArrayList<>();
     	DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();    
     	capabilities.setCapability("phantomjs.binary.path", System.getProperty("phantomjs.binary"));		
     	cliArgsCap.add("--ssl-protocol=any");
@@ -98,7 +98,7 @@ public class HttpOauthProviderIT extends FunctionalTestCase
         JSONObject jso = new JSONObject(driver.getPageSource().substring(driver.getPageSource().indexOf("{"), driver.getPageSource().indexOf("}") + 1));        
                 
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         props.put("Authorization", "Bearer " + jso.get("access_token"));
         MuleMessage result = client.send("http://localhost:" + httpListenerPort.getNumber() + "/resources", "", props);

@@ -11,14 +11,13 @@ package org.mule.examples.leagues.model;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -32,8 +31,8 @@ public class League {
     private static final int MAX_RANDOM_SCORE = 5;
     private static final int MATCH_HOUR = 18;
 
-    private HashMap<String, Team> teams = new HashMap<String, Team>();
-    private HashMap<String, Match> fixture = new HashMap<String, Match>();
+    private HashMap<String, Team> teams = new HashMap<>();
+    private HashMap<String, Match> fixture = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public void initialize() {
@@ -41,10 +40,7 @@ public class League {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("teams.json")));
             JSONArray teams = (JSONArray) jsonObject.get("teams");
-            Iterator<JSONObject> iterator = teams.iterator();
-            while(iterator.hasNext()) {
-                addTeam(iterator.next());
-            }
+            teams.forEach(t -> addTeam((JSONObject) t));
             buildFixture();
 
         } catch (Exception e) {
@@ -110,9 +106,7 @@ public class League {
     }
 
     public List<Match> getMatches() {
-        List<Match> matches = new ArrayList<Match>();
-        matches.addAll(fixture.values());
-        return matches;
+        return new ArrayList<>(fixture.values());
     }
 
     private int generateRandomScore() {
@@ -129,9 +123,7 @@ public class League {
     }
 
     public List<Team> getTeams() {
-        List<Team> teams = new ArrayList<Team>();
-        teams.addAll(this.teams.values());
-        return teams;
+        return new ArrayList<>(this.teams.values());
     }
 
     public List<Team> getTeams(String homeCity) {
@@ -140,13 +132,9 @@ public class League {
             return teams;
         }
 
-        List<Team> teamsByCity = new ArrayList<Team>();
-        for(Team team : teams) {
-            if(team.getHomeCity().equals(homeCity)) {
-                teamsByCity.add(team);
-            }
-        }
-        return teamsByCity;
+        return teams.stream()
+                .filter(team -> team.getHomeCity().equals(homeCity))
+                .collect(Collectors.toList());
     }
 
     public boolean hasTeam(String id) {
@@ -174,23 +162,9 @@ public class League {
 
     public List<Team> orderTeamsByPosition() {
         List<Team> teams = getTeams();
-        Collections.sort(teams, new Comparator<Team>() {
-            public int compare(Team team, Team team2) {
-                int byPoints = Integer.valueOf(team2.getPoints()).compareTo(team.getPoints());
-                if(byPoints != 0) {
-                    return byPoints;
-                }
-
-                int byGoalDifference = Integer.valueOf(team2.getGoalsInFavor() - team2.getGoalsAgainst())
-                        .compareTo(team.getGoalsInFavor() - team.getGoalsAgainst());
-
-                if(byGoalDifference != 0) {
-                    return byGoalDifference;
-                }
-
-                return Integer.valueOf(team2.getGoalsInFavor()).compareTo(team.getGoalsInFavor());
-            }
-        });
+        teams.sort(Comparator.comparingInt(Team::getPoints).reversed()
+                .thenComparing(Comparator.comparingInt((Team t) -> t.getGoalsInFavor() - t.getGoalsAgainst()).reversed())
+                .thenComparing(Comparator.comparingInt(Team::getGoalsInFavor).reversed()));
         return teams;
     }
 

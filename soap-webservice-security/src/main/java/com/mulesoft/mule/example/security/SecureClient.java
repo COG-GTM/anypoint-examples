@@ -136,7 +136,7 @@ public class SecureClient
 
     protected static Map<String, Object> getUsernameTokenProps(String action, String propertiesFile)
     {
-        Map<String, Object> wss4jProps = new HashMap<String, Object>();
+        Map<String, Object> wss4jProps = new HashMap<>();
         wss4jProps.put("action", action);
         wss4jProps.put("signaturePropFile", propertiesFile);
         wss4jProps.put("encryptionPropFile", propertiesFile);
@@ -148,7 +148,7 @@ public class SecureClient
     
     protected static Map<String, Object> getSamlTokenProps(String action, String propertiesFile)
     {
-        Map<String, Object> wss4jProps = new HashMap<String, Object>();
+        Map<String, Object> wss4jProps = new HashMap<>();
         wss4jProps.put("action", action);
         wss4jProps.put("samlPropFile", propertiesFile);
         SAMLCallbackHandler samlCallbackHandler = new SAMLCallbackHandler();
@@ -158,7 +158,7 @@ public class SecureClient
 
     protected static Map<String, Object> getSignedSamlTokenProps(String action, String propertiesFile)
     {
-        Map<String, Object> wss4jProps = new HashMap<String, Object>();
+        Map<String, Object> wss4jProps = new HashMap<>();
         wss4jProps.put("action", action);
         wss4jProps.put("samlPropFile", propertiesFile);
         wss4jProps.put("signatureKeyIdentifier", "DirectReference");

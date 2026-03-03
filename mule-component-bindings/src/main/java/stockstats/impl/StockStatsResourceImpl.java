@@ -62,7 +62,7 @@ public class StockStatsResourceImpl implements StockStatsResource {
 			}
 			
 			// Fetch tweets
-			List<Tweet> tweets = new ArrayList<Tweet>();
+			List<Tweet> tweets = new ArrayList<>();
 			int maxResults = 1000;
 			int pageSize = 100;
 			int page = 1;
@@ -87,11 +87,11 @@ public class StockStatsResourceImpl implements StockStatsResource {
 			// Classify the tweets
 			sentimentService.classify(tweets);
 			
-			for (Tweet tweet: tweets) {
+				tweets.forEach(tweet -> {
 				if (stockStats != null) { // We won't have stats for weekend days
 					stockStats.getSocialStats().addTweet(tweet);
 				}
-			}
+			});
 			
 			return stockStats;
 		} catch (WebApplicationException e) {
