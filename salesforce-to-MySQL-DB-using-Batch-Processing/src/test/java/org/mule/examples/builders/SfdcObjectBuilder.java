@@ -16,7 +16,7 @@ public class SfdcObjectBuilder {
 	private Map<String, Object> fields;
 
 	public SfdcObjectBuilder() {
-		this.fields = new HashMap<String, Object>();
+		this.fields = new HashMap<>();
 	}
 
 	public SfdcObjectBuilder with(final String field, final Object value) {

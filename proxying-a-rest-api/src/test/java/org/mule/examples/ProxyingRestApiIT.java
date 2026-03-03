@@ -90,7 +90,7 @@ public class ProxyingRestApiIT extends FunctionalTestCase
 
     @Before
     public void setUp() {				
-    	ArrayList<String> cliArgsCap = new ArrayList<String>();
+    	ArrayList<String> cliArgsCap = new ArrayList<>();
     	DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
     	capabilities.setCapability("phantomjs.binary.path", System.getProperty("phantomjs.binary"));
 		capabilities.setJavascriptEnabled(true);
@@ -123,7 +123,7 @@ public class ProxyingRestApiIT extends FunctionalTestCase
         String token = getAccessToken(code);
         
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         props.put("Authorization", "Bearer " + token);
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/2.0/folders/0", "", props);
@@ -154,7 +154,7 @@ public class ProxyingRestApiIT extends FunctionalTestCase
 
 		DefaultHttpClient httpClient = new DefaultHttpClient(); 
 		HttpPost httpPost = new HttpPost("http://localhost:" + port.getNumber() + "/oauth2/token"); 
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		
 		formparams.add(new BasicNameValuePair("grant_type", "authorization_code")); 
 		formparams.add(new BasicNameValuePair("code", code)); 

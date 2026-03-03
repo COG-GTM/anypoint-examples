@@ -105,7 +105,7 @@ public class ExtractingDataFromLdapDirectoryIT extends FunctionalTestCase
     public void connectAndExtract() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);        
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage result = client.send("http://localhost:" + port.getNumber(), "", props);
         assertNotNull(result);

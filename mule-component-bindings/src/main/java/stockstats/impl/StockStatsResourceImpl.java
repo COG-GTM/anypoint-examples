@@ -62,7 +62,7 @@ public class StockStatsResourceImpl implements StockStatsResource {
 			}
 			
 			// Fetch tweets
-			List<Tweet> tweets = new ArrayList<Tweet>();
+			List<Tweet> tweets = new ArrayList<>();
 			int maxResults = 1000;
 			int pageSize = 100;
 			int page = 1;
