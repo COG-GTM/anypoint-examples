@@ -147,7 +147,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestContactsFromSandBoxB(List<Map<String, Object>> createdContactsInA) throws InitialisationException, MuleException, Exception {
-		List<Map<String, Object>> createdContactsInB = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> createdContactsInB = new ArrayList<>();
 		for (Map<String, Object> c : createdContactsInA) {
 			Map<String, Object> contact = invokeRetrieveFlow(retrieveContactFromBFlow, c);
 			if (contact != null) {
@@ -167,7 +167,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestAccountsFromSandBoxB(List<Map<String, Object>> createdAccountsInA) throws InitialisationException, MuleException, Exception {
-		List<Map<String, Object>> createdAccountsInB = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> createdAccountsInB = new ArrayList<>();
 		for (Map<String, Object> a : createdAccountsInA) {
 			Map<String, Object> account = invokeRetrieveFlow(retrieveAccountFlowFromB, a);
 			if (account != null) {
@@ -181,7 +181,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestEntityFromSandBox(SubflowInterceptingChainLifecycleWrapper deleteFlow, List<Map<String, Object>> entitities) throws MuleException, Exception {
-		List<String> idList = new ArrayList<String>();
+		List<String> idList = new ArrayList<>();
 		for (Map<String, Object> c : entitities) {
 			idList.add(c.get("Id")
 						.toString());

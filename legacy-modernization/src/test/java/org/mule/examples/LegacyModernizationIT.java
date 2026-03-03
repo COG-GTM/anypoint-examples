@@ -53,7 +53,7 @@ public class LegacyModernizationIT extends FunctionalTestCase
     public void testHTTPmessage() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage result = client.send("http://localhost:1080/OrderFulfillment", MESSAGE, props);
         assertNotNull(result);

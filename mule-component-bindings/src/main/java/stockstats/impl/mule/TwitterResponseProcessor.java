@@ -8,8 +8,8 @@
 
 package stockstats.impl.mule;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
@@ -31,17 +31,16 @@ public class TwitterResponseProcessor implements MessageProcessor {
 		
 		MuleMessage msg = event.getMessage();
 		
-		List<Tweet> tweetList = new ArrayList<Tweet>();
-		
-		
 		QueryResult queryResult = (QueryResult) msg.getPayload();
 		
-		for (twitter4j.Status t: queryResult.getTweets()) {
-			Tweet tweet = new Tweet();
-			tweet.setId(t.getId()+"");
-			tweet.setText(t.getText());
-			tweetList.add(tweet);
-		}
+		List<Tweet> tweetList = queryResult.getTweets().stream()
+				.map(t -> {
+					Tweet tweet = new Tweet();
+					tweet.setId(t.getId() + "");
+					tweet.setText(t.getText());
+					return tweet;
+				})
+				.collect(Collectors.toList());
 		msg.setPayload(tweetList);
 		
 		return event;

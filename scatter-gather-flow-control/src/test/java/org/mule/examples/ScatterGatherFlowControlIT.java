@@ -102,7 +102,7 @@ public class ScatterGatherFlowControlIT extends FunctionalTestCase
     public void httpPostToFlowUrlSentMessage() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/scatterGather", null, props);
         Thread.sleep(10000);

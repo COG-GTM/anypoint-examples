@@ -40,7 +40,7 @@ public class ImportLeadsToSfdcIT extends FunctionalTestCase
 	private static final String EMAIL1 = "faucibus@egetmetus.org";
 	private static final String EMAIL2 = "sem.egestas@mollis.org";
 	
-	private static List<String> leadIds = new ArrayList<String>();
+	private static List<String> leadIds = new ArrayList<>();
 	 
     @Override
     protected String getConfigResources()
@@ -69,7 +69,7 @@ public class ImportLeadsToSfdcIT extends FunctionalTestCase
     	
         MuleClient client = new MuleClient(muleContext);
         String fileInputPath = "file://./src/main/resources/input";
-        Map<String, Object> outboundProperties = new HashMap<String, Object>();
+        Map<String, Object> outboundProperties = new HashMap<>();
         outboundProperties.put("outputPattern", "leads.csv");
         MuleMessage message = new DefaultMuleMessage(
         		IOUtils.getResourceAsString("leads.csv", this.getClass()),

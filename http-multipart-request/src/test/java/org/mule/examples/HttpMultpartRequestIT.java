@@ -57,7 +57,7 @@ public class HttpMultpartRequestIT extends FunctionalTestCase
     @Test
 	public void testPageRender() throws Exception {        	
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/uploadFile", "", props);
         assertTrue(result.getPayloadAsString().contains(HTML));        

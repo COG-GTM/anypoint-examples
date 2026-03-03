@@ -45,25 +45,25 @@ public class ContactsMergeTest {
 	 * @return the list of contacts.
 	 */
 	private List<Map<String, String>> createExpectedList() {
-		Map<String, String> contact0 = new HashMap<String, String>();
+		Map<String, String> contact0 = new HashMap<>();
 		contact0.put("IDInA", "0");
 		contact0.put("IDInB", "");
 		contact0.put("Email", "some.email.0@fakemail.com");
 		contact0.put("Name", "SomeName_0");
 
-		Map<String, String> contact1 = new HashMap<String, String>();
+		Map<String, String> contact1 = new HashMap<>();
 		contact1.put("IDInA", "1");
 		contact1.put("IDInB", "1");
 		contact1.put("Email", "some.email.1@fakemail.com");
 		contact1.put("Name", "SomeName_1");
 
-		Map<String, String> contact2 = new HashMap<String, String>();
+		Map<String, String> contact2 = new HashMap<>();
 		contact2.put("IDInA", "");
 		contact2.put("IDInB", "2");
 		contact2.put("Email", "some.email.2@fakemail.com");
 		contact2.put("Name", "SomeName_2");
 
-		List<Map<String, String>> contactList = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> contactList = new ArrayList<>();
 		contactList.add(contact0);
 		contactList.add(contact1);
 		contactList.add(contact2);
@@ -80,7 +80,7 @@ public class ContactsMergeTest {
 	 * @return the list of maps
 	 */
 	private List<Map<String, String>> createContactLists(String orgId, int start, int end) {
-		List<Map<String, String>> contactList = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> contactList = new ArrayList<>();
 		for (int i = start; i <= end; i++) {
 			contactList.add(createContact(orgId, i));
 		}
@@ -94,8 +94,8 @@ public class ContactsMergeTest {
 	 * @return created contact as Map
 	 */
 	private Map<String, String> createContact(String orgId, int sequence) {
-		Map<String, String> contact = new HashMap<String, String>();
-		contact.put("Id", new Integer(sequence).toString());
+		Map<String, String> contact = new HashMap<>();
+		contact.put("Id", Integer.toString(sequence));
 		contact.put("Name", "SomeName_" + sequence);
 		contact.put("Email", "some.email." + sequence + "@fakemail.com");
 		return contact;

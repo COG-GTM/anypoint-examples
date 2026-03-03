@@ -43,7 +43,7 @@ public class ImportContactsIntoMSDynamicsIT extends FunctionalTestCase
 	
 	private final String EMAIL1 = "john.doe@texasComp.com";
 	private final String EMAIL2 = "jane.doe@texasComp.com";
-	private List<String> contactIds = new ArrayList<String>();
+	private List<String> contactIds = new ArrayList<>();
 
 	 
     @Override
@@ -87,7 +87,7 @@ public class ImportContactsIntoMSDynamicsIT extends FunctionalTestCase
     	
         MuleClient client = new MuleClient(muleContext);
         String fileInputPath = "file://./src/main/resources/input";
-        Map<String, Object> outboundProperties = new HashMap<String, Object>();
+        Map<String, Object> outboundProperties = new HashMap<>();
         outboundProperties.put("outputPattern", "contacts.csv");
         MuleMessage testMessage = new DefaultMuleMessage(
         	IOUtils.getResourceAsString("contacts.csv", this.getClass()),
