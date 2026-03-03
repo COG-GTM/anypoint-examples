@@ -60,7 +60,7 @@ public class GetCustomersListFromNetsuiteIT extends FunctionalTestCase
     public void testRetrieve() throws Exception
     {
     	MuleClient client = new MuleClient(muleContext);
-    	Map<String, Object> props = new HashMap<String, Object>();
+    	Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage response = client.send("http://localhost:" + port.getNumber() + "/customers?lastName=" + LAST_NAME_VALUE, "", props, 60000);
         assertTrue(response.getPayloadAsString().contains(TEST_HTML));

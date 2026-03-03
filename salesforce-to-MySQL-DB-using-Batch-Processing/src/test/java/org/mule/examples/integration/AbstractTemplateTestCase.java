@@ -11,10 +11,12 @@ package org.mule.examples.integration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.junit.Rule;
 import org.mule.MessageExchangePattern;
@@ -70,20 +72,13 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected String getTestFlows() {
-		StringBuilder resources = new StringBuilder();
-
 		File testFlowsFolder = new File(TEST_FLOWS_FOLDER_PATH);
 		File[] listOfFiles = testFlowsFolder.listFiles();
 		if (listOfFiles != null) {
-			for (File f : listOfFiles) {
-				if (f.isFile() && f.getName()
-									.endsWith("xml")) {
-					resources.append(",")
-								.append(TEST_FLOWS_FOLDER_PATH)
-								.append(f.getName());
-				}
-			}
-			return resources.toString();
+			return Arrays.stream(listOfFiles)
+					.filter(f -> f.isFile() && f.getName().endsWith("xml"))
+					.map(f -> "," + TEST_FLOWS_FOLDER_PATH + f.getName())
+					.collect(Collectors.joining());
 		} else {
 			return "";
 		}
@@ -147,7 +142,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestContactsFromSandBoxB(List<Map<String, Object>> createdContactsInA) throws InitialisationException, MuleException, Exception {
-		List<Map<String, Object>> createdContactsInB = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> createdContactsInB = new ArrayList<>();
 		for (Map<String, Object> c : createdContactsInA) {
 			Map<String, Object> contact = invokeRetrieveFlow(retrieveContactFromBFlow, c);
 			if (contact != null) {
@@ -167,7 +162,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestAccountsFromSandBoxB(List<Map<String, Object>> createdAccountsInA) throws InitialisationException, MuleException, Exception {
-		List<Map<String, Object>> createdAccountsInB = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> createdAccountsInB = new ArrayList<>();
 		for (Map<String, Object> a : createdAccountsInA) {
 			Map<String, Object> account = invokeRetrieveFlow(retrieveAccountFlowFromB, a);
 			if (account != null) {
@@ -181,16 +176,14 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	}
 
 	protected void deleteTestEntityFromSandBox(SubflowInterceptingChainLifecycleWrapper deleteFlow, List<Map<String, Object>> entitities) throws MuleException, Exception {
-		List<String> idList = new ArrayList<String>();
-		for (Map<String, Object> c : entitities) {
-			idList.add(c.get("Id")
-						.toString());
-		}
+		List<String> idList = entitities.stream()
+				.map(c -> c.get("Id").toString())
+				.collect(Collectors.toList());
 		deleteFlow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
 	}
 
 	protected String buildUniqueName(String templateName, String name) {
-		String timeStamp = new Long(new Date().getTime()).toString();
+		String timeStamp = Long.toString(new Date().getTime());
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(name);
@@ -202,7 +195,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 
 	protected String buildUniqueEmail(String user) {
 		String server = "fakemail";
-		String timeStamp = new Long(new Date().getTime()).toString();
+		String timeStamp = Long.toString(new Date().getTime());
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(user);

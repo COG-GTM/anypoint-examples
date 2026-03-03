@@ -53,7 +53,7 @@ public class TrackACustomBusinessEventIT extends FunctionalTestCase
     public void calculateDiscountTest() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/customBusinessEvents", MESSAGE, props);
         assertNotNull(result);

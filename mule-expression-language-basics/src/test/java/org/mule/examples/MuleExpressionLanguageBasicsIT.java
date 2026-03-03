@@ -109,7 +109,7 @@ public class MuleExpressionLanguageBasicsIT extends FunctionalTestCase
     }
     
     private void testResponse(MuleClient client, String param, String reply, String body) throws Exception{
-    	Map<String, Object> props = new HashMap<String, Object>();
+    	Map<String, Object> props = new HashMap<>();
     	props.put("http.method", "POST");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/" + param, body, props);
         assertNotNull(result);

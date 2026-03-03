@@ -66,7 +66,7 @@ public class SendingJsonDataToAmqpQueueIT extends FunctionalTestCase {
     public void testFlow() throws Exception
     {	    		    
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         client.dispatch("http://localhost:" + port.getNumber() + "/", REPLY_OK, props);
         recieveMessage();
