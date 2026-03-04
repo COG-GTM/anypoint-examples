@@ -125,7 +125,7 @@
                 </executions>
                 <configuration>
                     <useFile>false</useFile>
-                    <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+                    <argLine>-Xmx1024m</argLine>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${MULE_HOME}/conf/</additionalClasspathElement>
                         <!-- Location of the mule license in Bamboo muleLicenseKey.lic -->
@@ -172,6 +172,15 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
 	</build>
 

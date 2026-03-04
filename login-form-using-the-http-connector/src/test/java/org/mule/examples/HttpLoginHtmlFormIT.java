@@ -55,9 +55,9 @@ public class HttpLoginHtmlFormIT extends FunctionalTestCase
     @Test
 	public void testLogin() throws Exception {    
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "POST");
-        Map<String, String> map = new HashMap<String, String>();
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "POST");
+                Map<String, String> map = new HashMap<>();
         map.put("username", "mule");
         map.put("password", "mule");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/login", map, props);
@@ -68,18 +68,18 @@ public class HttpLoginHtmlFormIT extends FunctionalTestCase
     @Test
 	public void testLoginPage() throws Exception {        	
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "GET");
-        MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/login", "", props);
-        assertEquals(result.getPayloadAsString(), HTML);        
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "GET");
+                MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/login", "", props);
+                assertEquals(result.getPayloadAsString(), HTML);        
 	}
     
     @Test
 	public void testRequester() throws Exception {        	
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "GET");
-        MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/requesterLogin", "", props);
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "GET");
+                MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/requesterLogin", "", props);
         assertTrue(result.getPayloadAsString().contains(REPLY));        
 	}    
 }

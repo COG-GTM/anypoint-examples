@@ -72,7 +72,7 @@ public class WebServiceConsumerIT extends FunctionalTestCase
     public void testWebServiceConsumer() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         props.put("Content-Type", "application/json");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/orders", MESSAGE, props);

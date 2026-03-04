@@ -105,7 +105,7 @@ public class MuleComponentBindingsIT extends FunctionalTestCase
     	Mockito.when(stockService.getHistoricalPrices(STOCK, new SimpleDateFormat("yyyy-MM-dd").parse(DATE))).thenReturn(stockStats);
    		
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage result = client.send("http://localhost:8180/api/stockStats" + MESSAGE, "", props);
         Thread.sleep(5000);
