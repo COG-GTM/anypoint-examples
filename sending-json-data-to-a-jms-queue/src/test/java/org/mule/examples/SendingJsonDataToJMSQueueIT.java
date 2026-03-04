@@ -44,7 +44,7 @@ public class SendingJsonDataToJMSQueueIT extends FunctionalTestCase
     public void httpGetToFlowUrlSentMessage() throws Exception
     {
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/sales", MESSAGE, props);
         assertNotNull(result);

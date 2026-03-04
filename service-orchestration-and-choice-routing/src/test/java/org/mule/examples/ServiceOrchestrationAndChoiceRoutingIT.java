@@ -84,7 +84,7 @@ public class ServiceOrchestrationAndChoiceRoutingIT extends FunctionalTestCase
     public void orderTest() throws Exception
     {    	
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage res = client.send("http://localhost:1080/orders", MESSAGE, props);
         logger.info("res: " + res.getPayloadAsString());
@@ -96,7 +96,7 @@ public class ServiceOrchestrationAndChoiceRoutingIT extends FunctionalTestCase
     public void populateDatabase() throws Exception
     {    	
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage result = client.send("http://localhost:8091/populate", "", props);
         assertNotNull(result);

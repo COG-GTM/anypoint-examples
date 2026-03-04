@@ -75,7 +75,7 @@ public class SalesforceOauthIT extends FunctionalTestCase
     }
     
     private void loginToSalesforce() {
-    	ArrayList<String> cliArgsCap = new ArrayList<String>();
+    	ArrayList<String> cliArgsCap = new ArrayList<>();
 		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
 		capabilities.setCapability("phantomjs.binary.path", System.getProperty("phantomjs.binary"));
 		capabilities.setJavascriptEnabled(true);

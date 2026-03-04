@@ -53,7 +53,7 @@ public class ProxyingSoapApiIT extends FunctionalTestCase
     public void httpPostToFlowUrl() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         MuleMessage result = client.send("http://localhost:" + port.getNumber() + "/", MESSAGE, props);
         assertNotNull(result);

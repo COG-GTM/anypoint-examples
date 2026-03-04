@@ -54,7 +54,7 @@ public class ProcessingOrdersWithDataweaveAndApikitIT extends FunctionalTestCase
     {
         MuleClient client = new MuleClient(muleContext);
         String fileInputPath = "file://./src/main/resources/input";
-        Map<String, Object> outboundProperties = new HashMap<String, Object>();
+        Map<String, Object> outboundProperties = new HashMap<>();
         outboundProperties.put("outputPattern", "orders.xml");
         MuleMessage message = new DefaultMuleMessage(
         		IOUtils.getResourceAsString("orders.xml", this.getClass()),

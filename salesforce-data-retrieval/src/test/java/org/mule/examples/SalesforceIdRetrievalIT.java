@@ -33,7 +33,7 @@ import org.mule.tck.junit4.rule.DynamicPort;
 public class SalesforceIdRetrievalIT extends FunctionalTestCase {
 
 	private static final String TEST_DIR = "./src/test/resources";
-	private static List<String> REPLY = new ArrayList<String>();
+	private static List<String> REPLY = new ArrayList<>();
 	private static final String OPTION_REGEX = "<option\\svalue=\\\".*\\\">.*<\\/option>";
 	
 	@Rule
@@ -61,9 +61,9 @@ public class SalesforceIdRetrievalIT extends FunctionalTestCase {
 	@Test
 	public void testDisplayData() throws Exception {
 		MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "GET");
-        MuleMessage result = client.send("http://localhost:" + port.getNumber(), "", props);
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "GET");
+                MuleMessage result = client.send("http://localhost:" + port.getNumber(), "", props);
 
         Pattern p = Pattern.compile(OPTION_REGEX);
         Matcher m = p.matcher(result.getPayloadAsString());
@@ -73,9 +73,9 @@ public class SalesforceIdRetrievalIT extends FunctionalTestCase {
 	@Test
 	public void testGetData() throws Exception {
 		MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "POST");
-        Map<String, String> params = new HashMap<String, String>();
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "POST");
+                Map<String, String> params = new HashMap<>();
         params.put("object", "user");
         params.put("field", "email");
         params.put("searchKey", "name");

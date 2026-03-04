@@ -55,35 +55,35 @@ public class HttpRestfulResourceIT extends FunctionalTestCase
     public void createPerson() throws Exception
     {
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "POST");
-        client.send("http://0.0.0.0:" + port.getNumber() + "/person", PERSON_JSON, props);		       
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "POST");
+                client.send("http://0.0.0.0:" + port.getNumber() + "/person", PERSON_JSON, props);		       
     }
 
     @Test
 	public void getPerson() throws Exception {
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "GET");
-        MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person/1", "", props);
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "GET");
+                MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person/1", "", props);
         assertEquals(result.getPayloadAsString(), PERSON_JSON);       
 	}
     
     @Test
 	public void postPerson() throws Exception {
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "POST");
-        MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person", PERSON_JSON, props);
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "POST");
+                MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person", PERSON_JSON, props);
         assertEquals(result.getPayloadAsString(), REPLY);       
 	}
     
     @Test
 	public void getPersons() throws Exception {
     	MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("http.method", "GET");
-        MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person", "", props);
+                Map<String, Object> props = new HashMap<>();
+                props.put("http.method", "GET");
+                MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/person", "", props);
         assertTrue(result.getPayloadAsString().contains(PERSON_JSON));       
 	}
 }

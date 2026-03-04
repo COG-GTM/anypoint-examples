@@ -68,7 +68,7 @@ public class HttpAuthorizationCodeWebIT extends FunctionalTestCase
 
     @Before
     public void setUp() {				
-    	ArrayList<String> cliArgsCap = new ArrayList<String>();
+    	ArrayList<String> cliArgsCap = new ArrayList<>();
     	DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();    
     	capabilities.setCapability("phantomjs.binary.path", System.getProperty("phantomjs.binary"));		
     	cliArgsCap.add("--ssl-protocol=any");
