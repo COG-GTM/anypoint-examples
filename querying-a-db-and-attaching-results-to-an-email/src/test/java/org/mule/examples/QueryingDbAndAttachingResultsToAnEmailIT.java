@@ -71,7 +71,7 @@ public class QueryingDbAndAttachingResultsToAnEmailIT extends FunctionalTestCase
     public void attachmentsTest() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "POST");
         
         client.dispatch("http://localhost:" + port.getNumber() + "/", MESSAGE, props);

@@ -40,9 +40,9 @@ public class SAMLCallbackHandler implements CallbackHandler {
     public void handle(Callback[] callbacks)
             throws IOException, UnsupportedCallbackException
     {
-        for (int i = 0; i < callbacks.length; i++) {
-            if (callbacks[i] instanceof SAMLCallback) {
-                SAMLCallback callback = (SAMLCallback) callbacks[i];
+        for (Callback cb : callbacks) {
+            if (cb instanceof SAMLCallback) {
+                SAMLCallback callback = (SAMLCallback) cb;
                 callback.setSamlVersion(SAMLVersion.VERSION_20);
                 SubjectBean subjectBean =
                         new SubjectBean(
@@ -51,7 +51,7 @@ public class SAMLCallbackHandler implements CallbackHandler {
                 callback.setSubject(subjectBean);
                 createAndSetStatement(null, callback);
             } else {
-                throw new UnsupportedCallbackException(callbacks[i], "Unrecognized Callback");
+                throw new UnsupportedCallbackException(cb, "Unrecognized Callback");
             }
         }
     }

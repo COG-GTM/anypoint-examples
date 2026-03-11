@@ -92,7 +92,7 @@ public class SalesforceToMySQLDBUsingBatchProcessingIT extends AbstractTemplateT
 	public void tearDown() throws Exception {
 		stopFlowSchedulers(POLL_FLOW_NAME);
 		// delete previously created Contact from DB by matching ID
-		final Map<String, Object> contact = new HashMap<String, Object>();
+		final Map<String, Object> contact = new HashMap<>();
 		contact.put("LastName", this.contact.get("LastName"));
 		contact.put("Id", this.contact.get("Id"));
 
@@ -146,7 +146,7 @@ public class SalesforceToMySQLDBUsingBatchProcessingIT extends AbstractTemplateT
 
 	private void deleteContactFromSalesforce(final Map<String, Object> acc) throws Exception {
 
-		List<Object> idList = new ArrayList<Object>();
+		List<Object> idList = new ArrayList<>();
 		idList.add(acc.get("Id"));
 
 		deleteContactFromSalesforce.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));

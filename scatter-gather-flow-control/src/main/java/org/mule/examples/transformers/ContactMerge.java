@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,14 +31,14 @@ public class ContactMerge {
 	 * @return a list with the merged content of the to input lists
 	 */
 	public List<Map<String, String>> mergeList(List<Map<String, String>> contactsFromA, List<Map<String, String>> contactsFromB) {
-		List<Map<String, String>> mergedContactList = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> mergedContactList = new ArrayList<>();
 
 		// Put all contacts from A in the merged mergedContactsList
-		for (Map<String, String> contactFromA : contactsFromA) {
+		contactsFromA.forEach(contactFromA -> {
 			Map<String, String> mergedContact = createMergedContact(contactFromA);
 			mergedContact.put("IDInA", contactFromA.get("Id"));
 			mergedContactList.add(mergedContact);
-		}
+		});
 
 		// Add the new contacts from B and update the exiting ones
 		for (Map<String, String> contact : contactsFromB) {
@@ -55,7 +56,7 @@ public class ContactMerge {
 	}
 
 	private Map<String, String> createMergedContact(Map<String, String> contact) {
-		Map<String, String> mergedContact = new HashMap<String, String>();
+		Map<String, String> mergedContact = new HashMap<>();
 		mergedContact.put("Name", contact.get("Name"));
 		mergedContact.put("Email", contact.get("Email"));
 		mergedContact.put("IDInA", "");
@@ -66,11 +67,9 @@ public class ContactMerge {
 	private Map<String, String> findContactInList(String contactEmail, List<Map<String, String>> contactsList) {
 		if(StringUtils.isBlank(contactEmail))
 			return null;
-		for (Map<String, String> contact : contactsList) {
-			if (StringUtils.isNotBlank(contact.get("Email")) && contact.get("Email").equals(contactEmail)) {
-				return contact;
-			}
-		}
-		return null;
+		Optional<Map<String, String>> result = contactsList.stream()
+				.filter(contact -> StringUtils.isNotBlank(contact.get("Email")) && contact.get("Email").equals(contactEmail))
+				.findFirst();
+		return result.orElse(null);
 	}
 }

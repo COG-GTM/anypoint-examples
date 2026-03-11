@@ -41,7 +41,7 @@ public class ImportContactsToSfdcIT extends FunctionalTestCase
 	
 	private final String EMAIL1 = "john.doe@texasComp.com";
 	private final String EMAIL2 = "jane.doe@texasComp.com";
-	private static List<String> contactIds = new ArrayList<String>();
+	private static List<String> contactIds = new ArrayList<>();
 	private static final String MAPPINGS_FOLDER_PATH = "./mappings";
 
 	 
@@ -84,7 +84,7 @@ public class ImportContactsToSfdcIT extends FunctionalTestCase
     {
     	MuleClient client = new MuleClient(muleContext);
         String fileInputPath = "file://./src/main/resources/input";
-        Map<String, Object> outboundProperties = new HashMap<String, Object>();
+        Map<String, Object> outboundProperties = new HashMap<>();
         outboundProperties.put("outputPattern", "contacts.csv");
         MuleMessage message = new DefaultMuleMessage(
         		IOUtils.getResourceAsString("contacts.csv", this.getClass()),

@@ -42,7 +42,7 @@ public class DataWeaveWithFlowRefIT extends FunctionalTestCase
 	private static final String MAPPINGS_FOLDER_PATH = "./mappings";
 	private final String COMPANY_NAME = "Universal Exports";
 	private final String COMPANY_NAME1 = "Best Widgets";
-	private static List<String> accountIds = new ArrayList<String>();
+	private static List<String> accountIds = new ArrayList<>();
 	
     @Override
     protected String getConfigResources()
@@ -81,7 +81,7 @@ public class DataWeaveWithFlowRefIT extends FunctionalTestCase
     {
         MuleClient client = new MuleClient(muleContext);
         String fileInputPath = "file://./src/main/resources/input";
-        Map<String, Object> outboundProperties = new HashMap<String, Object>();
+        Map<String, Object> outboundProperties = new HashMap<>();
         outboundProperties.put("outputPattern", "companies.csv");
         MuleMessage message = new DefaultMuleMessage(
         		IOUtils.getResourceAsString("companies.csv", this.getClass()),
