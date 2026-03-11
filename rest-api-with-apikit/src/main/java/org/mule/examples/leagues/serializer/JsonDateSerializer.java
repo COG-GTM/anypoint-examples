@@ -9,7 +9,8 @@
 package org.mule.examples.leagues.serializer;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.codehaus.jackson.JsonGenerator;
@@ -19,13 +20,15 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 public class JsonDateSerializer extends JsonSerializer<Date>
 {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); // ISO 8601
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"); // ISO 8601
 
     @Override
     public void serialize(Date date, JsonGenerator gen, SerializerProvider provider)
             throws IOException, JsonProcessingException {
 
-        String formattedDate = dateFormat.format(date);
+        String formattedDate = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .format(dateFormatter);
         gen.writeString(formattedDate);
     }
 }

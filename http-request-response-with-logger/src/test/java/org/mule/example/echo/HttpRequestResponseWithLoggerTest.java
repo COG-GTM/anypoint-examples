@@ -42,7 +42,7 @@ public class HttpRequestResponseWithLoggerTest extends FunctionalTestCase
     public void httpGetToFlowUrlEchoesSentMessage() throws Exception
     {
         MuleClient client = new MuleClient(muleContext);
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("http.method", "GET");
         MuleMessage result = client.send("http://0.0.0.0:" + port.getNumber() + "/" + MESSAGE, "", props);
         assertNotNull(result);
