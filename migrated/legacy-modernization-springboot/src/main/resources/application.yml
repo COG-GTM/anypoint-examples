@@ -1,0 +1,14 @@
+server:
+  # The Mule http:listener ran on 0.0.0.0:1080.
+  address: 0.0.0.0
+  port: 1080
+
+legacy:
+  fulfillment:
+    # Drop folder of the legacy, file-based fulfillment system.
+    # The Mule file:outbound-endpoint wrote to src/main/resources/Output.
+    output-directory: output
+
+logging:
+  level:
+    org.ordermgmt.fulfillment: INFO
