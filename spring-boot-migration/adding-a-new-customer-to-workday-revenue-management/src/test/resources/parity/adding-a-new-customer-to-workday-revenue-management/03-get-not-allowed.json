@@ -1,0 +1,26 @@
+{
+  "name": "get-not-allowed",
+  "description": "The listener only allows POST: GET / returns 405 and Workday isn't called.",
+  "source": {
+    "muleApp": "adding-a-new-customer-to-workday-revenue-management",
+    "flow": "add-customer-flow",
+    "evidence": "documented",
+    "reference": "adding-a-new-customer-to-workday-revenue-management/src/main/app/add_a_new_customer.xml (http:listener allowedMethods=POST)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 405,
+    "bodyFormat": "IGNORE"
+  }
+}

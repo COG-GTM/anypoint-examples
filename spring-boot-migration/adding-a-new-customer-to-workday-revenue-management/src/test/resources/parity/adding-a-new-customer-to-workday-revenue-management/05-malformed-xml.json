@@ -1,0 +1,30 @@
+{
+  "name": "malformed-xml",
+  "description": "A body that isn't well-formed XML fails in xml-to-dom-transformer: 500, Workday isn't called.",
+  "source": {
+    "muleApp": "adding-a-new-customer-to-workday-revenue-management",
+    "flow": "add-customer-flow",
+    "evidence": "documented",
+    "reference": "adding-a-new-customer-to-workday-revenue-management/src/main/app/add_a_new_customer.xml (mulexml:xml-to-dom-transformer, default exception strategy)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": "<root><Account><CustomerName>John Doe</Account>"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 500,
+    "bodyFormat": "IGNORE"
+  }
+}
