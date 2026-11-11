@@ -1,0 +1,25 @@
+{
+  "name": "ajax-manufacturers",
+  "description": "The /orders/manufacturers channel returns a fixed list.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "manufacturers",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/mule-config.xml (manufacturers expression-transformer)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/orders/manufacturers"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": [
+      "Samsung",
+      "Philips",
+      "Sony"
+    ]
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

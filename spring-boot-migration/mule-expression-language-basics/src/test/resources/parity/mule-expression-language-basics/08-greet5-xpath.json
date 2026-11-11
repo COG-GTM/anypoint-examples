@@ -1,0 +1,12 @@
+{
+  "name": "greet5-xpath",
+  "description": "Example 5: XPath /user/username and /user/age from the XML body.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "docs-greetingFlow5",
+    "evidence": "munit",
+    "reference": "mule-expression-language-basics/src/test/java/org/mule/examples/MuleExpressionLanguageBasicsIT.java + mule-expression-language-basics/src/test/resources/message.xml; mule-expression-language-basics/src/main/app/greeting.xml (docs-greetingFlow5)"
+  },
+  "request": { "method": "POST", "path": "/greet5", "headers": { "Content-Type": "application/xml" }, "bodyFile": "bodies/message.xml" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello Mule" }, "expectedFile": "Mule, 1, false"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "sum-all-values-including-decimals",
+  "description": "for (var i in list) visits every property; decimals and negatives add numerically.",
+  "source": {
+    "muleApp": "addition-using-javascript-transformer",
+    "flow": "javascript-calculatorFlow1",
+    "evidence": "documented",
+    "reference": "addition-using-javascript-transformer/src/main/app/javascript-calculator.xml (scripting:transformer JavaScript + set-payload 'Sum is: #[payload].')"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": { "a": 1.5, "b": 2.25, "c": -1, "d": 10 } },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Sum is: 12.75." }
+}

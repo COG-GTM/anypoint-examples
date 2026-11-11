@@ -1,0 +1,56 @@
+{
+  "name": "mixed-order-routes-by-manufacturer",
+  "description": "Choice per item: Samsung -> samsungOrder (2550 * 5 = 12750.0); Philips -> inhouseOrder (price 159 from the price service * 10 = 1590.0, no receipt id).",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "orderService",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (foreach + choice manufacturer == 'Samsung'; inhouseOrder totalPrice = price * quantity, ACCEPTED); ProductPrice.java (159)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders",
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ord:processOrder xmlns:ord=\"http://orders.se.mulesoft.com/\"><order><orderId>13</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>Galaxy</name><productId>i9000</productId><quantity>5</quantity></item><item><manufacturer>Philips</manufacturer><name>P3123</name><productId>23</productId><quantity>10</quantity></item></orderItems></order></ord:processOrder></soap:Body></soap:Envelope>"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "XML",
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:processOrderResponse xmlns:ns2=\"http://orders.se.mulesoft.com/\"><summary><orderId>13</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>Galaxy</name><productId>i9000</productId><purchaseReceipt><id>1</id><status>ACCEPTED</status><totalPrice>12750.0</totalPrice></purchaseReceipt><quantity>5</quantity></item><item><manufacturer>Philips</manufacturer><name>P3123</name><productId>23</productId><purchaseReceipt><status>ACCEPTED</status><totalPrice>1590.0</totalPrice></purchaseReceipt><quantity>10</quantity></item></orderItems></summary></ns2:processOrderResponse></soap:Body></soap:Envelope>"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml"
+      },
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchaseResponse xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderResponse><id>1</id><price>12750</price><result>ACCEPTED</result></orderResponse></ns2:purchaseResponse></soap:Body></soap:Envelope>"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/23",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/plain"
+      },
+      "body": "159"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "bodyFormat": "XML",
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchase xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderRequest><name>Galaxy</name><quantity>5</quantity></orderRequest></ns2:purchase></soap:Body></soap:Envelope>"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/23",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "unparseable-date",
+  "description": "SimpleDateFormat(yyyy-MM-dd) parse failure (a / where - is expected) -> 400. Lenient parsing accepts e.g. 26-10-2012, so that is not a failure case.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java (validation)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?stock=AAPL&date=2012/10/26"
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "date format must be YYYY-MM-DD"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

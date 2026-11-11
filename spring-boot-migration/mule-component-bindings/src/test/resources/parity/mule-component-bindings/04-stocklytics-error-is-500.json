@@ -1,0 +1,39 @@
+{
+  "name": "stocklytics-error-is-500",
+  "description": "Non-200 from Stocklytics -> RuntimeException message returned with 500.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java (catch Throwable -> 500 e.getMessage()); mule-component-bindings/src/main/java/stockstats/impl/stocklytics/StocklyticsStockService.java"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?stock=AAPL&date=2012-10-26"
+  },
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "Stockylitics returned status 503"
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/historicalPrices/1.0",
+      "status": 503,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "error": "unavailable"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/1.1/search/tweets.json",
+      "count": 0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "intermediate-value-is-cached",
+  "description": "n=5 was cached while computing n=10, so the response generator reports COST 0.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "munit",
+    "reference": "cache-scope-with-fibonacci/src/test/java/org/mule/examples/CacheScopeWithFibonacciIT.java (second request n=5); cache-scope-with-fibonacci/src/main/app/cache-scope.xml (ee:cache keyed by n, FibonacciResponseGenerator sets cost 0 on hits)"
+  },
+  "request": { "method": "GET", "path": "/fibonacci?n=5" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Fibonacci(5) = 5\nCOST: 0" }
+}

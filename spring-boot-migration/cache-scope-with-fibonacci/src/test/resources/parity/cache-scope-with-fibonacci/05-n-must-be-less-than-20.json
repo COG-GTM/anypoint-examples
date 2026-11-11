@@ -1,0 +1,12 @@
+{
+  "name": "n-must-be-less-than-20",
+  "description": "The choice rejects n >= 20 before the cache scope.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "documented",
+    "reference": "cache-scope-with-fibonacci/src/main/app/cache-scope.xml (otherwise -> 'ERROR: n must be less than 20'); cache-scope-with-fibonacci/README.md"
+  },
+  "request": { "method": "GET", "path": "/fibonacci?n=20" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "ERROR: n must be less than 20" }
+}

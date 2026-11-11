@@ -1,0 +1,6 @@
+company_name,company_address,company_city,company_state,company_zip,has_given_contact_permission
+NE Co,1 A St,Boston,ma,02108,
+MW Co,2 B St,Chicago,IL,60601,yes
+SW Co,3 C St,Phoenix,az,85001,
+Unknown Co,4 D St,Philadelphia,PA,19104,
+Blank Co,5 E St,Nowhere,,00000,

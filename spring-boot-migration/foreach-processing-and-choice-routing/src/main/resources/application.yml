@@ -1,0 +1,9 @@
+server:
+  # http:listener-config HTTP_Listener_Configuration_1 port="11081"
+  port: ${http.port:11081}
+spring:
+  application:
+    name: foreach-processing-and-choice-routing
+loanbroker:
+  # Credit agency and bank services; defaults to the mock services bundled in this app.
+  services-base-url: http://localhost:${server.port}

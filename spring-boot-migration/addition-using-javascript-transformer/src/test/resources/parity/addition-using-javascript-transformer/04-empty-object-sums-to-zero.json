@@ -1,0 +1,12 @@
+{
+  "name": "empty-object-sums-to-zero",
+  "description": "An empty object leaves the initial var sum = 0.",
+  "source": {
+    "muleApp": "addition-using-javascript-transformer",
+    "flow": "javascript-calculatorFlow1",
+    "evidence": "documented",
+    "reference": "addition-using-javascript-transformer/src/main/app/javascript-calculator.xml (scripting:transformer JavaScript + set-payload 'Sum is: #[payload].') (var sum = 0)"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": {} },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Sum is: 0.0." }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "greet2-username-blank",
+  "description": "MEL empty also matches an empty string.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "greetingFlow2",
+    "evidence": "documented",
+    "reference": "mule-expression-language-basics/src/main/app/greeting.xml (greetingFlow2 when username == empty)"
+  },
+  "request": { "method": "GET", "path": "/greet2?username=" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "No username provided" }
+}

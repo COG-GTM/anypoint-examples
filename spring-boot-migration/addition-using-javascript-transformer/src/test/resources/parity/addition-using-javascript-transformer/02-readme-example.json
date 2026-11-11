@@ -1,0 +1,12 @@
+{
+  "name": "readme-example",
+  "description": "README example {a:3,b:4}, logged as 'Sum is: 7.0'.",
+  "source": {
+    "muleApp": "addition-using-javascript-transformer",
+    "flow": "javascript-calculatorFlow1",
+    "evidence": "documented",
+    "reference": "addition-using-javascript-transformer/README.md (log line 'Sum is: 7.0'); addition-using-javascript-transformer/src/main/app/javascript-calculator.xml (scripting:transformer JavaScript + set-payload 'Sum is: #[payload].')"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": { "a": 3, "b": 4 } },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Sum is: 7.0." }
+}

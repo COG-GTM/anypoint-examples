@@ -1,0 +1,12 @@
+{
+  "name": "no-language-defaults-to-english",
+  "description": "No language parameter: otherwise branch, replyInDefaultLanguage sub-flow replies in English.",
+  "source": {
+    "muleApp": "content-based-routing",
+    "flow": "content-based-routingFlow",
+    "evidence": "documented",
+    "reference": "content-based-routing/src/main/app/content-based-routing.xml (otherwise -> flow-ref replyInDefaultLanguage -> set-payload Hello!); content-based-routing/README.md"
+  },
+  "request": { "method": "GET", "path": "/" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello!" }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "missing-stock",
+  "description": "Blank stock -> 400 before any service call.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java (validation)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?date=2012-10-26"
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "stock is required"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

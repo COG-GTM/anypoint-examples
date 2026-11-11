@@ -1,0 +1,2 @@
+loanbroker:
+  services-base-url: ${parity.downstream.base-url}

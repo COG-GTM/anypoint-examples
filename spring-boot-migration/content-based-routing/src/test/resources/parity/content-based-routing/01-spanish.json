@@ -1,0 +1,12 @@
+{
+  "name": "spanish",
+  "description": "language=Spanish routes to the 'Reply in Spanish' branch.",
+  "source": {
+    "muleApp": "content-based-routing",
+    "flow": "content-based-routingFlow",
+    "evidence": "munit",
+    "reference": "content-based-routing/src/test/java/org/mule/examples/ContentBasedRoutingIT.java (assertEquals \"Hola!\"); content-based-routing/src/main/app/content-based-routing.xml (when flowVars['language'] == 'Spanish')"
+  },
+  "request": { "method": "GET", "path": "/?language=Spanish" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hola!" }
+}

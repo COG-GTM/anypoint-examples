@@ -1,0 +1,12 @@
+{
+  "name": "greet6-json",
+  "description": "Example 6: JSON -> Object, payload.username / payload.age.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "greetingFlow6",
+    "evidence": "munit",
+    "reference": "mule-expression-language-basics/src/test/java/org/mule/examples/MuleExpressionLanguageBasicsIT.java + mule-expression-language-basics/src/test/resources/message.json; mule-expression-language-basics/src/main/app/greeting.xml (greetingFlow6)"
+  },
+  "request": { "method": "POST", "path": "/greet6", "headers": { "Content-Type": "application/json" }, "bodyFile": "bodies/message.json" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello Mule" }, "expectedFile": "Mule, 1, false"
+}

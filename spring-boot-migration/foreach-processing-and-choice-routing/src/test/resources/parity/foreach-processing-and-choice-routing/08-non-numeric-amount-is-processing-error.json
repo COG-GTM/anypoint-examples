@@ -1,0 +1,21 @@
+{
+  "name": "non-numeric-amount-is-processing-error",
+  "description": "Integer.parseInt fails in 'Create customer request'; the catch-exception-strategy answers 'Error processing loan request'.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (Integer.parseInt in expression-component; catch-exception-strategy set-payload)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=lots&term=6"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Error processing loan request"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

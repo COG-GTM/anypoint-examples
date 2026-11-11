@@ -1,0 +1,51 @@
+{
+  "name": "inhouse-price-is-cached-by-product-id",
+  "description": "ee:cache keyed by #[payload.productId]: product 23 was priced in the previous order, so no price call is made; a lower-case 'samsung' is not the Samsung branch.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "inhouseOrder",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (Caching_Strategy keyGenerationExpression=#[payload.productId], in-memory-store; choice is case-sensitive)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders",
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ord:processOrder xmlns:ord=\"http://orders.se.mulesoft.com/\"><order><orderId>14</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Sony</manufacturer><name>Bravia</name><productId>23</productId><quantity>2</quantity></item><item><manufacturer>samsung</manufacturer><name>Galaxy</name><productId>i9000</productId><quantity>1</quantity></item></orderItems></order></ord:processOrder></soap:Body></soap:Envelope>"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "XML",
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:processOrderResponse xmlns:ns2=\"http://orders.se.mulesoft.com/\"><summary><orderId>14</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Sony</manufacturer><name>Bravia</name><productId>23</productId><purchaseReceipt><status>ACCEPTED</status><totalPrice>318.0</totalPrice></purchaseReceipt><quantity>2</quantity></item><item><manufacturer>samsung</manufacturer><name>Galaxy</name><productId>i9000</productId><purchaseReceipt><status>ACCEPTED</status><totalPrice>159.0</totalPrice></purchaseReceipt><quantity>1</quantity></item></orderItems></summary></ns2:processOrderResponse></soap:Body></soap:Envelope>"
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/i9000",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/plain"
+      },
+      "body": "159"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/23",
+      "count": 0
+    },
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/i9000",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "count": 0
+    }
+  ]
+}

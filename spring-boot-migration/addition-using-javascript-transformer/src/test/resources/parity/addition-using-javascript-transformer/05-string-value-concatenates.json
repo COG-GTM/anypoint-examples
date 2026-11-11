@@ -1,0 +1,12 @@
+{
+  "name": "string-value-concatenates",
+  "description": "JavaScript + with a string operand concatenates: 0 + 1 = 1, then 1 + '2' = '12'.",
+  "source": {
+    "muleApp": "addition-using-javascript-transformer",
+    "flow": "javascript-calculatorFlow1",
+    "evidence": "documented",
+    "reference": "addition-using-javascript-transformer/src/main/app/javascript-calculator.xml (scripting:transformer JavaScript + set-payload 'Sum is: #[payload].') (sum += list[i] with JavaScript + semantics)"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": { "a": 1, "b": "2" } },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Sum is: 12." }
+}

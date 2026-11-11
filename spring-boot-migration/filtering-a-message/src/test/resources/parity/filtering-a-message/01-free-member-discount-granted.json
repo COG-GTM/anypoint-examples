@@ -1,0 +1,17 @@
+{
+  "name": "free-member-discount-granted",
+  "description": "Free member, 12 months, 2000 purchases: months >= 12 && purchases >= 1500, so the message passes the custom filter.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "munit",
+    "reference": "filtering-a-message/src/test/java/org/mule/examples/FilteringMessageIT.java + src/test/resources/message.json; filtering-a-message/src/main/app/filtering.xml; filtering-a-message/src/main/java/org/mule/examples/filters/FreeMembershipDiscountFilter.java"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "purchases": 2000, "months": 12, "membership": "free" }
+  },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "the discount was granted." }
+}

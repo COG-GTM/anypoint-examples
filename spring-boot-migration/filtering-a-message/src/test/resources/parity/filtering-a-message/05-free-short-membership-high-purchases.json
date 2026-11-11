@@ -1,0 +1,17 @@
+{
+  "name": "free-short-membership-high-purchases",
+  "description": "Free member, <= 6 months, purchases >= 2500.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "documented",
+    "reference": "filtering-a-message/src/main/app/filtering.xml; filtering-a-message/src/main/java/org/mule/examples/filters/FreeMembershipDiscountFilter.java (months <= 6 && purchase >= 2500)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "purchases": 2500, "months": 6, "membership": "free" }
+  },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "the discount was granted." }
+}

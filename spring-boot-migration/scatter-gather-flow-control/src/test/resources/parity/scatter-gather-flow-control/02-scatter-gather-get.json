@@ -1,0 +1,23 @@
+{
+  "name": "scatter-gather-get",
+  "description": "GET /scatterGather: both routes run, ContactMergeAggregationStrategy merges A and B by e-mail, DataWeave writes the CSV (merged contacts have no Id key, so the Id column is empty), outboundFlow e-mails it as the aggregation-report attachment and the response is the payload set before the SMTP endpoint.",
+  "source": {
+    "muleApp": "scatter-gather-flow-control",
+    "flow": "scatter-gatherFlow / outboundFlow",
+    "evidence": "documented",
+    "reference": "scatter-gather-flow-control/src/main/app/scatter-gather.xml (scatter-gather, dw:transform-message, outboundFlow set-attachment/set-payload/smtp:outbound-endpoint); scatter-gather-flow-control/src/main/java/org/mule/examples/transformers/ContactMerge.java"
+  },
+  "request": { "method": "GET", "path": "/scatterGather" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Please find attached your Aggregation Report" },
+  "expectedEmail": {
+    "from": "mule-example@example.com",
+    "to": "report-recipient@example.com",
+    "subject": "Scatter gather example - aggregation",
+    "body": "Please find attached your Aggregation Report",
+    "attachment": {
+      "name": "aggregation-report",
+      "contentType": "text/plain",
+      "content": "Id,Name,Email\n,vlado,vlado@email.com\n,michal,michal@email.com\n,peter,peter@email.com\n"
+    }
+  }
+}

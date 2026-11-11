@@ -1,0 +1,22 @@
+{
+  "name": "nocache-header-bypasses-cache",
+  "description": "A nocache HTTP header becomes an inbound property, so the cache scope is skipped for the top-level call. Children: 15 was never stored (it ran under nocache), so it misses (14 hit + 13 hit + 1 = 1); 14 hits (0). COST = 1 + 0 + 1 = 2.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "documented",
+    "reference": "cache-scope-with-fibonacci/src/main/app/cache-scope.xml (ee:cache filterExpression=\"#[groovy:message.getInboundProperty('nocache') == null]\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/fibonacci?n=16",
+    "headers": {
+      "nocache": "true"
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Fibonacci(16) = 987\nCOST: 2"
+  }
+}

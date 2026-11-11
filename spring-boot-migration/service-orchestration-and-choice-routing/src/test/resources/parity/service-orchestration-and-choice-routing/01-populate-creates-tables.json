@@ -1,0 +1,21 @@
+{
+  "name": "populate-creates-tables",
+  "description": "First GET /populate creates the orders and order_audits tables.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "databaseInitialisation",
+    "evidence": "munit",
+    "reference": "service-orchestration-and-choice-routing/src/test/java/org/mule/examples/ServiceOrchestrationAndChoiceRoutingIT.java (contains \"db populated\"); service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (databaseInitialisation)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/populate"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "db populated"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

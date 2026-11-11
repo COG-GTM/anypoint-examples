@@ -1,0 +1,17 @@
+{
+  "name": "premium-boundary-granted",
+  "description": "Premium member at the boundary: months >= 6 && purchases >= 1000.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "documented",
+    "reference": "filtering-a-message/src/main/app/filtering.xml; filtering-a-message/src/main/java/org/mule/examples/filters/FreeMembershipDiscountFilter.java (isPremium branch)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "purchases": 1000, "months": 6, "membership": "premium" }
+  },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "the discount was granted." }
+}

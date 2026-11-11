@@ -1,0 +1,21 @@
+{
+  "name": "no-parameters-is-incomplete",
+  "description": "The listener path is /* so any path is accepted; without parameters the request is incomplete.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (http:listener path=\"/*\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/loans"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Error: incomplete request"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

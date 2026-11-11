@@ -1,0 +1,8 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: mule-expression-language-basics
+mel:
+  # file:outbound-endpoint path="Path_of_your_choice"
+  output-dir: ${mel.output.dir:Path_of_your_choice}

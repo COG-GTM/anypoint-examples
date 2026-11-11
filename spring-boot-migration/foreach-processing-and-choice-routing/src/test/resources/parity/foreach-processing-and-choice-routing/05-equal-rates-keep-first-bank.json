@@ -1,0 +1,93 @@
+{
+  "name": "equal-rates-keep-first-bank",
+  "description": "findLowestLoanQuote only replaces on a strictly lower rate, so the first bank in the routed order wins ties.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (findLowestLoanQuote: loanQuote.getInterestRate() < lowestQuote.getInterestRate())"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=12000&term=6"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Bank #3, rate: 4.0"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "creditScore": 750,
+        "creditHistory": 10
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank3",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #3",
+        "interestRate": 4.0
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank4",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #4",
+        "interestRate": 4.0
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "name": "Ann",
+        "ssn": 1234
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank3",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank4",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    }
+  ]
+}

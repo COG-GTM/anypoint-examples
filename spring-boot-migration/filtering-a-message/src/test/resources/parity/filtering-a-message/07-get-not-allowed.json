@@ -1,0 +1,12 @@
+{
+  "name": "get-not-allowed",
+  "description": "The listener only allows POST (allowedMethods=\"POST\"), so a GET is answered with 405 Method Not Allowed.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "documented",
+    "reference": "filtering-a-message/src/main/app/filtering.xml (http:listener allowedMethods=\"POST\")"
+  },
+  "request": { "method": "GET", "path": "/" },
+  "expected": { "status": 405, "bodyFormat": "IGNORE" }
+}

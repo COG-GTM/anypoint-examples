@@ -1,0 +1,55 @@
+{
+  "name": "credit-agency-failure-is-processing-error",
+  "description": "A failing credit agency call is caught by the catch-exception-strategy; no bank is asked.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (lookupCustomerCreditProfile inside LoanBrokerFlow; catch-exception-strategy)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=25000&term=12"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Error processing loan request"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "status": 500,
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "name": "Ann",
+        "ssn": 1234
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank1",
+      "count": 0,
+      "bodyFormat": "JSON",
+      "body": null
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank2",
+      "count": 0,
+      "bodyFormat": "JSON",
+      "body": null
+    }
+  ]
+}
