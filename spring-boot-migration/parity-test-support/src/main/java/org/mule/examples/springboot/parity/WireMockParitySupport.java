@@ -85,9 +85,16 @@ public class WireMockParitySupport {
         return matches;
     }
 
-    /** Verifies the outbound side effects declared in a fixture; returns mismatches. */
+    /**
+     * Verifies the outbound side effects declared in a fixture; returns mismatches. Any request that
+     * matched no stub is also reported, since it is a downstream call the fixture does not account for.
+     */
     public List<String> verifyOutbound(List<ParityFixture.OutboundExpectation> expectations) {
         List<String> mismatches = new ArrayList<>();
+        for (LoggedRequest r : server.findAllUnmatchedRequests()) {
+            mismatches.add("unexpected outbound " + r.getMethod().getName() + " " + r.getUrl()
+                    + ": no downstream stub declared for it");
+        }
         for (ParityFixture.OutboundExpectation o : expectations) {
             String label = "outbound " + o.method() + " " + o.urlPath();
             List<LoggedRequest> got = received(o.method(), o.urlPath(), o.queryParams());
