@@ -108,8 +108,7 @@ public class BoxAuthorizationCodeClient {
                         new OAuth2AuthorizationExchange(authorizationRequest(state),
                                 OAuth2AuthorizationResponse.success(code).redirectUri(registration.getRedirectUri()).state(state).build())));
                 if (tokens.getRefreshToken() == null) {
-                    log.error("Could not extract access token or refresh token from token URL. Access token is {}, Refresh token is null",
-                            tokens.getAccessToken().getTokenValue());
+                    log.error("Could not extract access token or refresh token from token URL. Refresh token is null");
                     authorizationStatus = TOKEN_NOT_FOUND_STATUS;
                     httpStatus = 500;
                     message = "Failed getting access token or refresh token from token URL response. See logs for details.";
