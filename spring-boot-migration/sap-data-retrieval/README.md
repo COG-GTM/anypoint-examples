@@ -63,7 +63,8 @@ cd spring-boot-migration && mvn -B -pl sap-data-retrieval -am verify
    documented.
 3. **Empty customer result.** Mule's customers DataWeave has no `otherwise` branch, so an empty `RESULT_TAB` behaviour
    is undocumented. The port returns `{"customers": []}`; no fixture asserts it.
-4. **APIkit console / 406 / non-`/api` paths.** These behave as in `netsuite-data-retrieval`: no `/api/console`;
+4. **APIkit console / 406 / non-`/api` paths.** These behave as in `netsuite-data-retrieval`: no `/api/console`
+   (springdoc serves `/v3/api-docs` and `/swagger-ui.html` instead);
    Spring's empty-body 406; and APIkit-style 404 JSON for every unknown path.
 5. **`/salesOrder` flow mapping.** The Mule `apikit:flow-mapping resource="/salesOrder"` names a resource that isn't in
    the RAML. The flow is reached by APIkit's naming convention (`get:/salesOrders:sap-api-config`) at the RAML path

@@ -20,7 +20,7 @@
 | `dw:transform-message` `*row map {($$):$}` (`application/json`) | `BapiXml#rows` → `List<SapRow>` (`@JsonAnyGetter`) | |
 | `… when table != "" otherwise {message: "No data found."}` | `SapApiController#orNoData` | materials / salesOrders only. |
 | `logger` | omitted | |
-| `sap-api-console` | not migrated | Delta 4. |
+| `sap-api-console` | springdoc (`/v3/api-docs`, `/swagger-ui.html`) | Delta 4. |
 
 ## Configuration
 

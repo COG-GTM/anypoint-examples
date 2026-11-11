@@ -52,7 +52,8 @@ cd spring-boot-migration && mvn -B -pl netsuite-data-retrieval -am verify
    object to `/search/{CUSTOMER|ITEM_SUPPLY_PLAN_BASIC|OPPORTUNITY}` with `NLAuth` credentials built from the same
    `nets.*` properties. In production, point `nets.base-url` at a SuiteTalk/RESTlet bridge that exposes that contract
    (or swap in a SOAP implementation behind the same client methods).
-2. **APIkit console.** `/api/console` isn't served.
+2. **APIkit console.** `/api/console` isn't served; springdoc publishes the OpenAPI document at `/v3/api-docs` and
+   Swagger UI at `/swagger-ui.html` instead.
 3. **406 Not Acceptable.** Spring's content negotiation returns 406 with an empty body, not `{"message": "Not acceptable"}`.
 4. **Paths outside `/api`.** Mule only listened on `/api/*`; the port answers any unknown path with the APIkit-style 404
    JSON instead of the Mule listener's plain-text 404.

@@ -20,7 +20,7 @@
 | `netsuite:search searchRecord="CUSTOMER" / "ITEM_SUPPLY_PLAN_BASIC" / "OPPORTUNITY"` | `NetSuiteSearchClient#searchCustomers` / `#searchItemSupplyPlans` / `#searchOpportunities` (WebClient POST `/search/{searchRecord}`) | Typed criteria in, `List<NetSuiteRecord>` out. |
 | `dw:transform-message` `payload map $` (`application/json`) | Jackson serialisation of `List<NetSuiteRecord>` (`produces = application/json`) | |
 | `logger` | omitted | |
-| `netsuite-api-console` (`apikit:console`) | not migrated | Delta 2. |
+| `netsuite-api-console` (`apikit:console`) | springdoc (`/v3/api-docs`, `/swagger-ui.html`) | Delta 2. |
 
 ## Configuration
 
