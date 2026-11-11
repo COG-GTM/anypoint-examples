@@ -1,0 +1,1 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns0:ListInventory xmlns:ns0="http://mulesoft.org/tshirt-service"/></soap:Body></soap:Envelope>

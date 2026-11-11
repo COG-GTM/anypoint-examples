@@ -1,0 +1,28 @@
+{
+  "name": "signed-saml-token",
+  "description": "SAMLTokenSigned (sender-vouches, message signed with joe, DirectReference) accepted.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "SignedSamlTokenServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (action SAMLTokenUnsigned Signature); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testSignedSamlToken"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/signedsaml",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "samlTokenSigned"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}

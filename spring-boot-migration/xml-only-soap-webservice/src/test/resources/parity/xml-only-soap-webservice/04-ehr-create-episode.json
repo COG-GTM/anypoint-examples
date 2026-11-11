@@ -1,0 +1,26 @@
+{
+  "name": "ehr-create-episode",
+  "description": "EHRService createEpisode echoes the PatientId with generated episodeId/startDate/endDate (now), admission Elective, care Private.",
+  "source": {
+    "muleApp": "xml-only-soap-webservice",
+    "flow": "EHRService",
+    "evidence": "documented",
+    "reference": "xml-only-soap-webservice/src/main/app/mocks.xml (when operation == 'createEpisode')"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/EHRService",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8"
+    },
+    "bodyFile": "bodies/create-episode-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/create-episode-response.xml"
+  }
+}

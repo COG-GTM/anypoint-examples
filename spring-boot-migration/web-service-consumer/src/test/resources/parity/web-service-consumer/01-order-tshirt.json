@@ -1,0 +1,63 @@
+{
+  "name": "order-tshirt",
+  "description": "POST /orders with the IT's JSON order: DataWeave maps it to ns0:OrderTshirt, the AuthenticationHeader apiKey abc12345 is added as SOAP header, OrderTshirt is invoked (SOAPAction order-tshirt) and the OrderTshirtResponse is returned as JSON with 200.",
+  "source": {
+    "muleApp": "web-service-consumer",
+    "flow": "orderTshirt",
+    "evidence": "documented",
+    "reference": "web-service-consumer/src/main/app/tshirt-service-consumer.xml (dw ns0#OrderTshirt: payload; dw soap.header AuthenticationHeader apiKey; ws:consumer operation=OrderTshirt; dw %output application/json payload); tshirt.wsdl (soapAction http://mulesoft.org/tshirt-service/order-tshirt); src/test/resources/message.json; sample_data/OrderTshirtResponse.xml; WebServiceConsumerIT asserts 'orderId'"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "customerID@gmail.com",
+      "address1": "Corrientes 316",
+      "address2": "EP",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "name": "MuleSoft Argentina",
+      "postalCode": "C1043AAQ",
+      "size": "L",
+      "stateOrProvince": "CABA"
+    }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml;charset=UTF-8"
+      },
+      "bodyFile": "bodies/order-tshirt-response.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/",
+      "headers": {
+        "Content-Type": "~text/xml.*",
+        "SOAPAction": "~\"?http://mulesoft\\.org/tshirt-service/order-tshirt\"?"
+      },
+      "bodyFormat": "XML",
+      "bodyFile": "bodies/order-tshirt-request.xml"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "OrderTshirtResponse": {
+        "orderId": "1"
+      }
+    }
+  }
+}

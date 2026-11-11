@@ -1,0 +1,28 @@
+{
+  "name": "saml-token-wrong-issuer",
+  "description": "A SAML assertion issued by www.example.com is rejected by SAMLCustomValidator with a <wsse:Security> header fault.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "SamlTokenServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testSamlTokenWrongIssuer (wrong-saml.properties; fault message contains \"<wsse:Security> header\")"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/saml",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "samlTokenWrongIssuer"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 500,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/fault-invalid-security.xml"
+  }
+}

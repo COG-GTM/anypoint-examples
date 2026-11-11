@@ -1,0 +1,20 @@
+{
+  "name": "redirect-followed",
+  "description": "Mule's http:request follows redirects by default, so a 302 from the API (e.g. Box file download) is followed and the final content is returned with 200.",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (http:request-config without followRedirects, Mule 3.8 default followRedirects=true)"
+  },
+  "request": { "method": "GET", "path": "/2.0/files/12345/content", "headers": { "Authorization": "Bearer test-token" } },
+  "downstream": [
+    { "method": "GET", "urlPath": "/2.0/files/12345/content", "status": 302, "headers": { "Location": "/dl/12345/report.txt" } },
+    { "method": "GET", "urlPath": "/dl/12345/report.txt", "status": 200, "headers": { "Content-Type": "text/plain" }, "body": "quarterly report" }
+  ],
+  "expectedOutbound": [
+    { "method": "GET", "urlPath": "/2.0/files/12345/content", "headers": { "Authorization": "Bearer test-token" } },
+    { "method": "GET", "urlPath": "/dl/12345/report.txt" }
+  ],
+  "expected": { "status": 200, "headers": { "Content-Type": "~text/plain.*" }, "bodyFormat": "TEXT", "body": "quarterly report" }
+}

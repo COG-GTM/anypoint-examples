@@ -19,7 +19,7 @@ Mule 3.8 flow.
 | `AbstractParityTest` | `@SpringBootTest(RANDOM_PORT)`, profile `parity`; turns every fixture into a dynamic test (capture-and-compare) |
 | `AbstractWireMockParityTest` | Same, plus a shared WireMock server for downstream systems (`parity.downstream.base-url`), per-case stubs and outbound-request verification |
 | `ParityHttpClient` | Replays a fixture request against any base URL; never follows redirects |
-| `ParityComparator` / `ParityAssertions` | Status, header (`exact`, `~regex`, `!absent`) and body comparison: JSON (JSONAssert, `ignorePaths`), XML (XMLUnit similarity), text (exact or regex) |
+| `ParityComparator` / `ParityAssertions` | Status, header (`exact`, `~regex`, `!absent`) and body comparison: JSON (JSONAssert, `ignorePaths`), XML (XMLUnit similarity; a fixture text node `~regex` matches generated values), text (exact or regex) |
 | `ParityRecorder` | Writes responses captured from a live Mule runtime as fixtures (`evidence: recorded`) |
 | `WireMockParitySupport` | Stand-alone WireMock helper (stub downstream, verify outbound) for non-HTTP-entry modules |
 | `ParityContainers` | Testcontainers factories: MySQL 5.7, ActiveMQ, RabbitMQ, MongoDB, GreenMail, SFTP |

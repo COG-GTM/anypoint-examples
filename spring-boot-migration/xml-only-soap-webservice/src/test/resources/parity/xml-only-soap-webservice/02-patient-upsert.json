@@ -1,0 +1,26 @@
+{
+  "name": "patient-upsert",
+  "description": "PatientService upsertPatient returns upsertPatientResponse with PatientId = now as :string.",
+  "source": {
+    "muleApp": "xml-only-soap-webservice",
+    "flow": "PatientService",
+    "evidence": "documented",
+    "reference": "xml-only-soap-webservice/src/main/app/mocks.xml (when operation == 'upsertPatient')"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/PatientService",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8"
+    },
+    "bodyFile": "bodies/upsert-patient-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/upsert-patient-response.xml"
+  }
+}

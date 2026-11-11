@@ -1,0 +1,3 @@
+tshirt:
+  service:
+    address: ${parity.downstream.base-url}

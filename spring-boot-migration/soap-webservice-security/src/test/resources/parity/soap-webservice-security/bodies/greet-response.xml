@@ -1,0 +1,1 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:greetResponse xmlns:ns2="http://security.example.mule.mulesoft.com/"><name>Hello Mule</name></ns2:greetResponse></soap:Body></soap:Envelope>

@@ -1,0 +1,26 @@
+{
+  "name": "ehr-find-episodes",
+  "description": "EHRService otherwise branch (findEpisodes) returns one Episode with the requested PatientId.",
+  "source": {
+    "muleApp": "xml-only-soap-webservice",
+    "flow": "EHRService",
+    "evidence": "documented",
+    "reference": "xml-only-soap-webservice/src/main/app/mocks.xml (otherwise: findEpisode to findEpisodeResponse); service/EHRService.wsdl"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/EHRService",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8"
+    },
+    "bodyFile": "bodies/find-episodes-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/find-episodes-response.xml"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "api-error-fails-flow-with-500",
+  "description": "An API status >= 400 fails the Mule http:request (default success-status-code-validator 0..399); the unhandled exception makes the listener answer 500.",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (http:request without success-status-code-validator, no exception strategy); Mule 3.8 HTTP connector docs: default success range 0..399, failures raise ResponseValidatorException → 500"
+  },
+  "request": { "method": "GET", "path": "/2.0/files/999", "headers": { "Authorization": "Bearer test-token" } },
+  "downstream": [
+    { "method": "GET", "urlPath": "/2.0/files/999", "status": 404, "headers": { "Content-Type": "application/json" }, "body": { "type": "error", "status": 404, "code": "not_found" } }
+  ],
+  "expectedOutbound": [ { "method": "GET", "urlPath": "/2.0/files/999" } ],
+  "expected": { "status": 500 }
+}

@@ -115,4 +115,14 @@ class ParityComparatorTest {
             wm.stop();
         }
     }
+
+    @Test
+    void xmlRegexTextMatchesGeneratedValues() {
+        var exp = expected(200, BodyFormat.XML,
+                "<a:episode xmlns:a=\"urn:sample\"><id>~\\d{4}-\\d{2}-\\d{2}</id><care>Private</care></a:episode>", Map.of());
+        String ok = "<b:episode xmlns:b=\"urn:sample\"><id>2026-11-11</id><care>Private</care></b:episode>";
+        String bad = "<b:episode xmlns:b=\"urn:sample\"><id>not-a-date</id><care>Private</care></b:episode>";
+        assertThat(ParityComparator.compare(exp, response(200, "text/xml", ok))).isEmpty();
+        assertThat(ParityComparator.compare(exp, response(200, "text/xml", bad))).isNotEmpty();
+    }
 }

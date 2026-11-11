@@ -1,0 +1,16 @@
+{
+  "name": "shop-service-fault-becomes-500",
+  "description": "A ShopService HTTP 500 (SOAP fault) fails the Mule http:request (default success range 0..399), which the CXF proxy answers as a SOAP fault with HTTP 500.",
+  "source": {
+    "muleApp": "proxying-a-soap-api",
+    "flow": "main",
+    "evidence": "documented",
+    "reference": "proxying-a-soap-api/src/main/app/soap-api-proxy.xml (http:request without success-status-code-validator inside the cxf:proxy-service flow)"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "text/xml;charset=UTF-8" }, "bodyFile": "bodies/create-request.xml" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/shop/ShopService", "status": 500, "headers": { "Content-Type": "text/xml" }, "body": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Body><soapenv:Fault><faultcode>soapenv:Server</faultcode><faultstring>boom</faultstring></soapenv:Fault></soapenv:Body></soapenv:Envelope>" }
+  ],
+  "expectedOutbound": [ { "method": "POST", "urlPath": "/shop/ShopService" } ],
+  "expected": { "status": 500, "headers": { "Content-Type": "~text/xml.*" }, "bodyFormat": "TEXT", "body": "~(?s).*<soap:Fault>.*</soap:Fault>.*" }
+}

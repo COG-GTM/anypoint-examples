@@ -1,0 +1,39 @@
+{
+  "name": "get-forwards-method-path-query-and-headers",
+  "description": "GET /2.0/folders/0?fields=name is replayed to the API with the same method, path, query and application headers; Host/Connection/MULE_* are dropped (copy-headers). The API's JSON and custom response headers come back unchanged with status 200.",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy / copy-headers",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (http:listener path=/*, http:request method=#[http.method] path=#[http.request.path] query-params=#[http.query.params], copy-headers removes Host, Content-Length, http.*, MULE_*, Connection, transfer-encoding); proxying-a-rest-api/README.md"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/2.0/folders/0?fields=name",
+    "headers": { "Authorization": "Bearer test-token", "Accept": "application/json", "X-Client-Trace": "trace-1", "MULE_CORRELATION_ID": "abc" }
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/2.0/folders/0",
+      "queryParams": { "fields": "name" },
+      "status": 200,
+      "headers": { "Content-Type": "application/json", "BOX-REQUEST-ID": "req-42" },
+      "body": { "type": "folder", "id": "0", "name": "All Files" }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/2.0/folders/0",
+      "queryParams": { "fields": "name" },
+      "headers": { "Authorization": "Bearer test-token", "Accept": "application/json", "X-Client-Trace": "trace-1", "MULE_CORRELATION_ID": "!absent" }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json", "BOX-REQUEST-ID": "req-42" },
+    "bodyFormat": "JSON",
+    "body": { "type": "folder", "id": "0", "name": "All Files" }
+  }
+}

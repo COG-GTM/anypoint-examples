@@ -1,0 +1,13 @@
+{
+  "name": "non-soap-payload-rejected-with-fault",
+  "description": "cxf:proxy-service payload=envelope only accepts SOAP envelopes: a non-SOAP XML body is answered with a SOAP fault (HTTP 500) and nothing is sent to ShopService.",
+  "source": {
+    "muleApp": "proxying-a-soap-api",
+    "flow": "main",
+    "evidence": "documented",
+    "reference": "proxying-a-soap-api/src/main/app/soap-api-proxy.xml (cxf:proxy-service doc:name=\"Check WSDL\" payload=envelope in front of the http:request); proxying-a-soap-api/README.md ('validates the request against the WSDL')"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "text/xml" }, "body": "<create><customerId>001</customerId></create>" },
+  "expectedOutbound": [],
+  "expected": { "status": 500, "headers": { "Content-Type": "~text/xml.*" }, "bodyFormat": "TEXT", "body": "~(?s).*<soap:Fault>.*</soap:Fault>.*" }
+}

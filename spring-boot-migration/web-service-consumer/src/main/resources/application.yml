@@ -1,0 +1,10 @@
+# Mule: http:listener-config port="${http.port}"
+server:
+  port: ${http.port:8081}
+
+# Mule: ws:consumer-config serviceAddress="http://tshirt-service.cloudhub.io" wsdlLocation="tshirt.wsdl"
+tshirt:
+  service:
+    address: http://tshirt-service.cloudhub.io
+    # Mule: dw:set-property soap.header -> AuthenticationHeader/apiKey
+    api-key: abc12345

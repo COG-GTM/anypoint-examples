@@ -1,0 +1,34 @@
+{
+  "name": "create-cart-envelope-proxied",
+  "description": "The README/IT 'create' envelope (customerId 001) is POSTed unchanged to shop/ShopService with the inbound SOAPAction; the ShopService envelope containing <cartId> is returned as text/xml with 200.",
+  "source": {
+    "muleApp": "proxying-a-soap-api",
+    "flow": "main / copy-headers",
+    "evidence": "documented",
+    "reference": "proxying-a-soap-api/src/main/app/soap-api-proxy.xml (cxf:proxy-service/proxy-client payload=envelope, http:request method=POST path=shop/ShopService); proxying-a-soap-api/README.md; proxying-a-soap-api/src/test/resources/message.xml; ProxyingSoapApiIT asserts the reply contains <cartId>"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "text/xml;charset=UTF-8", "SOAPAction": "\"\"" },
+    "bodyFile": "bodies/create-request.xml"
+  },
+  "downstream": [
+    { "method": "POST", "urlPath": "/shop/ShopService", "status": 200, "headers": { "Content-Type": "text/xml;charset=UTF-8" }, "bodyFile": "bodies/create-response.xml" }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/shop/ShopService",
+      "headers": { "Content-Type": "~text/xml.*", "SOAPAction": "\"\"" },
+      "bodyFormat": "XML",
+      "bodyFile": "bodies/create-request.xml"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~text/xml.*" },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/create-response.xml"
+  }
+}

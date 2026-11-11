@@ -1,0 +1,14 @@
+{
+  "name": "delete-no-content-becomes-empty-200",
+  "description": "DELETE is forwarded with its method; the API's 204 No Content is returned as 200 with an empty body (http.status removed by copy-headers).",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (method=#[message.inboundProperties['http.method']], copy-headers removes http.*)"
+  },
+  "request": { "method": "DELETE", "path": "/2.0/files/12345", "headers": { "Authorization": "Bearer test-token" } },
+  "downstream": [ { "method": "DELETE", "urlPath": "/2.0/files/12345", "status": 204 } ],
+  "expectedOutbound": [ { "method": "DELETE", "urlPath": "/2.0/files/12345", "headers": { "Authorization": "Bearer test-token" } } ],
+  "expected": { "status": 200, "bodyFormat": "NONE" }
+}

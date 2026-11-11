@@ -1,0 +1,54 @@
+{
+  "name": "percent-encoded-path-and-query-forwarded-unchanged",
+  "description": "A percent-encoded path segment and query value are forwarded byte-for-byte (http.request.path / http.query.params are replayed, so %20 stays %20 and is not double-encoded).",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (http:request path=#[message.inboundProperties.'http.request.path'] query-params=#[message.inboundProperties.'http.query.params'])"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/2.0/folders/My%20Folder?fields=name%20id",
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/2.0/folders/My%20Folder",
+      "queryParams": {
+        "fields": "name id"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "type": "folder",
+        "name": "My Folder"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/2.0/folders/My%20Folder",
+      "queryParams": {
+        "fields": "name id"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "type": "folder",
+      "name": "My Folder"
+    }
+  }
+}

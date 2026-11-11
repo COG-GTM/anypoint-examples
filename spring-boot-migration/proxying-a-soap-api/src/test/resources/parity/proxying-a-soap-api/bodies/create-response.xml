@@ -1,0 +1,1 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><ns1:createResponse xmlns:ns1="http://predic8.com/wsdl/shop/1/"><cartId>107</cartId></ns1:createResponse></soapenv:Body></soapenv:Envelope>

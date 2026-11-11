@@ -1,0 +1,28 @@
+{
+  "name": "username-token-encrypted",
+  "description": "UsernameToken + Timestamp with the body encrypted for joe is decrypted and accepted.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "UsernameTokenEncryptedServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (action UsernameToken Timestamp Encrypt, decryptionPropFile); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testUsernameTokenEncrypted"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/encrypted",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "usernameTokenEncrypted"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}
