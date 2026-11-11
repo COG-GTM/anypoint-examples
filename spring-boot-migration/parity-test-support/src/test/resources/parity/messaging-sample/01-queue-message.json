@@ -1,0 +1,12 @@
+{
+  "name": "queue-message",
+  "description": "Harness demo: a message published to queue:in is forwarded unchanged to queue:out.",
+  "source": { "muleApp": "(harness sample)", "flow": "n/a", "evidence": "documented", "reference": "parity-test-support README" },
+  "send": [ { "destination": "queue:in", "bodyFile": "bodies/order.json" } ],
+  "expectedMessages": [
+    { "destination": "queue:out", "type": "TextMessage", "bodyFormat": "JSON", "bodyFile": "bodies/order.json",
+      "properties": { "JMSXDeliveryCount": "1", "JMSCorrelationID": "!absent" } },
+    { "destination": "queue:dlq", "count": 0 }
+  ],
+  "expectedState": { "deliveryAttempts": [1] }
+}

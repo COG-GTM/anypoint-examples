@@ -1,0 +1,8 @@
+{
+  "name": "get-not-allowed",
+  "description": "allowedMethods=POST: GET / returns 405 and nothing is published.",
+  "source": { "muleApp": "sending-json-data-to-a-amqp-queue", "flow": "json-to-rabbitmqFlow", "evidence": "documented", "reference": "sending-json-data-to-a-amqp-queue/src/main/app/json-to-rabbitmq.xml (http:listener allowedMethods=POST path=/)" },
+  "request": { "method": "GET", "path": "/" },
+  "expected": { "status": 405, "bodyFormat": "IGNORE" },
+  "expectedMessages": [ { "destination": "queue:sales_queue", "count": 0 } ]
+}

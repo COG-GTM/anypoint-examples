@@ -1,0 +1,11 @@
+{
+  "name": "munit-test-payload",
+  "description": "The IT POSTs 'test' to / and reads exactly 'test' from sales_queue (published through sales_exchange). Nobody replies, so the request-response call times out and the HTTP response carries no AMQP result.",
+  "source": { "muleApp": "sending-json-data-to-a-amqp-queue", "flow": "json-to-rabbitmqFlow", "evidence": "munit", "reference": "sending-json-data-to-a-amqp-queue/src/test/java/org/mule/examples/SendingJsonDataToAmqpQueueIT.java (dispatch 'test' over HTTP POST; basicGet on sales_queue equals 'test'); src/main/app/json-to-rabbitmq.xml (amqp:outbound-endpoint exchangeName=sales_exchange queueName=sales_queue exchange-pattern=request-response responseTimeout=10000)" },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "text/plain" }, "body": "test" },
+  "expected": { "status": 200, "bodyFormat": "IGNORE" },
+  "expectedMessages": [
+    { "destination": "queue:sales_queue", "count": 1, "bodyFormat": "TEXT", "body": "test",
+      "properties": { "receivedExchange": "sales_exchange", "replyTo": "~.+" } }
+  ]
+}

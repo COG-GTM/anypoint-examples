@@ -61,11 +61,11 @@ GreenMail, LDAP, SFTP).
 | [`web-service-consumer`](../web-service-consumer) | [`spring-boot-migration/web-service-consumer`](./web-service-consumer) | 2 | Planned |
 | [`proxying-a-soap-api`](../proxying-a-soap-api) | [`spring-boot-migration/proxying-a-soap-api`](./proxying-a-soap-api) | 2 | Planned |
 | [`proxying-a-rest-api`](../proxying-a-rest-api) | [`spring-boot-migration/proxying-a-rest-api`](./proxying-a-rest-api) | 2 | Planned |
-| [`sending-json-data-to-a-jms-queue`](../sending-json-data-to-a-jms-queue) | [`spring-boot-migration/sending-json-data-to-a-jms-queue`](./sending-json-data-to-a-jms-queue) | 3 | Planned |
-| [`sending-json-data-to-a-amqp-queue`](../sending-json-data-to-a-amqp-queue) | [`spring-boot-migration/sending-json-data-to-a-amqp-queue`](./sending-json-data-to-a-amqp-queue) | 3 | Planned |
-| [`jms-message-rollback-and-redelivery`](../jms-message-rollback-and-redelivery) | [`spring-boot-migration/jms-message-rollback-and-redelivery`](./jms-message-rollback-and-redelivery) | 3 | Planned |
-| [`using-transactional-scope-in-jms-to-database`](../using-transactional-scope-in-jms-to-database) | [`spring-boot-migration/using-transactional-scope-in-jms-to-database`](./using-transactional-scope-in-jms-to-database) | 3 | Planned |
-| [`websphere-mq`](../websphere-mq) | [`spring-boot-migration/websphere-mq`](./websphere-mq) | 3 | Planned |
+| [`sending-json-data-to-a-jms-queue`](../sending-json-data-to-a-jms-queue) | [`spring-boot-migration/sending-json-data-to-a-jms-queue`](./sending-json-data-to-a-jms-queue) | 3 | Migrated (deltas) |
+| [`sending-json-data-to-a-amqp-queue`](../sending-json-data-to-a-amqp-queue) | [`spring-boot-migration/sending-json-data-to-a-amqp-queue`](./sending-json-data-to-a-amqp-queue) | 3 | Migrated (deltas) |
+| [`jms-message-rollback-and-redelivery`](../jms-message-rollback-and-redelivery) | [`spring-boot-migration/jms-message-rollback-and-redelivery`](./jms-message-rollback-and-redelivery) | 3 | Migrated (deltas) |
+| [`using-transactional-scope-in-jms-to-database`](../using-transactional-scope-in-jms-to-database) | [`spring-boot-migration/using-transactional-scope-in-jms-to-database`](./using-transactional-scope-in-jms-to-database) | 3 | Migrated (deltas) |
+| [`websphere-mq`](../websphere-mq) | [`spring-boot-migration/websphere-mq`](./websphere-mq) | 3 | Migrated (deltas) |
 | [`authenticating-salesforce-using-oauth2`](../authenticating-salesforce-using-oauth2) | [`spring-boot-migration/authenticating-salesforce-using-oauth2`](./authenticating-salesforce-using-oauth2) | 4 | Planned |
 | [`salesforce-data-retrieval`](../salesforce-data-retrieval) | [`spring-boot-migration/salesforce-data-retrieval`](./salesforce-data-retrieval) | 4 | Planned |
 | [`import-contacts-into-salesforce`](../import-contacts-into-salesforce) | [`spring-boot-migration/import-contacts-into-salesforce`](./import-contacts-into-salesforce) | 4 | Planned |

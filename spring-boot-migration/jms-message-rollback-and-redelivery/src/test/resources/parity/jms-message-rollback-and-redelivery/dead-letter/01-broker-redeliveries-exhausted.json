@@ -1,0 +1,12 @@
+{
+  "name": "broker-redeliveries-exhausted",
+  "description": "If the ActiveMQ RedeliveryPolicy allows fewer redeliveries than the flow needs (maximumRedeliveries=3, connector check disabled), deliveries 1-4 all roll back and ActiveMQ moves the message to ActiveMQ.DLQ unchanged; topic1 gets nothing. Module config: jms.max-redelivery=-1, activemq.redelivery-policy.maximum-redeliveries=3.",
+  "source": { "muleApp": "jms-message-rollback-and-redelivery", "flow": "JMSRedeliver", "evidence": "documented", "reference": "jms-message-rollback-and-redelivery/src/main/app/jms-redelivery.xml (redeliveryPolicy bean on amqFactory; choice succeeds only when JMSXDeliveryCount==5); ActiveMQ Classic RedeliveryPolicy docs (after maximumRedeliveries the client poison-acks and the broker sends the message to ActiveMQ.DLQ)" },
+  "send": [ { "destination": "queue:in", "body": "Message123" } ],
+  "expectedMessages": [
+    { "destination": "topic:topic1", "count": 0 },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:ActiveMQ.DLQ", "count": 1, "type": "TextMessage", "bodyFormat": "TEXT", "body": "Message123" }
+  ],
+  "expectedState": { "deliveryAttempts": [ {"deliveryCount":1,"outcome":"ROLLED_BACK"}, {"deliveryCount":2,"outcome":"ROLLED_BACK"}, {"deliveryCount":3,"outcome":"ROLLED_BACK"}, {"deliveryCount":4,"outcome":"ROLLED_BACK"} ], "minRedeliveryDelaysMillis": [5000, 2000, 2000] }
+}

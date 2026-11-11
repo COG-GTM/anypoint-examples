@@ -1,0 +1,16 @@
+{
+  "name": "other-order-rolled-back",
+  "description": "A different order (itemId 42, 7 units, customer 9) follows the same path: every scope execution rolls back, so the outcome does not depend on the order contents.",
+  "source": { "muleApp": "using-transactional-scope-in-jms-to-database", "flow": "transactionsFlow1", "evidence": "documented", "reference": "using-transactional-scope-in-jms-to-database/src/main/app/transactions.xml (TestComponent throws unconditionally; maxRedelivery=\"2\"); src/main/java/org/mule/examples/TestComponent.java" },
+  "send": [ { "destination": "queue:in", "body": "<order><itemId>42</itemId><itemUnits>7</itemUnits><customerId>9</customerId></order>" } ],
+  "expectedMessages": [
+    { "destination": "queue:out", "count": 0 },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:ActiveMQ.DLQ", "count": 0 }
+  ],
+  "expectedState": {
+    "deliveryAttempts": [ {"deliveryCount":1,"outcome":"ROLLED_BACK"}, {"deliveryCount":2,"outcome":"ROLLED_BACK"}, {"deliveryCount":3,"outcome":"ROLLED_BACK"}, {"deliveryCount":4,"outcome":"COMMITTED_AFTER_ERROR"} ],
+    "ordersRows": [],
+    "insertsExecuted": 3
+  }
+}

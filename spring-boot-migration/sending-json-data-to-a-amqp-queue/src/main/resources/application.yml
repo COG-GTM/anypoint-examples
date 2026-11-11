@@ -1,0 +1,20 @@
+# Mule: json-to-rabbitmq.xml (HTTP_Listener_Configuration port=${http.port}; amqp:connector with default host/port/credentials)
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: sending-json-data-to-a-amqp-queue
+  rabbitmq:
+    host: ${amqp.host:localhost}
+    port: ${amqp.port:5672}
+    username: ${amqp.username:guest}
+    password: ${amqp.password:guest}
+    virtual-host: ${amqp.virtualHost:/}
+amqp:
+  exchange: ${amqp.exchangeName:sales_exchange}
+  queue: ${amqp.queueName:sales_queue}
+  routing-key: ${amqp.routingKey:sales_queue}
+  # amqp:outbound-endpoint responseTimeout="10000"
+  response-timeout: ${amqp.responseTimeout:10000}
+  # Declare the README's exchange/queue/binding on startup (the Mule app expected them to exist).
+  declare-topology: ${amqp.declareTopology:true}

@@ -1,0 +1,11 @@
+{
+  "name": "readme-sales-json",
+  "description": "README step 8 body is published verbatim to sales_queue (README step 9: the message count of sales_queue increases and the message can be viewed).",
+  "source": { "muleApp": "sending-json-data-to-a-amqp-queue", "flow": "json-to-rabbitmqFlow", "evidence": "documented", "reference": "sending-json-data-to-a-amqp-queue/README.md steps 2-4, 8-9; src/main/app/json-to-rabbitmq.xml" },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": "{\"ITEM_ID\"= 001, \"ITEM_NAME\" = \"Shirt\", \"QTY\" = 1, \"PRICE\" = 20}" },
+  "expected": { "status": 200, "bodyFormat": "IGNORE" },
+  "expectedMessages": [
+    { "destination": "queue:sales_queue", "count": 1, "bodyFormat": "TEXT", "body": "{\"ITEM_ID\"= 001, \"ITEM_NAME\" = \"Shirt\", \"QTY\" = 1, \"PRICE\" = 20}",
+      "properties": { "receivedExchange": "sales_exchange" } }
+  ]
+}

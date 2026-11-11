@@ -1,0 +1,12 @@
+{
+  "name": "munit-test-payload",
+  "description": "WebsphereMQIT drives the three flows with the payload 'test': Input returns the enqueued payload, and the message that reaches the dequeue channel is 'test - processed'. In the MUnit test the WMQ/AJAX endpoints are mocked; here a real queue manager is used.",
+  "source": { "muleApp": "websphere-mq", "flow": "Input, MessageProcessor, Output", "evidence": "munit", "reference": "websphere-mq/src/test/java/org/mule/examples/WebsphereMQIT.java (MESSAGE='test'; runFlow Input/MessageProcessor/Output); src/main/app/websphere-mq.xml (appendString=' - processed')" },
+  "send": [ { "destination": "http:/services/wmqExample/enqueue", "body": "test" } ],
+  "expectedMessages": [
+    { "destination": "sse:/services/wmqExample/dequeue", "count": 1, "type": "SSE", "bodyFormat": "TEXT", "body": "test - processed" },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:out", "count": 0 }
+  ],
+  "expectedState": { "enqueueStatus": 200, "enqueueBody": "test", "minProcessingMillis": 15000, "timeoutMillis": 45000 }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- Port of websphere-mq/src/main/app/docroot/index.html: mule.rpc/mule.subscribe replaced by fetch + EventSource. -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mule WMQ Example</title>
+    <script>
+        let source;
+
+        function init() {
+            source = new EventSource("/services/wmqExample/dequeue");
+            source.onmessage = dequeueCallback;
+        }
+
+        function dispose() {
+            if (source) {
+                source.close();
+            }
+        }
+
+        function dequeueCallback(message) {
+            if (!message.data) {
+                console.debug("bad message format " + message);
+                return;
+            }
+            const received = document.getElementById("whatYouReceived");
+            received.innerHTML = "<b>You just received:&nbsp;</b>";
+            received.appendChild(document.createTextNode(message.data + "\n"));
+            const table = document.getElementById("dequeueTable");
+            table.insertRow(1).insertCell(0).textContent = message.data;
+        }
+
+        function rpcEnqueue() {
+            const data = document.getElementById("phrase").value;
+            if (data) {
+                fetch("/services/wmqExample/enqueue", {method: "POST", headers: {"Content-Type": "text/plain"}, body: data});
+                const sent = document.getElementById("whatYouSent");
+                sent.innerHTML = "<b>You just sent:&nbsp;</b>";
+                sent.appendChild(document.createTextNode(data + "\n"));
+            } else {
+                alert("Please provide a message");
+            }
+        }
+    </script>
+</head>
+<body onload="init();" onunload="dispose();">
+<h1>WMQ Example</h1>
+<div>
+    Message to send to WMQ: <input id="phrase" type="text"/>
+    <input id="sendButton" class="button" type="submit" name="Go" value="Send" onclick="rpcEnqueue();"/>
+</div>
+<pre id="whatYouSent"></pre>
+<pre id="whatYouReceived"></pre>
+<p></p>
+<div style="position:relative;width:800px;height:300px;overflow:auto;">
+    <table id="dequeueTable">
+        <thead><tr><th width="100%">Messages received from queue</th></tr></thead>
+    </table>
+</div>
+</body>
+</html>

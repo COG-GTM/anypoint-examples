@@ -1,0 +1,10 @@
+{
+  "name": "valid-json-utf8",
+  "description": "A well-formed JSON order with non-ASCII characters is sent byte-for-byte (UTF-8 decoded) to queue 'sales'.",
+  "source": { "muleApp": "sending-json-data-to-a-jms-queue", "flow": "json-to-jmsFlow", "evidence": "documented", "reference": "sending-json-data-to-a-jms-queue/src/main/app/json-to-jms.xml (byte-array-to-string-transformer uses the message encoding, UTF-8 by default)" },
+  "request": { "method": "POST", "path": "/sales", "headers": { "Content-Type": "application/json; charset=UTF-8" }, "body": "{\"ITEM_ID\":2,\"ITEM_NAME\":\"Camiseta niño\",\"QTY\":3,\"PRICE\":12.5}" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "{\"ITEM_ID\":2,\"ITEM_NAME\":\"Camiseta niño\",\"QTY\":3,\"PRICE\":12.5}" },
+  "expectedMessages": [
+    { "destination": "queue:sales", "count": 1, "type": "TextMessage", "bodyFormat": "JSON", "body": { "ITEM_ID": 2, "ITEM_NAME": "Camiseta niño", "QTY": 3, "PRICE": 12.5 } }
+  ]
+}

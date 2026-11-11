@@ -1,0 +1,8 @@
+{
+  "name": "unknown-path",
+  "description": "Only /sales is bound: POST to another path returns 404 and nothing is sent to the queue.",
+  "source": { "muleApp": "sending-json-data-to-a-jms-queue", "flow": "json-to-jmsFlow", "evidence": "documented", "reference": "sending-json-data-to-a-jms-queue/src/main/app/json-to-jms.xml (single http:listener path=sales); Mule 3.8 HTTP listener returns 404 when no listener matches" },
+  "request": { "method": "POST", "path": "/orders", "headers": { "Content-Type": "application/json" }, "body": "{\"ITEM_ID\":1}" },
+  "expected": { "status": 404, "bodyFormat": "IGNORE" },
+  "expectedMessages": [ { "destination": "queue:sales", "count": 0 } ]
+}
