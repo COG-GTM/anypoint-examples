@@ -88,17 +88,22 @@ class SalesforceOAuth implements SalesforceTokenProvider {
         pendingStates.put(state, now);
     }
 
-    /** True when {@code state} was issued by {@link #authorizationRedirect()}, has not expired and was not used yet. */
-    boolean isPendingState(String state) {
-        Instant issued = state == null ? null : pendingStates.get(state);
-        return issued != null && !issued.plus(STATE_TTL).isBefore(Instant.now());
+    /**
+     * Atomically takes {@code state} out of the pending set, so concurrent callbacks with the same state cannot both
+     * proceed. Returns when it was issued, or {@code null} if it was never issued, already claimed or has expired.
+     */
+    Instant claimState(String state) {
+        Instant issued = state == null ? null : pendingStates.remove(state);
+        return issued != null && !issued.plus(STATE_TTL).isBefore(Instant.now()) ? issued : null;
     }
 
-    /**
-     * OAuth callback: exchanges the authorization code at the access token URL and stores the token. The state is
-     * used up only once the exchange succeeded, so a callback that failed on a transient error can be retried.
-     */
-    void exchange(String code, String state) {
+    /** Puts a claimed state back after a failed token exchange so the callback can be retried. */
+    void releaseState(String state, Instant issued) {
+        pendingStates.putIfAbsent(state, issued);
+    }
+
+    /** OAuth callback: exchanges the authorization code at the access token URL and stores the token. */
+    void exchange(String code) {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("grant_type", "authorization_code");
         form.add("code", code);
@@ -106,7 +111,6 @@ class SalesforceOAuth implements SalesforceTokenProvider {
         form.add("client_secret", consumerSecret);
         form.add("redirect_uri", redirectUri);
         token = requestToken(form, null);
-        pendingStates.remove(state);
     }
 
     @Override

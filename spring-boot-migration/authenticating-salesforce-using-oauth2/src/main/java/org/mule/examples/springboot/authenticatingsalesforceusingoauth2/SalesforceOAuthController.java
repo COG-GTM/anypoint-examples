@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -45,14 +46,20 @@ class SalesforceOAuthController {
                                     @RequestParam(required = false) String state,
                                     @RequestParam(required = false) String error,
                                     @RequestParam(name = "error_description", required = false) String errorDescription) {
-        if (!oauth.isPendingState(state)) {
+        Instant issued = oauth.claimState(state);
+        if (issued == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Salesforce authorization failed: unknown OAuth state");
         }
         if (code == null || code.isBlank()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Salesforce authorization failed: " + (error == null ? "no authorization code" : error + " " + errorDescription));
         }
-        oauth.exchange(code, state);
+        try {
+            oauth.exchange(code);
+        } catch (RuntimeException e) {
+            oauth.releaseState(state, issued);
+            throw e;
+        }
         return ResponseEntity.ok(queryContacts());
     }
 
