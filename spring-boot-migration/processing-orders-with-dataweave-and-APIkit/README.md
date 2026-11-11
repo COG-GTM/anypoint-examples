@@ -12,10 +12,18 @@ mvn -pl processing-orders-with-dataweave-and-APIkit spring-boot:run        # or:
 
 The port defaults to `8081` and honours the Mule property: `-Dhttp.port=9090`.
 
+`orders.input-dir` and `orders.output-dir` default to the Mule paths `src/main/resources/input` and `src/main/resources/output`. As in Mule, these relative paths resolve against the **working directory**, so start the app from the module directory or pass absolute paths:
+
 ```bash
-cp ../../processing-orders-with-dataweave-and-APIkit/src/main/resources/orders.xml src/main/resources/input/   # from the module dir, while running
+cd spring-boot-migration/processing-orders-with-dataweave-and-APIkit
+java -jar target/processing-orders-with-dataweave-and-APIkit-1.0.0-SNAPSHOT.jar
+# in another shell, from the same directory:
+cp ../../processing-orders-with-dataweave-and-APIkit/src/main/resources/orders.xml src/main/resources/input/
 cat src/main/resources/output/orders.json src/main/resources/output/report.csv
 curl http://localhost:8081/api/currencies
+
+# or from anywhere:
+java -jar .../processing-orders-with-dataweave-and-APIkit-1.0.0-SNAPSHOT.jar --orders.input-dir=/abs/in --orders.output-dir=/abs/out
 ```
 
 Directories: `orders.input-dir`, `orders.output-dir`. Currency API override: `orders.currency-base-url`.
