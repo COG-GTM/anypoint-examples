@@ -11,9 +11,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import java.net.URLEncoder;
+import java.time.Duration;
+import java.time.Instant;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,7 +34,10 @@ class SalesforceOAuth implements SalesforceTokenProvider {
     private final String accessTokenUrl;
     private final String display;
     private final String redirectUri;
-    private final Set<String> pendingStates = ConcurrentHashMap.newKeySet();
+    static final Duration STATE_TTL = Duration.ofMinutes(10);
+    static final int MAX_PENDING_STATES = 1000;
+
+    private final Map<String, Instant> pendingStates = new ConcurrentHashMap<>();
     private volatile SalesforceToken token;
 
     SalesforceOAuth(RestClient.Builder builder,
@@ -72,17 +77,28 @@ class SalesforceOAuth implements SalesforceTokenProvider {
                 + "&state=" + encode(state);
     }
 
-    void rememberState(String state) {
-        pendingStates.add(state);
+    /** Remembers an issued state for {@link #STATE_TTL}; at most {@link #MAX_PENDING_STATES} are kept (oldest dropped). */
+    synchronized void rememberState(String state) {
+        Instant now = Instant.now();
+        pendingStates.values().removeIf(issued -> issued.plus(STATE_TTL).isBefore(now));
+        while (pendingStates.size() >= MAX_PENDING_STATES) {
+            pendingStates.entrySet().stream().min(Map.Entry.comparingByValue())
+                    .ifPresent(oldest -> pendingStates.remove(oldest.getKey()));
+        }
+        pendingStates.put(state, now);
     }
 
-    /** True (once) when {@code state} was issued by {@link #authorizationRedirect()}. */
-    boolean consumeState(String state) {
-        return state != null && pendingStates.remove(state);
+    /** True when {@code state} was issued by {@link #authorizationRedirect()}, has not expired and was not used yet. */
+    boolean isPendingState(String state) {
+        Instant issued = state == null ? null : pendingStates.get(state);
+        return issued != null && !issued.plus(STATE_TTL).isBefore(Instant.now());
     }
 
-    /** OAuth callback: exchanges the authorization code at the access token URL and stores the token. */
-    void exchange(String code) {
+    /**
+     * OAuth callback: exchanges the authorization code at the access token URL and stores the token. The state is
+     * used up only once the exchange succeeded, so a callback that failed on a transient error can be retried.
+     */
+    void exchange(String code, String state) {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("grant_type", "authorization_code");
         form.add("code", code);
@@ -90,6 +106,7 @@ class SalesforceOAuth implements SalesforceTokenProvider {
         form.add("client_secret", consumerSecret);
         form.add("redirect_uri", redirectUri);
         token = requestToken(form, null);
+        pendingStates.remove(state);
     }
 
     @Override

@@ -45,14 +45,14 @@ class SalesforceOAuthController {
                                     @RequestParam(required = false) String state,
                                     @RequestParam(required = false) String error,
                                     @RequestParam(name = "error_description", required = false) String errorDescription) {
-        if (!oauth.consumeState(state)) {
+        if (!oauth.isPendingState(state)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Salesforce authorization failed: unknown OAuth state");
         }
         if (code == null || code.isBlank()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Salesforce authorization failed: " + (error == null ? "no authorization code" : error + " " + errorDescription));
         }
-        oauth.exchange(code);
+        oauth.exchange(code, state);
         return ResponseEntity.ok(queryContacts());
     }
 
