@@ -1,0 +1,13 @@
+{
+  "name": "Posting mule/mule on the login form redirects to redirect_uri with an authorization code (no state requested, none returned)",
+  "source": { "muleApp": "http-oauth-provider", "flow": "oauth2-provider:config (authorization endpoint, resourceOwnerSecurityProvider)", "evidence": "documented", "reference": "http-oauth-provider/src/main/app/http-oauth-provider.xml (ss:user mule/mule, client myclientid redirect-uri http://localhost*); README 'Run it!' step 4 and HttpOauthProviderIT (login → browser lands on http://localhost:8082/redirect?code=...)" },
+  "request": {
+    "method": "POST", "path": "/authorize?response_type=code&client_id=myclientid&scope=READ_RESOURCE&redirect_uri=http://localhost:8082/redirect",
+    "headers": { "Content-Type": "application/x-www-form-urlencoded" },
+    "body": "username=mule&password=mule"
+  },
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "~http://localhost:8082/redirect\\?code=[^&]+" }
+  }
+}

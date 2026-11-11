@@ -1,0 +1,11 @@
+{
+  "name": "GET /authorize (README step 2 URL) shows the SampleAPI login form with username/password fields",
+  "source": { "muleApp": "http-oauth-provider", "flow": "oauth2-provider:config (authorization endpoint)", "evidence": "documented", "reference": "http-oauth-provider/README.md 'Run it!' steps 2-3 (authorization URL, 'SampleAPI web page will be displayed with the login form', 'Login and Authorize' button); src/test/java/org/mule/examples/HttpOauthProviderIT.java (waits for the elements with id username and id password)" },
+  "request": { "method": "GET", "path": "/authorize?response_type=code&client_id=myclientid&scope=READ_RESOURCE&redirect_uri=http://localhost:8082/redirect" },
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~text/html.*" },
+    "bodyFormat": "TEXT",
+    "body": "~(?s)(?=.*SampleAPI)(?=.*id=\"username\")(?=.*id=\"password\")(?=.*Login and Authorize).*"
+  }
+}

@@ -1,0 +1,9 @@
+box:
+  id: parity-box-id
+  secret: parity-box-secret
+  api-base-url: ${parity.downstream.base-url}/2.0
+  token-url: ${parity.downstream.base-url}/api/oauth2/token
+oauth:
+  callback:
+    # Fixtures address every listener through the one random port of the test server.
+    connector-enabled: false

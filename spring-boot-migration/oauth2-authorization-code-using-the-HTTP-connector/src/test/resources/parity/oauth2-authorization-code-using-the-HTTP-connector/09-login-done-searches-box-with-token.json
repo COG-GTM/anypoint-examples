@@ -1,0 +1,18 @@
+{
+  "name": "GET /web/loginDone after authorization searches Box with the stored Bearer token and prefixes the result",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "userLoginDoneFlow", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (http:request GET /search query-param query=mule on basePath /2.0, object-to-string, set-payload value='The user successfully authorized access to the resource. Searching for files containing &quot;mule&quot;: #[payload]'); the Mule README describes the same final page" },
+  "request": { "method": "GET", "path": "/web/loginDone" },
+  "downstream": [
+    { "method": "GET", "urlPath": "/2.0/search", "queryParams": { "query": "mule" }, "status": 200,
+      "headers": { "Content-Type": "application/json" }, "body": "{\"total_count\":1,\"entries\":[{\"type\":\"file\",\"name\":\"mule.txt\"}]}" }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "The user successfully authorized access to the resource. Searching for files containing \"mule\": {\"total_count\":1,\"entries\":[{\"type\":\"file\",\"name\":\"mule.txt\"}]}"
+  },
+  "expectedOutbound": [
+    { "method": "GET", "urlPath": "/2.0/search", "queryParams": { "query": "mule" },
+      "headers": { "Authorization": "Bearer box-access-1" } }
+  ]
+}

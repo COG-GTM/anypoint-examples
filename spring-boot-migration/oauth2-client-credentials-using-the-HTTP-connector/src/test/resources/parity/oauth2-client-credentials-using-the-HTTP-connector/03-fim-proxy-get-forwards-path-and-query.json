@@ -1,0 +1,24 @@
+{
+  "name": "GET /FIM/sps/authsvc?PolicyId=x is proxied to the FIM host with the same method, path and query",
+  "source": {
+    "muleApp": "oauth2-client-credentials-using-the-HTTP-connector",
+    "flow": "http-client-credentialsFlow",
+    "evidence": "documented",
+    "reference": "oauth2-client-credentials-using-the-HTTP-connector/src/main/app/http-client-credentials.xml (listener path=/FIM/*, http:request config-ref=HTTP_Request_Configuration1 path=#[message.inboundProperties.'http.request.uri'] method=#[message.inboundProperties.'http.method']; uri-param client_id has no placeholder in the path); FIM config has no authentication"
+  },
+  "request": { "method": "GET", "path": "/FIM/sps/authsvc?PolicyId=x" },
+  "downstream": [
+    { "method": "GET", "urlPath": "/FIM/sps/authsvc", "queryParams": { "PolicyId": "x" }, "status": 200,
+      "headers": { "Content-Type": "application/json" }, "body": { "fim": "ok" } }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~application/json.*" },
+    "bodyFormat": "JSON",
+    "body": { "fim": "ok" }
+  },
+  "expectedOutbound": [
+    { "method": "GET", "urlPath": "/FIM/sps/authsvc", "queryParams": { "PolicyId": "x" },
+      "headers": { "Authorization": "!absent" } }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "GET /redirectUrl?code=... when the token URL answers 401 returns 500 'Failure calling token url ...'",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-code-grant-type (redirectionUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (tokenUrl); Mule 3.8 AbstractTokenRequestHandler#invokeTokenUrl (status >= 400 → TokenUrlResponseException, no message) + AutoAuthorizationCodeTokenRequestHandler (500, 'Failure calling token url %s. Exception message is %s')" },
+  "request": { "method": "GET", "path": "/redirectUrl?code=rejected-code" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/api/oauth2/token", "status": 401,
+      "headers": { "Content-Type": "application/json" }, "body": { "error": "invalid_grant" } }
+  ],
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "~Failure calling token url https?://[^ ]+/api/oauth2/token\\. Exception message is null"
+  },
+  "expectedOutbound": [ { "method": "POST", "urlPath": "/api/oauth2/token" } ]
+}

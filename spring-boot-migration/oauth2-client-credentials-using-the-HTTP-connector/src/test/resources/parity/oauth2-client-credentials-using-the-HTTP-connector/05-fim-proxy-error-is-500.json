@@ -1,0 +1,19 @@
+{
+  "name": "/FIM/* when the FIM host answers 503 fails the flow with 500 'Response code 503 mapped as failure'",
+  "source": {
+    "muleApp": "oauth2-client-credentials-using-the-HTTP-connector",
+    "flow": "http-client-credentialsFlow",
+    "evidence": "documented",
+    "reference": "oauth2-client-credentials-using-the-HTTP-connector/src/main/app/http-client-credentials.xml; Mule 3.8 SuccessStatusCodeValidator (success 0..399) and HttpMessageProcessorTemplate#sendFailureResponseToClient (500, exception message as body)"
+  },
+  "request": { "method": "GET", "path": "/FIM/sps/down" },
+  "downstream": [
+    { "method": "GET", "urlPath": "/FIM/sps/down", "status": 503, "body": "unavailable" }
+  ],
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "~Response code 503 mapped as failure\\..*"
+  },
+  "expectedOutbound": [ { "method": "GET", "urlPath": "/FIM/sps/down" } ]
+}

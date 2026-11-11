@@ -1,0 +1,9 @@
+{
+  "name": "GET /web answers 302 to the local authorization URL with onCompleteRedirectTo=/web/loginDone",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "boxUserLoginFlow", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (listener path=web, http:response-builder statusCode=302, header Location)" },
+  "request": { "method": "GET", "path": "/web" },
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "https://localhost:8082/authorization?onCompleteRedirectTo=http://localhost:8081/web/loginDone" }
+  }
+}

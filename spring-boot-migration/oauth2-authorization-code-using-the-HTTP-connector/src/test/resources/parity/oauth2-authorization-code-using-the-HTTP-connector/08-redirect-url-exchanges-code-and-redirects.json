@@ -1,0 +1,21 @@
+{
+  "name": "GET /redirectUrl?code=...&state=... posts the authorization_code grant (client secret in body) and redirects to onCompleteRedirectTo with authorizationStatus=0",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-code-grant-type (redirectionUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml; Mule 3.8 AutoAuthorizationCodeTokenRequestHandler#callTokenUrl form: code, client_id, client_secret, grant_type=authorization_code, redirect_uri (POST, no Authorization header); success → 'Successfully retrieved access token', SUCCESS status 0, 302 to onCompleteRedirectTo?authorizationStatus=0" },
+  "request": { "method": "GET", "path": "/redirectUrl?code=box-code-1&state=%3AonCompleteRedirectTo%3Dhttp%3A%2F%2Flocalhost%3A8081%2Fweb%2FloginDone" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/api/oauth2/token", "status": 200,
+      "headers": { "Content-Type": "application/json" },
+      "body": { "access_token": "box-access-1", "refresh_token": "box-refresh-1", "token_type": "bearer", "expires_in": 3600 } }
+  ],
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "http://localhost:8081/web/loginDone?authorizationStatus=0" },
+    "bodyFormat": "TEXT",
+    "body": "Successfully retrieved access token"
+  },
+  "expectedOutbound": [
+    { "method": "POST", "urlPath": "/api/oauth2/token",
+      "headers": { "Content-Type": "~application/x-www-form-urlencoded.*", "Authorization": "!absent" },
+      "bodyFormat": "TEXT", "body": "~(?=.*(^|&)grant_type=authorization_code(&|$))(?=.*(^|&)code=box-code-1(&|$))(?=.*(^|&)client_id=parity-box-id(&|$))(?=.*(^|&)client_secret=parity-box-secret(&|$))(?=.*(^|&)redirect_uri=https%3A%2F%2Flocalhost%3A8082%2FredirectUrl(&|$)).*" }
+  ]
+}

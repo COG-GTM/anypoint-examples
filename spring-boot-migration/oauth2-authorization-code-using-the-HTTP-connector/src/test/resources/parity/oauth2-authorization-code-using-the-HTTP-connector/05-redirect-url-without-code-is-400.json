@@ -1,0 +1,10 @@
+{
+  "name": "GET /redirectUrl without code answers 400 'Failure retrieving access token' and calls no token URL",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-code-grant-type (redirectionUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (redirectionUrl=https://localhost:8082/redirectUrl); Mule 3.8 AutoAuthorizationCodeTokenRequestHandler: NoAuthorizationCodeException → status 400, payload 'Failure retrieving access token.\\n OAuth Server uri from callback: ' + http.request.uri" },
+  "request": { "method": "GET", "path": "/redirectUrl?state=abc" },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "Failure retrieving access token.\n OAuth Server uri from callback: /redirectUrl?state=abc"
+  }
+}

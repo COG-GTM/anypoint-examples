@@ -1,0 +1,17 @@
+{
+  "name": "GET /redirectUrl with onCompleteRedirectTo state and a token response without refresh_token redirects with authorizationStatus=201",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-code-grant-type (redirectionUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml; Mule 3.8 AutoAuthorizationCodeTokenRequestHandler#tokenResponseContentIsValid requires access and refresh token (TokenNotFoundException → TOKEN_NOT_FOUND_STATUS=201); onCompleteRedirectTo in state → 302 Location HttpParser.appendQueryParam(onComplete, 'authorizationStatus', status)" },
+  "request": { "method": "GET", "path": "/redirectUrl?code=no-refresh-code&state=%3AonCompleteRedirectTo%3Dhttp%3A%2F%2Flocalhost%3A8081%2Fweb%2FloginDone" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/api/oauth2/token", "status": 200,
+      "headers": { "Content-Type": "application/json" },
+      "body": { "access_token": "only-access", "token_type": "bearer", "expires_in": 3600 } }
+  ],
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "http://localhost:8081/web/loginDone?authorizationStatus=201" },
+    "bodyFormat": "TEXT",
+    "body": "Failed getting access token or refresh token from token URL response. See logs for details."
+  },
+  "expectedOutbound": [ { "method": "POST", "urlPath": "/api/oauth2/token" } ]
+}

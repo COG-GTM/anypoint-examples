@@ -1,0 +1,9 @@
+{
+  "name": "GET /authorization without onCompleteRedirectTo sends no state parameter",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-request (localAuthorizationUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml; Mule 3.8 AuthorizationRequestUrlBuilder only appends state when it is not blank (no state attribute, no resource owner id configured)" },
+  "request": { "method": "GET", "path": "/authorization" },
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "https://www.box.com/api/oauth2/authorize?response_type=code&client_id=parity-box-id&box_device_id=1&box_device_name=device1&redirect_uri=https%3A%2F%2Flocalhost%3A8082%2FredirectUrl" }
+  }
+}

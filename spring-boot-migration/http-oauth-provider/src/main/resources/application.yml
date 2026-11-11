@@ -1,0 +1,35 @@
+# Mule: http-oauth-provider.xml / mule-app.properties
+http:
+  provider:
+    port: 8081
+  listener:
+    port: 8082
+
+server:
+  # HTTP_Listener_Configuration (localhost:${http.listener.port}): /resources, /redirect
+  port: ${http.listener.port}
+
+provider:
+  # oauth2-provider:config port=${http.provider.port}: /authorize, /token. Served by a second Tomcat connector.
+  connector-enabled: true
+  name: SampleAPI
+  base-url: http://localhost:${http.provider.port}
+  token-ttl-seconds: 86400
+  # oauth2-provider:client
+  client:
+    id: myclientid
+    secret: myclientsecret
+    name: Mule Bookstore
+    redirect-uri-patterns: http://localhost*
+    scopes: READ_RESOURCE,POST_RESOURCE
+  # ss:user-service
+  resource-owner:
+    username: mule
+    password: mule
+
+listener:
+  base-url: http://localhost:${http.listener.port}
+
+spring:
+  application:
+    name: http-oauth-provider

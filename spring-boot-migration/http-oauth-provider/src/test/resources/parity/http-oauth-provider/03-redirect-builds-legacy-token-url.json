@@ -1,0 +1,9 @@
+{
+  "name": "GET /redirect?code=... answers 302 to the GET token URL (with Mule's literal '&&')",
+  "source": { "muleApp": "http-oauth-provider", "flow": "redirectFlow", "evidence": "documented", "reference": "http-oauth-provider/src/main/app/http-oauth-provider.xml (set-property http.status=302, Location=http://localhost:${http.provider.port}/token?grant_type=authorization_code&amp;&amp;client_id=myclientid&amp;client_secret=myclientsecret&amp;code=#[code]&amp;redirect_uri=http://localhost:${http.listener.port}/redirect); mule-app.properties http.provider.port=8081, http.listener.port=8082" },
+  "request": { "method": "GET", "path": "/redirect?code=abc123" },
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "http://localhost:8081/token?grant_type=authorization_code&&client_id=myclientid&client_secret=myclientsecret&code=abc123&redirect_uri=http://localhost:8082/redirect" }
+  }
+}
