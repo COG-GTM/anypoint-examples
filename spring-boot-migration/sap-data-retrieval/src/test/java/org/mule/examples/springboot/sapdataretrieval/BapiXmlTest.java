@@ -14,9 +14,20 @@ class BapiXmlTest {
                 + "<row><FIELDVALUE>M\u00fcller Caf\u00e9</FIELDVALUE></row></RESULT_TAB></tables></BAPI_CUSTOMER_FIND>")
                 .getBytes(Charset.forName("windows-1252"));
 
-        List<SapRow> rows = BapiXml.rows(reply, "RESULT_TAB");
+        List<SapRow> rows = BapiXml.rows(reply, null, "RESULT_TAB");
 
         assertThat(rows).singleElement().satisfies(r ->
                 assertThat(r.fields()).containsEntry("FIELDVALUE", "M\u00fcller Caf\u00e9"));
+    }
+
+    @Test
+    void httpCharsetAppliesWhenTheReplyHasNoXmlDeclaration() {
+        byte[] reply = "<BAPI_MATERIAL_GETLIST><tables><MATNRLIST><row><MATL_DESC>Kr\u00e4mer \u00e9crou</MATL_DESC></row></MATNRLIST></tables></BAPI_MATERIAL_GETLIST>"
+                .getBytes(Charset.forName("ISO-8859-1"));
+
+        List<SapRow> rows = BapiXml.rows(reply, Charset.forName("ISO-8859-1"), "MATNRLIST");
+
+        assertThat(rows).singleElement().satisfies(r ->
+                assertThat(r.fields()).containsEntry("MATL_DESC", "Kr\u00e4mer \u00e9crou"));
     }
 }

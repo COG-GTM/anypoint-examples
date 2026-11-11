@@ -2,9 +2,11 @@ package org.mule.examples.springboot.sapdataretrieval;
 
 import static org.mule.examples.springboot.sapdataretrieval.BapiXml.fields;
 
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,7 +38,7 @@ public class SapGatewayClient implements SapClient {
                 fields("MAX_CNT", r.maxCount(), "PL_HOLD", "X"),
                 "SELOPT_TAB",
                 fields("COMP_CODE", "0001", "TABNAME", "KNA1", "FIELDNAME", "NAME1", "FIELDVALUE", r.namePattern()));
-        return BapiXml.rows(execute("BAPI_CUSTOMER_FIND", xml), "RESULT_TAB");
+        return rows(execute("BAPI_CUSTOMER_FIND", xml), "RESULT_TAB");
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SapGatewayClient implements SapClient {
                 fields("MAXROWS", r.maxRows()),
                 "MATERIALSHORTDESCSEL",
                 fields("SIGN", "I", "OPTION", "CP", "DESCR_LOW", r.descriptionPattern()));
-        return BapiXml.rows(execute("BAPI_MATERIAL_GETLIST", xml), "MATNRLIST");
+        return rows(execute("BAPI_MATERIAL_GETLIST", xml), "MATNRLIST");
     }
 
     @Override
@@ -53,17 +55,23 @@ public class SapGatewayClient implements SapClient {
         String xml = BapiXml.write("BAPI_SALESORDER_GETLIST",
                 fields("CUSTOMER_NUMBER", r.customerNumber(), "SALES_ORGANIZATION", r.salesOrganization()),
                 null, Map.of());
-        return BapiXml.rows(execute("BAPI_SALESORDER_GETLIST", xml), "SALES_ORDERS");
+        return rows(execute("BAPI_SALESORDER_GETLIST", xml), "SALES_ORDERS");
     }
 
-    private byte[] execute(String functionName, String requestXml) {
+    private ResponseEntity<byte[]> execute(String functionName, String requestXml) {
         return webClient.post()
                 .uri("/functions/{functionName}", functionName)
                 .contentType(MediaType.APPLICATION_XML)
                 .accept(MediaType.APPLICATION_XML)
                 .bodyValue(requestXml)
                 .retrieve()
-                .bodyToMono(byte[].class)
+                .toEntity(byte[].class)
                 .block();
+    }
+
+    private static List<SapRow> rows(ResponseEntity<byte[]> reply, String table) {
+        MediaType contentType = reply.getHeaders().getContentType();
+        Charset charset = contentType == null ? null : contentType.getCharset();
+        return BapiXml.rows(reply.getBody() == null ? new byte[0] : reply.getBody(), charset, table);
     }
 }

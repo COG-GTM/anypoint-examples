@@ -2,6 +2,7 @@ package org.mule.examples.springboot.sapdataretrieval;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 /** The SAP connector's {@code xmlVersion="2"} document format: {@code <FUNCTION><import/><tables/></FUNCTION>}. */
 final class BapiXml {
@@ -70,10 +72,13 @@ final class BapiXml {
     }
 
     /** Rows of {@code /<function>/tables/<table>/row}; empty if the table is missing or has no rows. */
-    /** The raw reply bytes are parsed so the XML declaration's encoding (e.g. {@code windows-1252}) is honoured. */
-    static List<SapRow> rows(byte[] xml, String table) {
+    /**
+     * Parses the raw reply bytes. A charset from the HTTP {@code Content-Type} wins (RFC 7303); otherwise the XML
+     * declaration's encoding (e.g. {@code windows-1252}) is honoured, defaulting to UTF-8.
+     */
+    static List<SapRow> rows(byte[] xml, Charset httpCharset, String table) {
         List<SapRow> rows = new ArrayList<>();
-        Element tables = child(parse(xml).getDocumentElement(), "tables");
+        Element tables = child(parse(xml, httpCharset).getDocumentElement(), "tables");
         Element tableElement = child(tables, table);
         if (tableElement == null) {
             return rows;
@@ -92,6 +97,14 @@ final class BapiXml {
         return rows;
     }
 
+    private static InputSource source(byte[] xml, Charset httpCharset) {
+        InputSource source = new InputSource(new ByteArrayInputStream(xml));
+        if (httpCharset != null) {
+            source.setEncoding(httpCharset.name());
+        }
+        return source;
+    }
+
     private static Element child(Element parent, String name) {
         if (parent == null) {
             return null;
@@ -104,12 +117,12 @@ final class BapiXml {
         return null;
     }
 
-    private static Document parse(byte[] xml) {
+    private static Document parse(byte[] xml, Charset httpCharset) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            return factory.newDocumentBuilder().parse(new ByteArrayInputStream(xml));
+            return factory.newDocumentBuilder().parse(source(xml, httpCharset));
         } catch (Exception e) {
             throw new IllegalStateException("Invalid BAPI response XML: " + e.getMessage(), e);
         }
