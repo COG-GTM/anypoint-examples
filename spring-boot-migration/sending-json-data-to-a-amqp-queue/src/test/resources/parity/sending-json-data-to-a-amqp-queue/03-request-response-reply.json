@@ -1,0 +1,12 @@
+{
+  "name": "request-response-reply",
+  "description": "exchange-pattern=request-response: when a consumer of sales_queue replies, the reply body becomes the flow result and so the HTTP response body.",
+  "source": { "muleApp": "sending-json-data-to-a-amqp-queue", "flow": "json-to-rabbitmqFlow", "evidence": "documented", "reference": "sending-json-data-to-a-amqp-queue/src/main/app/json-to-rabbitmq.xml (amqp:outbound-endpoint exchange-pattern=request-response is the last processor; its response is the flow result returned by http:listener)" },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": "{\"ITEM_ID\":1,\"ITEM_NAME\":\"Shirt\",\"QTY\":1,\"PRICE\":20}" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "order accepted" },
+  "expectedMessages": [
+    { "destination": "queue:sales_queue", "count": 1, "bodyFormat": "JSON", "body": { "ITEM_ID": 1, "ITEM_NAME": "Shirt", "QTY": 1, "PRICE": 20 },
+      "properties": { "receivedExchange": "sales_exchange", "replyTo": "~.+" } }
+  ],
+  "expectedState": { "replyWith": "order accepted" }
+}

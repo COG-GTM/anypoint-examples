@@ -1,0 +1,12 @@
+{
+  "name": "readme-step8-no-maxredelivery",
+  "description": "README step 8: without maxRedelivery on the connector (Mule default 0) delivery 1 rolls back (MyException) and delivery 2 fails with 'maxRedelivery exceeded', which the catch-exception-strategy commits. Nothing reaches topic1, nothing is left on 'in' or dead-lettered. Module config: jms.max-redelivery=0.",
+  "source": { "muleApp": "jms-message-rollback-and-redelivery", "flow": "JMSRedeliver", "evidence": "documented", "reference": "jms-message-rollback-and-redelivery/README.md step 8 ('the transaction will fail in the second attempt due to a different error (maxRedelivery setting exceeded), but it will be commited'); src/main/app/jms-redelivery.xml (catch-exception-strategy when !causedBy(MyException))" },
+  "send": [ { "destination": "queue:in", "body": "Message123" } ],
+  "expectedMessages": [
+    { "destination": "topic:topic1", "count": 0 },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:ActiveMQ.DLQ", "count": 0 }
+  ],
+  "expectedState": { "deliveryAttempts": [ {"deliveryCount":1,"outcome":"ROLLED_BACK"}, {"deliveryCount":2,"outcome":"COMMITTED_AFTER_ERROR"} ], "minRedeliveryDelaysMillis": [5000] }
+}

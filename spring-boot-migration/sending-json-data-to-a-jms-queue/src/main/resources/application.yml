@@ -1,0 +1,12 @@
+# Mule: json-to-jms.xml (HTTP_Listener_Configuration host=0.0.0.0 port=${http.port}; activemq-connector brokerURL=tcp://localhost:61616)
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: sending-json-data-to-a-jms-queue
+  activemq:
+    broker-url: ${activemq.broker-url:tcp://localhost:61616}
+    user: ${activemq.username:}
+    password: ${activemq.password:}
+jms:
+  queue: ${jms.sales-queue:sales}

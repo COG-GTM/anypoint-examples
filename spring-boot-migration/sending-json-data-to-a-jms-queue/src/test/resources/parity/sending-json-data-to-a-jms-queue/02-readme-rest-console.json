@@ -1,0 +1,10 @@
+{
+  "name": "readme-rest-console",
+  "description": "README step 6 body (not valid JSON; the flow never parses it) is forwarded verbatim to queue 'sales' and echoed in the 200 response.",
+  "source": { "muleApp": "sending-json-data-to-a-jms-queue", "flow": "json-to-jmsFlow", "evidence": "documented", "reference": "sending-json-data-to-a-jms-queue/README.md step 6 (POST http://localhost:8081/sales); src/main/app/json-to-jms.xml" },
+  "request": { "method": "POST", "path": "/sales", "headers": { "Content-Type": "application/json" }, "body": "{\"ITEM_ID\"= 001, \"ITEM_NAME\" = \"Shirt\", \"QTY\" = 1, \"PRICE\" = 20}" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "{\"ITEM_ID\"= 001, \"ITEM_NAME\" = \"Shirt\", \"QTY\" = 1, \"PRICE\" = 20}" },
+  "expectedMessages": [
+    { "destination": "queue:sales", "count": 1, "type": "TextMessage", "bodyFormat": "TEXT", "body": "{\"ITEM_ID\"= 001, \"ITEM_NAME\" = \"Shirt\", \"QTY\" = 1, \"PRICE\" = 20}" }
+  ]
+}

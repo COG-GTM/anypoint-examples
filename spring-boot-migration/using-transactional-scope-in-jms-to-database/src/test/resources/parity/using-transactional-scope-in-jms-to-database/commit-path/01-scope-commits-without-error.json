@@ -1,0 +1,16 @@
+{
+  "name": "scope-commits-without-error",
+  "description": "The transactional scope with the TestComponent step not throwing (module config orders.throw-after-insert=false): the row is committed and the JMS outbound sends the db:insert result (update count 1, an Integer, so an ObjectMessage) to 'out' in the same transaction. One delivery, nothing redelivered or dead-lettered.",
+  "source": { "muleApp": "using-transactional-scope-in-jms-to-database", "flow": "transactionsFlow1", "evidence": "documented", "reference": "using-transactional-scope-in-jms-to-database/src/main/app/transactions.xml (db:insert parameterized-query -> jms:outbound-endpoint queue=\"out\" JOIN_IF_POSSIBLE inside ee:multi-transactional); Mule 3.8 db:insert returns the update count as payload; Mule JMS ObjectToJMSMessage sends Serializable payloads as ObjectMessage" },
+  "send": [ { "destination": "queue:in", "body": "<order>\n    <itemId>1</itemId>\n    <itemUnits>2</itemUnits>\n    <customerId>1</customerId>\n</order>" } ],
+  "expectedMessages": [
+    { "destination": "queue:out", "count": 1, "type": "ObjectMessage", "bodyFormat": "TEXT", "body": "1" },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:ActiveMQ.DLQ", "count": 0 }
+  ],
+  "expectedState": {
+    "deliveryAttempts": [ {"deliveryCount":1,"outcome":"COMMITTED"} ],
+    "ordersRows": [ {"item_id":1,"item_units":2,"customer_id":1} ],
+    "insertsExecuted": 1
+  }
+}

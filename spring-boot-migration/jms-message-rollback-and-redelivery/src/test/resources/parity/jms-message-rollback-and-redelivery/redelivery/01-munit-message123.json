@@ -1,0 +1,12 @@
+{
+  "name": "munit-message123",
+  "description": "The IT's Message123 on queue 'in' is rolled back on deliveries 1-4 (MyException) and published unchanged to topic1 on delivery 5 (JMSXDeliveryCount==5). Redeliveries follow the RedeliveryPolicy bean: 5000 ms before the first, 2000 ms between the others. Nothing is left on 'in' or dead-lettered.",
+  "source": { "muleApp": "jms-message-rollback-and-redelivery", "flow": "JMSRedeliver", "evidence": "munit", "reference": "jms-message-rollback-and-redelivery/src/test/java/org/mule/examples/JmsMessageRollbackAndRedeliveryIT.java (dispatch Message123 to jms://queue:in; topic1 payload equals Message123 within 30 s); src/main/app/jms-redelivery.xml (choice JMSXDeliveryCount==5, rollback-exception-strategy for MyException, redeliveryPolicy initialRedeliveryDelay=5000 redeliveryDelay=2000); README.md ('After ... unsuccessful attempts to commit (4 in this case), it sends the message successfully')" },
+  "send": [ { "destination": "queue:in", "body": "Message123" } ],
+  "expectedMessages": [
+    { "destination": "topic:topic1", "count": 1, "type": "TextMessage", "bodyFormat": "TEXT", "body": "Message123" },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:ActiveMQ.DLQ", "count": 0 }
+  ],
+  "expectedState": { "deliveryAttempts": [ {"deliveryCount":1,"outcome":"ROLLED_BACK"}, {"deliveryCount":2,"outcome":"ROLLED_BACK"}, {"deliveryCount":3,"outcome":"ROLLED_BACK"}, {"deliveryCount":4,"outcome":"ROLLED_BACK"}, {"deliveryCount":5,"outcome":"COMMITTED"} ], "minRedeliveryDelaysMillis": [5000, 2000, 2000, 2000] }
+}

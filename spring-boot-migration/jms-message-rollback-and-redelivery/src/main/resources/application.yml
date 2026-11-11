@@ -1,0 +1,28 @@
+# Mule: jms-redelivery.xml
+spring:
+  application:
+    name: jms-message-rollback-and-redelivery
+  activemq:
+    # amqFactory brokerURL
+    broker-url: ${activemq.broker-url:failover:(tcp://localhost:61616)}
+    user: ${activemq.username:}
+    password: ${activemq.password:}
+  jms:
+    template:
+      # jms:activemq-connector persistentDelivery="true"
+      delivery-mode: persistent
+jms:
+  in-queue: in
+  topic: topic1
+  # jms:activemq-connector maxRedelivery="5"; -1 disables the check (Mule REDELIVERY_IGNORE)
+  max-redelivery: 5
+  # choice: #[message.inboundProperties['JMSXDeliveryCount']==5]
+  success-delivery-count: 5
+# org.apache.activemq.RedeliveryPolicy bean
+activemq:
+  redelivery-policy:
+    maximum-redeliveries: 5
+    initial-redelivery-delay: 5000
+    redelivery-delay: 2000
+    use-exponential-back-off: false
+    back-off-multiplier: 2

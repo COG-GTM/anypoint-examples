@@ -1,0 +1,25 @@
+# Mule: websphere-mq.xml + mule-app.properties
+server:
+  # ajax:connector serverUrl="http://0.0.0.0:8086/services/wmqExample"
+  port: ${http.port:8086}
+spring:
+  application:
+    name: websphere-mq
+# wmq:connector (transportType CLIENT_MQ_TCPIP)
+ibm:
+  mq:
+    queue-manager: ${wmq.queue:QM1}
+    channel: ${wmq.channel:DEV.APP.SVRCONN}
+    conn-name: ${wmq.host:localhost}(${wmq.port:1414})
+    user: ${wmq.username:}
+    password: ${wmq.password:}
+wmq:
+  in-queue: in
+  out-queue: out
+  # test:component appendString / waitTime
+  processor:
+    append-string: " - processed"
+    wait-millis: 15000
+  # Output flow (out queue -> dequeue channel); disable to leave messages on "out"
+  output:
+    enabled: true

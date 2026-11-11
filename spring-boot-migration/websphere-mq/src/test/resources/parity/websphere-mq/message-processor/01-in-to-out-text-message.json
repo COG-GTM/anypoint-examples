@@ -1,0 +1,12 @@
+{
+  "name": "in-to-out-text-message",
+  "description": "MessageProcessor flow on its own (Output flow off): a text message put on WMQ 'in' by any producer is consumed in a transaction, held for 15 s, and put on WMQ 'out' as a TextMessage with ' - processed' appended. 'in' is empty afterwards.",
+  "source": { "muleApp": "websphere-mq", "flow": "MessageProcessor", "evidence": "documented", "reference": "websphere-mq/src/main/app/websphere-mq.xml (wmq:inbound-endpoint queue='in' ALWAYS_BEGIN; test:component appendString=' - processed' waitTime=15000; wmq:outbound-endpoint queue='out' JOIN_IF_POSSIBLE)" },
+  "send": [ { "destination": "queue:in", "body": "order 42" } ],
+  "expectedMessages": [
+    { "destination": "queue:out", "count": 1, "type": "TextMessage", "bodyFormat": "TEXT", "body": "order 42 - processed" },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "sse:/services/wmqExample/dequeue", "count": 0 }
+  ],
+  "expectedState": { "minProcessingMillis": 15000, "timeoutMillis": 45000, "settleMillis": 0 }
+}

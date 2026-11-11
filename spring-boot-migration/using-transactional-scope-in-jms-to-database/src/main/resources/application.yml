@@ -1,0 +1,26 @@
+# Mule: transactions.xml
+spring:
+  application:
+    name: using-transactional-scope-in-jms-to-database
+  activemq:
+    # jms:activemq-connector (default brokerURL)
+    broker-url: ${activemq.broker-url:tcp://localhost:61616}
+    user: ${activemq.username:}
+    password: ${activemq.password:}
+  datasource:
+    # db:generic-config url="${jdbc.url}" (user/password may be in the URL, as in Mule)
+    url: ${jdbc.url:jdbc:mysql://localhost:3306/test}
+    username: ${jdbc.username:}
+    password: ${jdbc.password:}
+  sql:
+    init:
+      # Mule required running order.sql by hand; set to "always" to create the orders table at startup
+      mode: ${orders.init-schema:never}
+jms:
+  in-queue: in
+  out-queue: out
+  # jms:activemq-connector maxRedelivery="2"; -1 disables the check
+  max-redelivery: 2
+orders:
+  # org.mule.examples.TestComponent always throws MyException after the insert
+  throw-after-insert: true

@@ -1,0 +1,12 @@
+{
+  "name": "readme-browser-roundtrip",
+  "description": "README 'Set Up and Run' steps 2-3: text entered in the page is sent on the enqueue channel (Input flow -> WMQ 'in'), MessageProcessor appends ' - processed' after its 15 s wait and puts it on 'out', and the Output flow publishes it on the dequeue channel. The enqueue call returns the text it enqueued. Exactly one message reaches the subscriber and both queues end up empty.",
+  "source": { "muleApp": "websphere-mq", "flow": "Input, MessageProcessor, Output", "evidence": "documented", "reference": "websphere-mq/README.md ('Mule introduces an intentional 15 second delay between receiving your message and sending you a confirmation'); src/main/app/websphere-mq.xml (ajax enqueue -> wmq in; test:component appendString=' - processed' waitTime=15000; wmq out -> ajax dequeue); src/main/app/docroot/index.html (mule.rpc enqueue, subscribe dequeue)" },
+  "send": [ { "destination": "http:/services/wmqExample/enqueue", "body": "Hello WebSphere MQ" } ],
+  "expectedMessages": [
+    { "destination": "sse:/services/wmqExample/dequeue", "count": 1, "type": "SSE", "bodyFormat": "TEXT", "body": "Hello WebSphere MQ - processed" },
+    { "destination": "queue:in", "count": 0 },
+    { "destination": "queue:out", "count": 0 }
+  ],
+  "expectedState": { "enqueueStatus": 200, "enqueueBody": "Hello WebSphere MQ", "minProcessingMillis": 15000, "timeoutMillis": 45000 }
+}

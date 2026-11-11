@@ -1,0 +1,8 @@
+{
+  "name": "get-not-allowed",
+  "description": "allowedMethods=POST: a GET to /sales is rejected with 405 and nothing is sent to the queue.",
+  "source": { "muleApp": "sending-json-data-to-a-jms-queue", "flow": "json-to-jmsFlow", "evidence": "documented", "reference": "sending-json-data-to-a-jms-queue/src/main/app/json-to-jms.xml (http:listener allowedMethods=POST); Mule 3.8 HTTP listener returns 405 Method Not Allowed for other methods" },
+  "request": { "method": "GET", "path": "/sales" },
+  "expected": { "status": 405, "bodyFormat": "IGNORE" },
+  "expectedMessages": [ { "destination": "queue:sales", "count": 0 } ]
+}

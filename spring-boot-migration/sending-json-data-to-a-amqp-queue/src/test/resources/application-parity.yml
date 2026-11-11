@@ -1,0 +1,3 @@
+amqp:
+  # keeps no-reply cases short; the Mule value (10000) only changes how long the caller waits
+  response-timeout: 2000
