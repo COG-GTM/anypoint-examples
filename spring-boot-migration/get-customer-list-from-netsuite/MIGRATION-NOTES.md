@@ -38,4 +38,4 @@
 ## Behavioural deltas
 
 See [README](README.md#behavioural-deltas): SuiteQL REST transport instead of SuiteTalk SOAP, single-quote escaping,
-template whitespace not asserted.
+whitespace between template tags not asserted (tag order is).

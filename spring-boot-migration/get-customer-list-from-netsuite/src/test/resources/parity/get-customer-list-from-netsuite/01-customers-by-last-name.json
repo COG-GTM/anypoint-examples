@@ -1,25 +1,46 @@
 {
   "name": "customers-by-last-name",
-  "description": "GET /customers?lastName=a runs the DSQL query with lastName like 'a%' ORDER BY lastName ASC and renders each returned record as <tr><td>lastName</td><td>firstName</td><td>email</td></tr> inside the customer/index.html template, in the order NetSuite returned them.",
+  "description": "GET /customers?lastName=a runs the DSQL query with lastName like 'a%' ORDER BY lastName ASC and renders each returned record as <tr><td>lastName</td><td>firstName</td><td>email</td></tr> inside the customer/index.html template, in the order NetSuite returned them. The page is matched in document order (rows and cells may not be reordered); only whitespace between tags is free, since the exact indentation of DataWeave's XML writer isn't documented. bodies/customers-a.html is the readable form of the expected page.",
   "source": {
     "muleApp": "get-customer-list-from-netsuite",
     "flow": "get-customer-list-from-netsuiteFlow",
     "evidence": "documented",
     "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (flow get-customer-list-from-netsuiteFlow: expression-filter, netsuite:query, dw:transform-message, parse-template customer/index.html); src/main/resources/customer/index.html; records from src/test/resources/sample_data/list_Customer.dwl; request from src/test/java/org/mule/examples/GetCustomersListFromNetsuiteIT.java"
   },
-  "request": { "method": "GET", "path": "/customers?lastName=a" },
+  "request": {
+    "method": "GET",
+    "path": "/customers?lastName=a"
+  },
   "downstream": [
     {
       "method": "POST",
       "urlPath": "/services/rest/query/v1/suiteql",
       "status": 200,
-      "headers": { "Content-Type": "application/json" },
+      "headers": {
+        "Content-Type": "application/json"
+      },
       "body": {
         "items": [
-          { "email": "ab@example.com", "firstName": "Byron", "lastName": "Abbott" },
-          { "email": "gustaffson@example.com", "firstName": "Norman", "lastName": "Gustaffson" },
-          { "email": "aa@example.com", "firstName": "Analytics", "lastName": "Angels" },
-          { "email": "mcgill@example.com", "firstName": "Stuart", "lastName": "McGill" }
+          {
+            "email": "ab@example.com",
+            "firstName": "Byron",
+            "lastName": "Abbott"
+          },
+          {
+            "email": "gustaffson@example.com",
+            "firstName": "Norman",
+            "lastName": "Gustaffson"
+          },
+          {
+            "email": "aa@example.com",
+            "firstName": "Analytics",
+            "lastName": "Angels"
+          },
+          {
+            "email": "mcgill@example.com",
+            "firstName": "Stuart",
+            "lastName": "McGill"
+          }
         ]
       }
     }
@@ -33,13 +54,17 @@
         "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3"
       },
       "bodyFormat": "JSON",
-      "body": { "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'a%' ORDER BY lastName ASC" }
+      "body": {
+        "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'a%' ORDER BY lastName ASC"
+      }
     }
   ],
   "expected": {
     "status": 200,
-    "headers": { "Content-Type": "~text/html.*" },
-    "bodyFormat": "XML",
-    "bodyFile": "bodies/customers-a.html"
+    "headers": {
+      "Content-Type": "~text/html.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~(?s)\\s*<!\\-\\-\\\n\\\n\\ \\ \\ \\ MuleSoft\\ Examples\\\n\\ \\ \\ \\ Copyright\\ 2014\\ MuleSoft,\\ Inc\\.\\\n\\\n\\ \\ \\ \\ This\\ product\\ includes\\ software\\ developed\\ at\\\n\\ \\ \\ \\ MuleSoft,\\ Inc\\.\\ \\(http://www\\.mulesoft\\.com/\\)\\.\\\n\\\n\\-\\->\\s*<html>\\s*<body>\\s*<h1>\\s*Netsuite\\ Customer\\ List\\s*</h1>\\s*<table>\\s*<thead>\\s*<tr>\\s*<th>\\s*Last\\ Name\\s*</th>\\s*<th>\\s*First\\ Name\\s*</th>\\s*<th>\\s*Email\\s*</th>\\s*</tr>\\s*</thead>\\s*<tbody>\\s*<div>\\s*<line>\\s*<tr>\\s*<td>\\s*Abbott\\s*</td>\\s*<td>\\s*Byron\\s*</td>\\s*<td>\\s*ab@example\\.com\\s*</td>\\s*</tr>\\s*<tr>\\s*<td>\\s*Gustaffson\\s*</td>\\s*<td>\\s*Norman\\s*</td>\\s*<td>\\s*gustaffson@example\\.com\\s*</td>\\s*</tr>\\s*<tr>\\s*<td>\\s*Angels\\s*</td>\\s*<td>\\s*Analytics\\s*</td>\\s*<td>\\s*aa@example\\.com\\s*</td>\\s*</tr>\\s*<tr>\\s*<td>\\s*McGill\\s*</td>\\s*<td>\\s*Stuart\\s*</td>\\s*<td>\\s*mcgill@example\\.com\\s*</td>\\s*</tr>\\s*</line>\\s*</div>\\s*</tbody>\\s*</table>\\s*</body>\\s*</html>\\s*"
   }
 }

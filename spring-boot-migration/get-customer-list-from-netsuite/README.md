@@ -29,7 +29,7 @@ curl 'http://localhost:8081/customers?lastName=a'
 
 `GetCustomerListFromNetsuiteParityTest` (`AbstractWireMockParityTest`) runs the fixtures in
 `src/test/resources/parity/get-customer-list-from-netsuite/`. WireMock plays NetSuite; each fixture asserts the exact
-outbound query body and `NLAuth` header, the HTTP status, content type and the rendered HTML (compared as XML).
+outbound query body and `NLAuth` header, the HTTP status, content type and the rendered HTML (matched tag by tag in document order).
 
 ```bash
 cd spring-boot-migration && mvn -B -pl get-customer-list-from-netsuite -am verify
@@ -44,5 +44,7 @@ cd spring-boot-migration && mvn -B -pl get-customer-list-from-netsuite -am verif
 2. **Quote escaping.** Mule concatenated `lastName` into the query unescaped (DSQL injection). The port doubles single
    quotes (`O'Brien` → `O''Brien`). Queries without `'` are byte-identical.
 3. **Template rendering.** The Groovy `parse-template` expression is replaced by a string substitution of the same
-   `<div><line><tr><td>…` fragment (2-space indentation, XML declaration line dropped). Fixtures compare the page as XML,
-   so whitespace differences aren't asserted.
+   `<div><line><tr><td>…` fragment (2-space indentation, XML declaration line dropped). The fixtures match the whole
+   page tag by tag, in document order (rows and cells can't be reordered). They don't assert whitespace between tags,
+   because the exact indentation of DataWeave's XML writer isn't documented. In live Mule-vs-Spring mode the harness
+   compares the two pages literally.
