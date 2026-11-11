@@ -1,0 +1,34 @@
+{
+  "name": "no-customers-found",
+  "description": "When the NetSuite query returns no records the DataWeave 'otherwise' branch renders a single 'No customers found' row.",
+  "source": {
+    "muleApp": "get-customer-list-from-netsuite",
+    "flow": "get-customer-list-from-netsuiteFlow",
+    "evidence": "documented",
+    "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (flow get-customer-list-from-netsuiteFlow: expression-filter, netsuite:query, dw:transform-message, parse-template customer/index.html); src/main/resources/customer/index.html (DataWeave: line: ... unless (payload is :empty) otherwise { tr: { td: 'No customers found' } })"
+  },
+  "request": { "method": "GET", "path": "/customers?lastName=Zz" },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "status": 200,
+      "headers": { "Content-Type": "application/json" },
+      "body": { "items": [] }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "bodyFormat": "JSON",
+      "body": { "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'Zz%' ORDER BY lastName ASC" }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~text/html.*" },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/no-customers.html"
+  }
+}

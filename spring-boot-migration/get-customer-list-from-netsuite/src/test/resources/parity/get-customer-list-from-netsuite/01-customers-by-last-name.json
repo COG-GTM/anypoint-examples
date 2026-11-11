@@ -1,0 +1,45 @@
+{
+  "name": "customers-by-last-name",
+  "description": "GET /customers?lastName=a runs the DSQL query with lastName like 'a%' ORDER BY lastName ASC and renders each returned record as <tr><td>lastName</td><td>firstName</td><td>email</td></tr> inside the customer/index.html template, in the order NetSuite returned them.",
+  "source": {
+    "muleApp": "get-customer-list-from-netsuite",
+    "flow": "get-customer-list-from-netsuiteFlow",
+    "evidence": "documented",
+    "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (flow get-customer-list-from-netsuiteFlow: expression-filter, netsuite:query, dw:transform-message, parse-template customer/index.html); src/main/resources/customer/index.html; records from src/test/resources/sample_data/list_Customer.dwl; request from src/test/java/org/mule/examples/GetCustomersListFromNetsuiteIT.java"
+  },
+  "request": { "method": "GET", "path": "/customers?lastName=a" },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "status": 200,
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "items": [
+          { "email": "ab@example.com", "firstName": "Byron", "lastName": "Abbott" },
+          { "email": "gustaffson@example.com", "firstName": "Norman", "lastName": "Gustaffson" },
+          { "email": "aa@example.com", "firstName": "Analytics", "lastName": "Angels" },
+          { "email": "mcgill@example.com", "firstName": "Stuart", "lastName": "McGill" }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3"
+      },
+      "bodyFormat": "JSON",
+      "body": { "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'a%' ORDER BY lastName ASC" }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~text/html.*" },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/customers-a.html"
+  }
+}

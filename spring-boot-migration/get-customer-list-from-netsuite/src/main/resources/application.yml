@@ -1,0 +1,10 @@
+server:
+  port: ${http.port:8081}
+
+# Mule netsuite:config (mule-app.properties: netsuite.email / password / account / roleId).
+netsuite:
+  base-url: ${NETSUITE_BASE_URL:https://${netsuite.account}.suitetalk.api.netsuite.com}
+  email: ${NETSUITE_EMAIL:}
+  password: ${NETSUITE_PASSWORD:}
+  account: ${NETSUITE_ACCOUNT:}
+  role-id: ${NETSUITE_ROLE_ID:}
