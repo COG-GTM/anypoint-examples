@@ -21,6 +21,7 @@
 |---|---|---|
 | `http.port` | `server.port` (`${http.port:8081}`) | 8081 |
 | (hard-coded `/tmp`) | `upload.directory` | `/tmp` |
+| (no limit) | `upload.max-file-size` / `upload.max-request-size` | `100MB` |
 
 ## Parity coverage
 
@@ -37,6 +38,8 @@
 - **HTTP reason phrase.** Mule sets a custom reason phrase (`File was uploaded.` on the 200). Tomcat (Spring Boot's embedded server) does not send reason phrases, so the status line is just `200`. Status codes are identical; clients that read the reason phrase see a difference.
 - **Stored file name is reduced to its base name.** Mule writes `/tmp/<filename>` using the raw `Content-Disposition` filename, so a name like `../../etc/x` would escape `/tmp`. Spring keeps only the last path segment (`Paths.get(name).getFileName()`). Ordinary file names are stored the same way.
 - **Upload directory is configurable.** It is `upload.directory` and defaults to `/tmp`, as in Mule. The parity test points it at a temp directory.
+- **Upload size limit.** Mule sets no multipart limit. Spring needs one, so it defaults to 100MB per file and per request (`upload.max-file-size`, `upload.max-request-size`). Larger uploads are rejected.
+- **Upload never follows symlinks.** Mule's file endpoint follows a symlink at `/tmp/<filename>`. Spring opens the target with `NOFOLLOW_LINKS`, so the upload fails instead of overwriting the link target.
 - **Response `Content-Type` isn't asserted.** Mule doesn't document what it sends for the attachment content. Spring sends `application/octet-stream`.
 - **Body of the 500 when the `file` part is missing.** Mule writes its exception message. Spring sends an empty body with the same status, 500.
 - **Added springdoc endpoints.** `/v3/api-docs` and `/swagger-ui.html` are new paths.

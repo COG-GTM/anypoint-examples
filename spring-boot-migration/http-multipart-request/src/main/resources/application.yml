@@ -3,5 +3,10 @@ server:
 spring:
   application:
     name: http-multipart-request
+  # Mule's HTTP listener imposes no multipart size limit; Spring's default is 1MB.
+  servlet:
+    multipart:
+      max-file-size: ${upload.max-file-size:100MB}
+      max-request-size: ${upload.max-request-size:100MB}
 upload:
   directory: /tmp
