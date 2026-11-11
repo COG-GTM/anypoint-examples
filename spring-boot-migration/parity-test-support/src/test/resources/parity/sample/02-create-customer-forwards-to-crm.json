@@ -1,0 +1,35 @@
+{
+  "name": "create-customer-forwards-to-crm",
+  "description": "Harness demo of side-effect parity: the inbound customer is mapped and POSTed downstream; the downstream id is returned.",
+  "source": { "muleApp": "(harness sample)", "flow": "n/a", "evidence": "documented", "reference": "parity-test-support README" },
+  "request": {
+    "method": "POST",
+    "path": "/sample/customers",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "firstName": "Ada", "lastName": "Lovelace", "email": "ADA@EXAMPLE.COM" }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/crm/customers",
+      "status": 200,
+      "headers": { "Content-Type": "application/json" },
+      "body": { "id": "C-1001" }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/crm/customers",
+      "headers": { "Content-Type": "~application/json.*" },
+      "bodyFormat": "JSON",
+      "body": { "name": "Ada Lovelace", "email": "ada@example.com" }
+    }
+  ],
+  "expected": {
+    "status": 201,
+    "headers": { "Content-Type": "application/json" },
+    "bodyFormat": "JSON",
+    "body": { "status": "CREATED", "customerId": "C-1001" }
+  }
+}

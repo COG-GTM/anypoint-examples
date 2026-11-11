@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:greeting xmlns:s="urn:sample">
+    <s:text>Hello World</s:text>
+</s:greeting>

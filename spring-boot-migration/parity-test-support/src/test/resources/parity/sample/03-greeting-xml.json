@@ -1,0 +1,12 @@
+{
+  "name": "greeting-xml",
+  "description": "XML bodies are compared with XMLUnit: whitespace and namespace prefixes don't matter.",
+  "source": { "muleApp": "(harness sample)", "flow": "n/a", "evidence": "documented", "reference": "parity-test-support README" },
+  "request": { "method": "GET", "path": "/sample/greeting" },
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~application/xml.*" },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greeting.xml"
+  }
+}
