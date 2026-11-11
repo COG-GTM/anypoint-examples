@@ -1,6 +1,6 @@
 {
   "name": "01-unauthorized-request-redirects-to-salesforce",
-  "description": "With no access token stored, sfdc:authorize redirects the browser (302) to the authorization URL with response_type=code, the Connected App's consumer key, the callback redirect_uri built from oauth-callback-config (http://localhost:8081/oauth2callback) and display=page; nothing is sent to Salesforce's API. README step 2: 'You will redirected to Salesforce Login page'. The Location is matched by parameter because Mule's exact parameter order (and its extra state value) is not documented.",
+  "description": "With no access token stored, sfdc:authorize redirects the browser (302) to the authorization URL with response_type=code, the Connected App's consumer key, the callback redirect_uri built from oauth-callback-config (http://localhost:8081/oauth2callback) display=page and a state value (Mule put its suspended event id there; the Spring module issues a single-use random value); nothing is sent to Salesforce's API. README step 2: 'You will redirected to Salesforce Login page'. The Location is matched by parameter because Mule's exact parameter order and state format are not documented.",
   "given": {
     "authorized": false
   },
@@ -19,7 +19,7 @@
   "expected": {
     "status": 302,
     "headers": {
-      "Location": "~https://login\\.salesforce\\.com/services/oauth2/authorize\\?(?=.*\\bresponse_type=code\\b)(?=.*\\bclient_id=parity-consumer-key\\b)(?=.*\\bredirect_uri=http%3A%2F%2Flocalhost%3A8081%2Foauth2callback\\b)(?=.*\\bdisplay=page\\b).*"
+      "Location": "~https://login\\.salesforce\\.com/services/oauth2/authorize\\?(?=.*\\bresponse_type=code\\b)(?=.*\\bclient_id=parity-consumer-key\\b)(?=.*\\bredirect_uri=http%3A%2F%2Flocalhost%3A8081%2Foauth2callback\\b)(?=.*\\bdisplay=page\\b)(?=.*\\bstate=[^&]+).*"
     },
     "bodyFormat": "IGNORE"
   }

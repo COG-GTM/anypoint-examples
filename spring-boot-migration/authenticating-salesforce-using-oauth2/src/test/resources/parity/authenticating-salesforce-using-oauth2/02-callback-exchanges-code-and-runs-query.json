@@ -1,8 +1,9 @@
 {
   "name": "02-callback-exchanges-code-and-runs-query",
-  "description": "Salesforce redirects back to /oauth2callback with the authorization code: the code is exchanged at accessTokenUrl (authorization_code grant with consumer key/secret and the same redirect_uri), then the rest of the flow runs with the new token: the fixed SOQL query and 'Salesforce query returned N contacts.' (SalesforceOauthIT expects the page to contain 'Salesforce query returned').",
+  "description": "Salesforce redirects back to /oauth2callback with the authorization code and the state from the redirect: the code is exchanged at accessTokenUrl (authorization_code grant with consumer key/secret and the same redirect_uri), then the rest of the flow runs with the new token: the fixed SOQL query and 'Salesforce query returned N contacts.' (SalesforceOauthIT expects the page to contain 'Salesforce query returned').",
   "given": {
-    "authorized": false
+    "authorized": false,
+    "pendingState": "parity-state-1"
   },
   "source": {
     "muleApp": "authenticating-salesforce-using-oauth2",
@@ -12,7 +13,7 @@
   },
   "request": {
     "method": "GET",
-    "path": "/oauth2callback?code=aPrxparityAuthCode%3D%3D"
+    "path": "/oauth2callback?code=aPrxparityAuthCode%3D%3D&state=parity-state-1"
   },
   "downstream": [
     {

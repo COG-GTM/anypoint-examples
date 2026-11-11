@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * OAuth2 authorization-code flow and contact query against the WireMock Salesforce API. A fixture's
- * {@code given.authorized} is either {@code false} (no token stored) or the token the connector already holds.
+ * {@code given.authorized} is either {@code false} (no token stored) or the token the connector already holds;
+ * {@code given.pendingState} is an OAuth {@code state} the app issued with an earlier redirect.
  */
 class SalesforceOAuthParityTest extends AbstractWireMockParityTest {
 
@@ -43,6 +44,10 @@ class SalesforceOAuthParityTest extends AbstractWireMockParityTest {
                 ? new SalesforceToken(authorized.path("access_token").asText(), DOWNSTREAM.baseUrl(),
                         authorized.path("refresh_token").asText(null))
                 : null);
+        JsonNode pendingState = GIVEN.get(fixture.name()).path("pendingState");
+        if (pendingState.isTextual()) {
+            oauth.rememberState(pendingState.asText());
+        }
         SalesforceParitySupport.stub(DOWNSTREAM, fixture);
     }
 

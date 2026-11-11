@@ -10,7 +10,7 @@
 |---|---|---|
 | `sfdc:config-with-oauth consumerKey consumerSecret` | `SalesforceOAuth` (`sfdc.key`, `sfdc.secret`) | In-memory token store, like the connector's default |
 | `sfdc:oauth-callback-config domain=localhost localPort=8081 path=oauth2callback` | `SalesforceOAuthController#callback` (`@GetMapping("/oauth2callback")`) + `sfdc.oauth.callback.*` (redirect URI) | Served on `server.port` |
-| `sfdc:authorize authorizationUrl accessTokenUrl display=PAGE` | `SalesforceOAuthController#root` → 302 to `SalesforceOAuth#authorizationRedirect`; `SalesforceOAuth#exchange` (authorization_code grant) | After the callback the rest of the flow runs and its result is the callback response |
+| `sfdc:authorize authorizationUrl accessTokenUrl display=PAGE` | `SalesforceOAuthController#root` → 302 to `SalesforceOAuth#authorizationRedirect` (single-use `state`); `SalesforceOAuth#exchange` (authorization_code grant) | After the callback the rest of the flow runs and its result is the callback response |
 | Connector access-token refresh on expired session | `SalesforceOAuth#renew` (refresh_token grant) called by `SalesforceClient` on 401 | Covered by `SalesforceOAuthParityTest#expiredAccessTokenIsRefreshedAndQueryRetried` |
 | `sfdc:query "SELECT id,lastname,lastmodifieddate from contact limit 10"` | `SalesforceClient#query` → `GET /query?q=...` |  |
 | `foreach` + `logger "contact: #[payload]"` | SLF4J `contact: {LastModifiedDate=..., Id=..., LastName=..., type=Contact}` | Identical to the README's sample log lines |
@@ -38,6 +38,7 @@
 | `02-callback-exchanges-code-and-runs-query` | Salesforce redirects back to /oauth2callback with the authorization code: the code is exchanged at accessTokenUrl (authorization_code grant with consumer key/secret and the same redirect_uri), then the rest of the flow runs with the new token: the fixed SOQL query and 'Salesforce query returned N contacts.' (SalesforceOauthIT expects the page to contain 'Salesforce query returned'). | documented |
 | `03-authorized-request-queries-directly` | Once a token is stored, sfdc:authorize does not redirect: GET / runs the query with the stored access token straight away (no token request) and returns the count. | documented |
 | `04-authorized-request-with-no-contacts` | An org without contacts: the query returns no records and the flow answers with a zero count. | documented |
+| `05-callback-with-unknown-state-is-rejected` | A callback whose state was not issued by this app (a forged or replayed authorization code) is rejected with 403 before any token request, so the stored Salesforce session cannot be swapped for another org's. | documented |
 
 ## Behavioural deltas
 

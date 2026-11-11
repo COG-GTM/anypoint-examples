@@ -13,6 +13,9 @@ import org.springframework.web.client.RestClient;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The Mule {@code sfdc:config-with-oauth} global element plus {@code sfdc:authorize}: OAuth2 web-server
@@ -29,6 +32,7 @@ class SalesforceOAuth implements SalesforceTokenProvider {
     private final String accessTokenUrl;
     private final String display;
     private final String redirectUri;
+    private final Set<String> pendingStates = ConcurrentHashMap.newKeySet();
     private volatile SalesforceToken token;
 
     SalesforceOAuth(RestClient.Builder builder,
@@ -53,13 +57,28 @@ class SalesforceOAuth implements SalesforceTokenProvider {
         return token != null;
     }
 
-    /** Where {@code sfdc:authorize} redirects the browser when there is no access token yet. */
+    /**
+     * Where {@code sfdc:authorize} redirects the browser when there is no access token yet. The {@code state}
+     * value is single-use and must come back on the callback, so only authorizations this app started are accepted.
+     */
     String authorizationRedirect() {
+        String state = UUID.randomUUID().toString();
+        rememberState(state);
         return authorizationUrl
                 + "?response_type=code"
                 + "&client_id=" + encode(consumerKey)
                 + "&redirect_uri=" + encode(redirectUri)
-                + "&display=" + encode(display.toLowerCase(Locale.ROOT));
+                + "&display=" + encode(display.toLowerCase(Locale.ROOT))
+                + "&state=" + encode(state);
+    }
+
+    void rememberState(String state) {
+        pendingStates.add(state);
+    }
+
+    /** True (once) when {@code state} was issued by {@link #authorizationRedirect()}. */
+    boolean consumeState(String state) {
+        return state != null && pendingStates.remove(state);
     }
 
     /** OAuth callback: exchanges the authorization code at the access token URL and stores the token. */
