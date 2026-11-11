@@ -1,0 +1,21 @@
+{
+  "name": "11-create-invalid-json-500",
+  "description": "Unparseable JSON makes json-to-object-transformer throw. storePersonFlow has no exception strategy, so the default strategy answers 500.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "storePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (storePersonFlow: json:json-to-object-transformer, no exception strategy)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{not json"
+  },
+  "expected": {
+    "status": 500
+  }
+}

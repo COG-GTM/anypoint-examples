@@ -11,7 +11,7 @@
 | `spring:bean personDataStore` (HashMap) + `personId` (AtomicInteger) | `PersonStore` (`ConcurrentSkipListMap` + `AtomicInteger`) | Ordered map, so lists come back in id order, which is how a HashMap of small Integer keys iterates |
 | `http:listener allowedMethods="GET" path="/person"` + `json:object-to-json-transformer` (`retrievePersonsFlow`) | `PersonController#all` (`@GetMapping("/person")`), Jackson |  |
 | `http:listener allowedMethods="POST" path="/person"` + `http:response-builder statusCode=201` + `Location` header (`storePersonFlow`) | `PersonController#create` (`@PostMapping`, `ResponseEntity.status(201).header("Location", ...)`) | `Location` stays hard-coded to `http://0.0.0.0:8081/person/<id>`, as in the Mule XML |
-| `json:json-to-object-transformer returnClass=org.mule.examples.Person` | `@RequestBody Person` (Jackson record, `int age` coerces `"12"`) |  |
+| `json:json-to-object-transformer returnClass=org.mule.examples.Person` | `@RequestBody String` + `ObjectMapper.readValue(body, Person.class)` (any Content-Type; `int age` coerces `"12"`) |  |
 | `set-payload` success JSON string | `PersonController.CREATED_BODY` | Same literal text |
 | `http:listener path="/person/{personId}"` + `Integer.valueOf(...)` + `logger level=ERROR` (`retrievePersonFlow`) | `PersonController#one` (`@GetMapping("/person/{personId}")`), `log.error("Person id is {}")` |  |
 | `message-filter throwOnUnaccepted` + `rollback-exception-strategy` (404 / `Not Found`) | `Optional.orElseGet(() -> 404 + filter message)` | Body is the README-documented filter message |
@@ -35,10 +35,13 @@
 | 06-get-missing-404 | 404 + filter-rejected message | documented |
 | 07-get-non-numeric-500 | Non-numeric id → 500 | documented |
 | 08-put-not-allowed | PUT → 405 | documented |
+| 09-create-without-content-type | `text/plain` body still parsed as JSON → 201 | documented |
+| 10-get-created-without-content-type | That person is stored | documented |
+| 11-create-invalid-json-500 | Invalid JSON → 500 | documented |
 
 ## Behavioural deltas
 
 - **HTTP reason phrase.** Mule sets a custom reason phrase (`Not Found` on the 404 from `http:error-response-builder`). Tomcat (Spring Boot's embedded server) does not send reason phrases, so the status line is just `404`. Status codes are identical; clients that read the reason phrase see a difference.
 - **`Content-Type` of the 201 response.** Mule returns the literal success JSON string from `set-payload` with no declared MIME type. Spring labels it `application/json`. The body is byte-for-byte the same, and the fixtures don't assert this header.
-- **Body of the 500 for a non-numeric id.** Mule's default exception strategy writes the exception message as the body. Spring returns an empty body with the same status, 500.
+- **Body of the 500s (non-numeric id, invalid JSON).** Mule's default exception strategy writes the exception message as the body. Spring returns an empty body with the same status, 500.
 - **Added springdoc endpoints.** `/v3/api-docs` and `/swagger-ui.html` are new. Mule answers 404 on those paths.

@@ -1,0 +1,36 @@
+{
+  "name": "09-create-without-content-type",
+  "description": "json:json-to-object-transformer parses the body as JSON regardless of the request Content-Type, so a text/plain POST still creates person 3.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "storePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (storePersonFlow: http:listener allowedMethods=POST has no mime-type restriction; json:json-to-object-transformer returnClass=org.mule.examples.Person)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "text/plain"
+    },
+    "body": {
+      "firstname": "Ada",
+      "lastname": "Lovelace",
+      "address": {
+        "streetAddress": "St James's Square",
+        "city": "London",
+        "state": "LDN",
+        "zipCode": "SW1Y"
+      },
+      "age": 36
+    }
+  },
+  "expected": {
+    "status": 201,
+    "headers": {
+      "Location": "http://0.0.0.0:8081/person/3"
+    },
+    "bodyFormat": "TEXT",
+    "body": "{ \"status\": \"success\", \"statusDescription\": \"person created successfully\"}"
+  }
+}
