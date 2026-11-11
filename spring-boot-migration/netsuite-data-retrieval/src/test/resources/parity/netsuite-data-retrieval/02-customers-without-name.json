@@ -1,0 +1,47 @@
+{
+  "name": "customers-without-name",
+  "description": "Without 'name' the conditional companyName element is omitted, so the CustomerSearch has an empty basic criteria.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "get:/customers:netsuite-api-config",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (flow get:/customers:netsuite-api-config: DataWeave CustomerSearch basic.companyName STARTS_WITH, netsuite:search searchRecord=CUSTOMER, 'payload map $'); response example netsuite-data-retrieval/src/main/api/netsuite-api.raml -> customers-response.json; src/test/munit/netsuite-api-test-suite.xml (customers test) (conditional element '(companyName: ...) when name != null')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/customers"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/search/CUSTOMER",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "bodyFile": "bodies/customers-response.json"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/CUSTOMER",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3, nlauth_application_id=00000000-PARITY-APP"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "basic": {}
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "bodyFile": "bodies/customers-response.json"
+  }
+}

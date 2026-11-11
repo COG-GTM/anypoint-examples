@@ -1,0 +1,47 @@
+{
+  "name": "opportunities-without-title",
+  "description": "Without 'title' the OpportunitySearch basic criteria is empty.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "get:/oportunities:netsuite-api-config",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (apikit:flow-mapping resource=/opportunities -> flow get:/oportunities:netsuite-api-config: DataWeave OpportunitySearch basic.title STARTS_WITH, searchRecord=OPPORTUNITY); netsuite-data-retrieval/src/main/api/netsuite-api.raml -> opportunities-response.json (raw newlines inside addrText escaped so the example is valid JSON)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/opportunities"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/search/OPPORTUNITY",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "bodyFile": "bodies/opportunities-response.json"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/OPPORTUNITY",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3, nlauth_application_id=00000000-PARITY-APP"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "basic": {}
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "bodyFile": "bodies/opportunities-response.json"
+  }
+}

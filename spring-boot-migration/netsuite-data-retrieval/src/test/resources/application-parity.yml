@@ -1,0 +1,7 @@
+nets:
+  base-url: ${parity.downstream.base-url}
+  email: parity@example.com
+  password: parity-secret
+  account: TSTDRV0001
+  role-id: "3"
+  application-id: 00000000-PARITY-APP
