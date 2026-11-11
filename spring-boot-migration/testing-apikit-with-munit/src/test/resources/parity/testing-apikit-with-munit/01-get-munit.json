@@ -1,0 +1,7 @@
+{
+  "name": "01-get-munit",
+  "description": "GET /api/munit returns 200 and 'GET RESPONSE'.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "get:/munit:api-config", "evidence": "munit", "reference": "testing-apikit-with-munit/src/test/munit/api-test-suite.xml (GET /munit asserts http.status 200 and payload GET RESPONSE); testing-apikit-with-munit/src/main/app/api.xml (set-payload #['GET RESPONSE'])" },
+  "request": { "method": "GET", "path": "/api/munit" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "GET RESPONSE" }
+}

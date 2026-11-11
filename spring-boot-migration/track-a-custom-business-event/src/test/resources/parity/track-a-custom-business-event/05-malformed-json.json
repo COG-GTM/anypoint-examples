@@ -1,0 +1,23 @@
+{
+  "name": "05-malformed-json",
+  "description": "A body that is not JSON fails json-to-object-transformer before the custom event: Mule's default exception strategy answers 500 and no business event is recorded.",
+  "source": {
+    "muleApp": "track-a-custom-business-event",
+    "flow": "custom-business-eventsFlow1",
+    "evidence": "documented",
+    "reference": "track-a-custom-business-event/src/main/app/custom-business-events.xml (json:json-to-object-transformer precedes tracking:custom-event; the flow has no exception strategy)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/customBusinessEvents",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{not json"
+  },
+  "expected": {
+    "status": 500,
+    "bodyFormat": "IGNORE"
+  },
+  "expectedEvents": []
+}

@@ -1,0 +1,7 @@
+{
+  "name": "02-post-munit",
+  "description": "POST /api/munit returns 201 (RAML response code) and 'POST RESPONSE'.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "post:/munit:api-config", "evidence": "munit", "reference": "testing-apikit-with-munit/src/test/munit/api-test-suite.xml (POST /munit asserts http.status 201 and payload POST RESPONSE); testing-apikit-with-munit/src/main/api/api.raml (post responses 201)" },
+  "request": { "method": "POST", "path": "/api/munit" },
+  "expected": { "status": 201, "bodyFormat": "TEXT", "body": "POST RESPONSE" }
+}

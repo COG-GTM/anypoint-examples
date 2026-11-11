@@ -1,0 +1,27 @@
+{
+  "name": "01-lastname-puckett",
+  "description": "lastname=Puckett returns the first names of both Puckett employees as a JSON array, in primary-key order.",
+  "source": {
+    "muleApp": "querying-a-mysql-database",
+    "flow": "database-to-jsonFlow",
+    "evidence": "documented",
+    "reference": "querying-a-mysql-database/src/test/java/org/mule/examples/QueryingMysqlDatabaseIT.java (MESSAGE lastname=Puckett, REPLY [{\"first_name\":\"Chava\"},{\"first_name\":\"Quentin\"}]); querying-a-mysql-database/README.md step 6; querying-a-mysql-database/src/main/app/database-to-json.xml"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?lastname=Puckett"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": [
+      {
+        "first_name": "Chava"
+      },
+      {
+        "first_name": "Quentin"
+      }
+    ],
+    "jsonCompareMode": "STRICT"
+  }
+}

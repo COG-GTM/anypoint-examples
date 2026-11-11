@@ -1,0 +1,30 @@
+{
+  "name": "01-put-shipping-order",
+  "description": "putShippingOrder echoes the order in a ShippingOrderConfirmation with orderReceivedStatus=true, and the async scope writes one CSV file with a header and one record per order item.",
+  "source": {
+    "muleApp": "legacy-modernization",
+    "flow": "Fulfillment_LegacySystemModernization",
+    "evidence": "documented",
+    "reference": "legacy-modernization/src/test/java/org/mule/examples/LegacyModernizationIT.java (message.xml -> reply.xml, then Thread.sleep for the async file); legacy-modernization/src/test/resources/message.xml; legacy-modernization/src/test/resources/reply.xml; legacy-modernization/src/main/java/org/ordermgmt/FulfillmentImpl.java; legacy-modernization/src/main/app/FufillmentWebService.xml (async dw:transform-message %output application/csv header=true, file:outbound-endpoint outputPattern ShippingOrder-#[server.dateTime.format('dd-MM-yy_HH-mm-ss.SSS')].txt)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/OrderFulfillment",
+    "headers": {
+      "Content-Type": "text/xml; charset=UTF-8",
+      "SOAPAction": "\"\""
+    },
+    "body": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ord=\"http://ordermgmt.org/\">\n<soapenv:Header/>\n<soapenv:Body>\n<ord:putShippingOrder>\n<shippingId>1234</shippingId>\n<billingAddress>\n<name>Mulesoft</name>\n<line1>77 Geary St</line1>\n<line2>Level 4</line2>\n<city>San Francisco</city>\n<stateOrProvinceCode>CA</stateOrProvinceCode>\n<countryCode>USA</countryCode>\n<postalCode>94108</postalCode>\n</billingAddress>\n<shippingAddress>\n<name>Mulesoft</name>\n<line1>77 Geary St</line1>\n<line2>Level 4</line2>\n<city>San Francisco</city>\n<stateOrProvinceCode>CA</stateOrProvinceCode>\n<countryCode>USA</countryCode>\n<postalCode>94108</postalCode>\n</shippingAddress>\n<order>\n<orderItem>\n<merchantSKU>1234</merchantSKU>\n<quantity>500</quantity>\n</orderItem>\n<orderItem>\n<merchantSKU>6789</merchantSKU>\n<quantity>1500</quantity>\n</orderItem>\n<orderItem>\n<merchantSKU>9998</merchantSKU>\n<quantity>5000</quantity>\n</orderItem>\n</order>\n</ord:putShippingOrder>\n</soapenv:Body>\n</soapenv:Envelope>"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "XML",
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:putShippingOrderResponse xmlns:ns2=\"http://ordermgmt.org/\"><ShippingOrderConfirmation><shippingOrder><shippingId>1234</shippingId><billingAddress><name>Mulesoft</name><line1>77 Geary St</line1><line2>Level 4</line2><city>San Francisco</city><stateOrProvinceCode>CA</stateOrProvinceCode><countryCode>USA</countryCode><postalCode>94108</postalCode></billingAddress><shippingAddress><name>Mulesoft</name><line1>77 Geary St</line1><line2>Level 4</line2><city>San Francisco</city><stateOrProvinceCode>CA</stateOrProvinceCode><countryCode>USA</countryCode><postalCode>94108</postalCode></shippingAddress><order><orderItem><merchantSKU>1234</merchantSKU><quantity>500</quantity></orderItem><orderItem><merchantSKU>6789</merchantSKU><quantity>1500</quantity></orderItem><orderItem><merchantSKU>9998</merchantSKU><quantity>5000</quantity></orderItem></order></shippingOrder><orderReceivedStatus>true</orderReceivedStatus></ShippingOrderConfirmation></ns2:putShippingOrderResponse></soap:Body></soap:Envelope>"
+  },
+  "expectedFiles": [
+    {
+      "nameRegex": "ShippingOrder-\\d{2}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2}\\.\\d{3}\\.txt",
+      "content": "MSKU,QTY,BillingAddressName,BillingAddressStreet,BillingAddrCity,BillingAddrState,BillingAddrCountry,BillingAddrZipCode,ShippingAddrName,ShippingAddrStreet,ShippingAddrCity,ShippingAddrState,ShippingAddrCountry,ShippingAddrZipCode,ShippingId\n1234,500,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,1234\n6789,1500,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,1234\n9998,5000,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,Mulesoft,77 Geary St Level 4,San Francisco,CA,USA,94108,1234\n"
+    }
+  ]
+}

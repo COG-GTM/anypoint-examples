@@ -1,0 +1,7 @@
+{
+  "name": "03-url-key-missing",
+  "description": "Without url_key the payload is null, 'payload_1'.equals(payload) is false, so exampleFlow2 takes the otherwise branch and the response is response_payload_2.",
+  "source": { "muleApp": "munit-short-tutorial", "flow": "exampleFlow", "evidence": "documented", "reference": "munit-short-tutorial/src/main/app/production-code.xml (exampleFlow, exampleFlow2, exampleSub_Flow1/2): set-payload #[message.inboundProperties['http.query.params']['url_key']] then choice otherwise branches" },
+  "request": { "method": "GET", "path": "/" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "response_payload_2" }
+}

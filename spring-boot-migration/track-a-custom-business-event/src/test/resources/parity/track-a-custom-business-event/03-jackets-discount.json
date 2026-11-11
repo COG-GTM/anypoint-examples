@@ -1,0 +1,40 @@
+{
+  "name": "03-jackets-discount",
+  "description": "Jackets get a 30% discount: 10 * (1 - 0.3) = 7.0.",
+  "source": {
+    "muleApp": "track-a-custom-business-event",
+    "flow": "custom-business-eventsFlow1",
+    "evidence": "documented",
+    "reference": "track-a-custom-business-event/src/main/app/custom-business-events.xml (jruby when \"jackets\" $discount = 0.3; object-to-string-transformer)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/customBusinessEvents",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@abc.sk",
+      "item name": "jackets",
+      "item units": 3,
+      "item price per unit": 10,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "7.0"
+  },
+  "expectedEvents": [
+    {
+      "name": "Price",
+      "transactionId": "custom-business-event-example-transaction",
+      "metadata": {
+        "item name": "jackets",
+        "item units": "3",
+        "item price per unit": "10"
+      }
+    }
+  ]
+}

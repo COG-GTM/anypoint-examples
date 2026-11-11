@@ -1,0 +1,7 @@
+{
+  "name": "05-unknown-resource",
+  "description": "A path not declared in the RAML raises NotFoundException, mapped to 404 with a JSON message.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "api-main", "evidence": "documented", "reference": "testing-apikit-with-munit/src/main/app/api.xml (apikit:mapping statusCode=404 NotFoundException -> Content-Type application/json, payload { \"message\": \"Resource not found\" })" },
+  "request": { "method": "GET", "path": "/api/unknown" },
+  "expected": { "status": 404, "headers": { "Content-Type": "~application/json.*" }, "bodyFormat": "JSON", "body": { "message": "Resource not found" }, "jsonCompareMode": "STRICT" }
+}

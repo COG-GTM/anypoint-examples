@@ -1,0 +1,8 @@
+{
+  "name": "post-hello-world",
+  "description": "The listener has no allowedMethods, so a POST with a body gets the same constant payload; the request body is ignored.",
+  "source": { "muleApp": "hello-world", "flow": "HelloWorldFlow1", "evidence": "documented",
+              "reference": "hello-world/src/main/app/HelloWorld.xml (http:listener path=\"helloWorld\" without allowedMethods; set-payload overwrites the inbound payload)" },
+  "request": { "method": "POST", "path": "/helloWorld", "headers": { "Content-Type": "text/plain" }, "body": "ignored" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello World" }
+}

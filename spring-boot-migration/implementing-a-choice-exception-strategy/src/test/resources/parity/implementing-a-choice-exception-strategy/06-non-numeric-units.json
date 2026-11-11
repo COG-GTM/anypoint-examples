@@ -1,0 +1,29 @@
+{
+  "name": "06-non-numeric-units",
+  "description": "Non-numeric item units: Integer.parseInt throws NumberFormatException, a subclass of IllegalArgumentException, so the Invalid input data branch answers.",
+  "source": {
+    "muleApp": "implementing-a-choice-exception-strategy",
+    "flow": "choice-error-handlingFlow1",
+    "evidence": "documented",
+    "reference": "implementing-a-choice-exception-strategy/src/main/java/org/mule/examples/InputDataValidator.java (Integer.parseInt); implementing-a-choice-exception-strategy/src/main/app/choice-error-handling.xml (exception.causedBy(java.lang.IllegalArgumentException))"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@aaa.aa",
+      "item name": "aa",
+      "item units": "ten",
+      "item price per unit": 1,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "Invalid input data: {item name=aa, membership=free, item price per unit=1, email=aaa@aaa.aa, item units=ten}"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "04-post-not-allowed",
+  "description": "The listener declares allowedMethods=GET, so other methods are rejected with 405 Method Not Allowed.",
+  "source": { "muleApp": "munit-short-tutorial", "flow": "exampleFlow", "evidence": "documented", "reference": "munit-short-tutorial/src/main/app/production-code.xml (http:listener allowedMethods=\"GET\" path=\"/\")" },
+  "request": { "method": "POST", "path": "/?url_key=payload_1" },
+  "expected": { "status": 405, "bodyFormat": "IGNORE" }
+}

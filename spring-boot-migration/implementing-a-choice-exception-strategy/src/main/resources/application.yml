@@ -1,0 +1,5 @@
+# mule-app.properties: http.port=8081
+http:
+  port: 8081
+server:
+  port: ${http.port}

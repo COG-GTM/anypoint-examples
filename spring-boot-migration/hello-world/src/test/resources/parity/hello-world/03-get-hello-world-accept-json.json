@@ -1,0 +1,8 @@
+{
+  "name": "get-hello-world-accept-json",
+  "description": "GET /helloWorld with Accept: application/json still returns 'Hello World' with status 200: the Mule http:listener does not negotiate on the Accept header.",
+  "source": { "muleApp": "hello-world", "flow": "HelloWorldFlow1", "evidence": "documented",
+              "reference": "hello-world/src/main/app/HelloWorld.xml (http:listener path=\"/helloWorld\" with no response content negotiation; set-payload value=\"Hello World\")" },
+  "request": { "method": "GET", "path": "/helloWorld", "headers": { "Accept": "application/json" } },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello World" }
+}

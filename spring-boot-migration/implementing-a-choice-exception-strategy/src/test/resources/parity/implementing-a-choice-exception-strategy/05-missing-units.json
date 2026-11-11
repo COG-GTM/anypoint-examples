@@ -1,0 +1,28 @@
+{
+  "name": "05-missing-units",
+  "description": "Missing item units: payloadMap.get(\"item units\").toString() throws NullPointerException, so the Missing input data branch answers.",
+  "source": {
+    "muleApp": "implementing-a-choice-exception-strategy",
+    "flow": "choice-error-handlingFlow1",
+    "evidence": "documented",
+    "reference": "implementing-a-choice-exception-strategy/src/main/java/org/mule/examples/InputDataValidator.java (get(\"item units\").toString() on a null value); implementing-a-choice-exception-strategy/src/main/app/choice-error-handling.xml (catch-exception-strategy causedBy NullPointerException)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@aaa.aa",
+      "item name": "aa",
+      "item price per unit": 1,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "Missing input data: {item name=aa, membership=free, item price per unit=1, email=aaa@aaa.aa}"
+  }
+}

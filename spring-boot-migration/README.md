@@ -99,13 +99,13 @@ GreenMail, LDAP, SFTP).
 | [`oauth2-authorization-code-using-the-HTTP-connector`](../oauth2-authorization-code-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-authorization-code-using-the-HTTP-connector`](./oauth2-authorization-code-using-the-HTTP-connector) | 8 | Planned |
 | [`oauth2-client-credentials-using-the-HTTP-connector`](../oauth2-client-credentials-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-client-credentials-using-the-HTTP-connector`](./oauth2-client-credentials-using-the-HTTP-connector) | 8 | Planned |
 | [`http-oauth-provider`](../http-oauth-provider) | [`spring-boot-migration/http-oauth-provider`](./http-oauth-provider) | 8 | Planned |
-| [`querying-a-mysql-database`](../querying-a-mysql-database) | [`spring-boot-migration/querying-a-mysql-database`](./querying-a-mysql-database) | 9 | Planned |
-| [`legacy-modernization`](../legacy-modernization) | [`spring-boot-migration/legacy-modernization`](./legacy-modernization) | 9 | Planned |
-| [`track-a-custom-business-event`](../track-a-custom-business-event) | [`spring-boot-migration/track-a-custom-business-event`](./track-a-custom-business-event) | 9 | Planned |
-| [`implementing-a-choice-exception-strategy`](../implementing-a-choice-exception-strategy) | [`spring-boot-migration/implementing-a-choice-exception-strategy`](./implementing-a-choice-exception-strategy) | 9 | Planned |
-| [`hello-world`](../hello-world) | [`spring-boot-migration/hello-world`](./hello-world) | 9 | Planned |
-| [`munit-short-tutorial`](../munit-short-tutorial) | [`spring-boot-migration/munit-short-tutorial`](./munit-short-tutorial) | 9 | Planned |
-| [`testing-apikit-with-munit`](../testing-apikit-with-munit) | [`spring-boot-migration/testing-apikit-with-munit`](./testing-apikit-with-munit) | 9 | Planned |
+| [`querying-a-mysql-database`](../querying-a-mysql-database) | [`spring-boot-migration/querying-a-mysql-database`](./querying-a-mysql-database) | 9 | Migrated (deltas) |
+| [`legacy-modernization`](../legacy-modernization) | [`spring-boot-migration/legacy-modernization`](./legacy-modernization) | 9 | Migrated (deltas) |
+| [`track-a-custom-business-event`](../track-a-custom-business-event) | [`spring-boot-migration/track-a-custom-business-event`](./track-a-custom-business-event) | 9 | Migrated (deltas) |
+| [`implementing-a-choice-exception-strategy`](../implementing-a-choice-exception-strategy) | [`spring-boot-migration/implementing-a-choice-exception-strategy`](./implementing-a-choice-exception-strategy) | 9 | Migrated (deltas) |
+| [`hello-world`](../hello-world) | [`spring-boot-migration/hello-world`](./hello-world) | 9 | Migrated |
+| [`munit-short-tutorial`](../munit-short-tutorial) | [`spring-boot-migration/munit-short-tutorial`](./munit-short-tutorial) | 9 | Migrated (deltas) |
+| [`testing-apikit-with-munit`](../testing-apikit-with-munit) | [`spring-boot-migration/testing-apikit-with-munit`](./testing-apikit-with-munit) | 9 | Migrated (deltas) |
 
 Ticket PRs update the **Status** column for their apps (`Migrated`, or `Migrated (deltas)` when the module README lists
 behavioural differences).

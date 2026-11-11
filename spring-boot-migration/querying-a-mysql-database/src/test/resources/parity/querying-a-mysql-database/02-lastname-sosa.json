@@ -1,0 +1,24 @@
+{
+  "name": "02-lastname-sosa",
+  "description": "lastname=Sosa matches a single seeded employee.",
+  "source": {
+    "muleApp": "querying-a-mysql-database",
+    "flow": "database-to-jsonFlow",
+    "evidence": "documented",
+    "reference": "querying-a-mysql-database/src/main/app/database-to-json.xml (select first_name from employees where last_name = ...); querying-a-mysql-database/src/main/resources/import.sql (employee 1067 Mona Sosa)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?lastname=Sosa"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": [
+      {
+        "first_name": "Mona"
+      }
+    ],
+    "jsonCompareMode": "STRICT"
+  }
+}

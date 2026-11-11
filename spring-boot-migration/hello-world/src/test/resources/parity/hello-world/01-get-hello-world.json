@@ -1,0 +1,8 @@
+{
+  "name": "get-hello-world",
+  "description": "GET /helloWorld returns the constant payload 'Hello World' with status 200.",
+  "source": { "muleApp": "hello-world", "flow": "HelloWorldFlow1", "evidence": "documented",
+              "reference": "hello-world/src/main/app/HelloWorld.xml (set-payload value=\"Hello World\"); hello-world/src/test/java/org/mule/examples/HelloWorldIT.java (assertEquals(\"Hello World\", ...)); hello-world/README.md step 5" },
+  "request": { "method": "GET", "path": "/helloWorld" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello World" }
+}

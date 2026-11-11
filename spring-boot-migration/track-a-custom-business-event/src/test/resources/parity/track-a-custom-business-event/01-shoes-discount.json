@@ -1,0 +1,40 @@
+{
+  "name": "01-shoes-discount",
+  "description": "Shoes get a 15% discount: 10 * (1 - 0.15) = 8.5. A Price business event records the undiscounted order data.",
+  "source": {
+    "muleApp": "track-a-custom-business-event",
+    "flow": "custom-business-eventsFlow1",
+    "evidence": "documented",
+    "reference": "track-a-custom-business-event/src/test/java/org/mule/examples/TrackACustomBusinessEventIT.java (message.json -> assertEquals(\"8.5\")); track-a-custom-business-event/src/test/resources/message.json; track-a-custom-business-event/src/main/app/custom-business-events.xml (tracking:custom-event Price, jruby when \"shoes\" 0.15)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/customBusinessEvents",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@abc.sk",
+      "item name": "shoes",
+      "item units": 2,
+      "item price per unit": 10,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "8.5"
+  },
+  "expectedEvents": [
+    {
+      "name": "Price",
+      "transactionId": "custom-business-event-example-transaction",
+      "metadata": {
+        "item name": "shoes",
+        "item units": "2",
+        "item price per unit": "10"
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# mule-app.properties: http.port=9090
+http:
+  port: 9090
+server:
+  port: ${http.port}

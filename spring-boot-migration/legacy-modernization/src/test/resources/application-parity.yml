@@ -1,0 +1,3 @@
+legacy:
+  output:
+    path: target/parity-output

@@ -1,0 +1,7 @@
+{
+  "name": "03-put-munit",
+  "description": "PUT /api/munit returns 201 (RAML response code) and 'PUT RESPONSE'.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "put:/munit:api-config", "evidence": "munit", "reference": "testing-apikit-with-munit/src/test/munit/api-test-suite.xml (PUT /munit asserts http.status 201 and payload PUT RESPONSE); testing-apikit-with-munit/src/main/api/api.raml (put responses 201)" },
+  "request": { "method": "PUT", "path": "/api/munit" },
+  "expected": { "status": 201, "bodyFormat": "TEXT", "body": "PUT RESPONSE" }
+}
