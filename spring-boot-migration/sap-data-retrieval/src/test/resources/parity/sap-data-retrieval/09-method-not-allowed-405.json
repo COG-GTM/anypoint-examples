@@ -1,0 +1,42 @@
+{
+  "name": "method-not-allowed-405",
+  "description": "POST on a GET-only resource returns 405 {\"message\": \"Method not allowed\"}; SAP is not called.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "sap-api-main",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (apikit:mapping-exception-strategy sap-api-apiKitGlobalExceptionMapping) (MethodNotAllowedException); sap-data-retrieval/src/main/resources/sap-api.raml (/materials declares only get)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/materials"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_CUSTOMER_FIND",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_MATERIAL_GETLIST",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 405,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Method not allowed"
+    }
+  }
+}

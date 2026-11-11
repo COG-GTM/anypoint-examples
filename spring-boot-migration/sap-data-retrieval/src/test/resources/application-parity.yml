@@ -1,0 +1,7 @@
+sap:
+  gateway-base-url: ${parity.downstream.base-url}
+  jco:
+    client: "800"
+    lang: EN
+    user: parity-user
+    passwd: parity-secret

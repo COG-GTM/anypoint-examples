@@ -1,0 +1,42 @@
+{
+  "name": "unknown-resource-404",
+  "description": "A resource not in the RAML returns 404 {\"message\": \"Resource not found\"}; SAP is not called.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "sap-api-main",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (apikit:mapping-exception-strategy sap-api-apiKitGlobalExceptionMapping) (NotFoundException)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/vendors"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_CUSTOMER_FIND",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_MATERIAL_GETLIST",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

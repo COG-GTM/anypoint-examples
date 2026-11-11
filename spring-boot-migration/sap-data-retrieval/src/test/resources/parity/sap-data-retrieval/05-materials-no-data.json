@@ -1,0 +1,51 @@
+{
+  "name": "materials-no-data",
+  "description": "An empty MATNRLIST table makes the DataWeave 'otherwise' branch return {\"materials\": {\"message\": \"No data found.\"}}.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "get:/materials:sap-api-config",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (flow get:/materials:sap-api-config: DataWeave 'Transform Map to Xml<BAPI_MATERIAL_GETLIST>' MAXROWS + MATERIALSHORTDESCSEL I/CP/<name>*, functionName=BAPI_MATERIAL_GETLIST, 'materials: MATNRLIST.*row map {($$):$} when MATNRLIST != \"\" otherwise {message:\"No data found.\"}'); samples inboundProperties_1.dwl, BAPI_MATERIAL_GETLIST.xml; sap-data-retrieval/README.md"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/materials?name=Unobtainium&max_count=5"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_MATERIAL_GETLIST",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "bodyFile": "bodies/BAPI_MATERIAL_GETLIST-empty.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_MATERIAL_GETLIST",
+      "headers": {
+        "Content-Type": "~application/xml.*",
+        "Authorization": "Basic cGFyaXR5LXVzZXI6cGFyaXR5LXNlY3JldA==",
+        "sap-client": "800",
+        "sap-language": "EN"
+      },
+      "bodyFormat": "XML",
+      "body": "<?xml version='1.0' encoding='UTF-8'?><BAPI_MATERIAL_GETLIST><import><MAXROWS>5</MAXROWS></import><tables><MATERIALSHORTDESCSEL><row><SIGN>I</SIGN><OPTION>CP</OPTION><DESCR_LOW>Unobtainium*</DESCR_LOW></row></MATERIALSHORTDESCSEL></tables></BAPI_MATERIAL_GETLIST>"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "materials": {
+        "message": "No data found."
+      }
+    }
+  }
+}
