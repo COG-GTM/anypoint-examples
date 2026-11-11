@@ -2,7 +2,6 @@ package org.mule.examples.springboot.sapdataretrieval;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,7 +70,8 @@ final class BapiXml {
     }
 
     /** Rows of {@code /<function>/tables/<table>/row}; empty if the table is missing or has no rows. */
-    static List<SapRow> rows(String xml, String table) {
+    /** The raw reply bytes are parsed so the XML declaration's encoding (e.g. {@code windows-1252}) is honoured. */
+    static List<SapRow> rows(byte[] xml, String table) {
         List<SapRow> rows = new ArrayList<>();
         Element tables = child(parse(xml).getDocumentElement(), "tables");
         Element tableElement = child(tables, table);
@@ -104,12 +104,12 @@ final class BapiXml {
         return null;
     }
 
-    private static Document parse(String xml) {
+    private static Document parse(byte[] xml) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            return factory.newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+            return factory.newDocumentBuilder().parse(new ByteArrayInputStream(xml));
         } catch (Exception e) {
             throw new IllegalStateException("Invalid BAPI response XML: " + e.getMessage(), e);
         }

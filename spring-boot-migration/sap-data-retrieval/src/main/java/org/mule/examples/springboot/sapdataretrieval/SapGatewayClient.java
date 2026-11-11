@@ -56,14 +56,14 @@ public class SapGatewayClient implements SapClient {
         return BapiXml.rows(execute("BAPI_SALESORDER_GETLIST", xml), "SALES_ORDERS");
     }
 
-    private String execute(String functionName, String requestXml) {
+    private byte[] execute(String functionName, String requestXml) {
         return webClient.post()
                 .uri("/functions/{functionName}", functionName)
                 .contentType(MediaType.APPLICATION_XML)
                 .accept(MediaType.APPLICATION_XML)
                 .bodyValue(requestXml)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(byte[].class)
                 .block();
     }
 }
