@@ -58,9 +58,16 @@ public final class ParityComparator {
             }
         }
         BodyFormat format = expected.bodyFormat();
-        if (format != BodyFormat.IGNORE) {
-            mismatches.addAll(compareBody(format == BodyFormat.NONE ? BodyFormat.TEXT : format,
-                    mule.bodyAsString(), spring.bodyAsString(), expected.jsonCompareMode(), expected.ignorePaths()));
+        if (format == BodyFormat.TEXT || format == BodyFormat.NONE) {
+            // captured Mule text is literal, never a ~regex
+            String m = mule.bodyAsString() == null ? "" : mule.bodyAsString();
+            String s = spring.bodyAsString() == null ? "" : spring.bodyAsString();
+            if (!m.equals(s)) {
+                mismatches.add("body: mule '" + abbreviate(m) + "' vs spring '" + abbreviate(s) + "'");
+            }
+        } else if (format != BodyFormat.IGNORE) {
+            mismatches.addAll(compareBody(format, mule.bodyAsString(), spring.bodyAsString(),
+                    expected.jsonCompareMode(), expected.ignorePaths()));
         }
         return mismatches;
     }

@@ -89,4 +89,30 @@ class ParityComparatorTest {
                 .isInstanceOf(AssertionError.class)
                 .hasMessageContaining("header Content-Type");
     }
+
+    @Test
+    void capturedMuleTextIsComparedLiterallyNotAsRegex() {
+        var fixture = new ParityFixture("tilde", null, null,
+                new ParityFixture.Request("GET", "/x", null, null, null),
+                expected(200, BodyFormat.TEXT, "~.*", Map.of()), null, null);
+        CapturedResponse mule = response(200, "text/plain", "~.*");
+        CapturedResponse spring = response(200, "text/plain", "anything");
+        assertThatThrownBy(() -> ParityAssertions.assertEquivalent(fixture, mule, spring))
+                .isInstanceOf(AssertionError.class)
+                .hasMessageContaining("body: mule");
+    }
+
+    @Test
+    void unstubbedDownstreamCallIsReported() throws Exception {
+        WireMockParitySupport wm = new WireMockParitySupport().start();
+        try {
+            var http = java.net.http.HttpClient.newHttpClient();
+            http.send(java.net.http.HttpRequest.newBuilder(java.net.URI.create(wm.baseUrl() + "/surprise")).build(),
+                    java.net.http.HttpResponse.BodyHandlers.discarding());
+            assertThat(wm.verifyOutbound(List.of()))
+                    .singleElement().asString().contains("unexpected outbound GET /surprise");
+        } finally {
+            wm.stop();
+        }
+    }
 }
