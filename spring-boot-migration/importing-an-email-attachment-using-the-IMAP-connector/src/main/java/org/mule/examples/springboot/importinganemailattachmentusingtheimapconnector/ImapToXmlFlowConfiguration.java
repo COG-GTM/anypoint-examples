@@ -48,7 +48,9 @@ class ImapToXmlFlowConfiguration {
                                 // Mule 3 mail connectors default to deleteReadMessages="true".
                                 .shouldDeleteMessages(true)
                                 .shouldMarkMessagesAsRead(true)
-                                .autoCloseFolder(false),
+                                .autoCloseFolder(false)
+                                // One message per receive: the handler closes the folder, which other fetched messages would share.
+                                .maxFetchSize(1),
                         e -> e.poller(Pollers.fixedDelay(Duration.ofMillis(checkFrequency)).maxMessagesPerPoll(10)))
                 .handle(MimeMessage.class, (message, headers) -> {
                     // The folder stays open until the attachment is read; closing it expunges the deleted message.
