@@ -1,0 +1,26 @@
+{
+  "name": "admit-subject",
+  "description": "The IT's admitSubject envelope goes through upsertPatient (PatientService) and createEpisode (EHRService) and comes back as admitSubjectResponse: the Episode with generated ids, startDate as a date and endDate + 5 days, plus the fixed Bill (100 / 5 / 500 / ADMITTED). Bill children follow the flow's DataWeave (initialStateEstimate), not the hand-written reply.xml (initialStayEstimate).",
+  "source": {
+    "muleApp": "xml-only-soap-webservice",
+    "flow": "admitPatientService / upsertPatient / createEpisode",
+    "evidence": "documented",
+    "reference": "xml-only-soap-webservice/src/main/app/Hospital_Admissions_SOA.xml (DataWeave 'createEpisodeResponse to admitSubjectResponse'); xml-only-soap-webservice/src/main/app/mocks.xml; xml-only-soap-webservice/src/test/resources/message.xml; XMLWithSoapIT asserts <runningTotal>500</runningTotal> and <status>ADMITTED</status>"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/AdmissionService",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8"
+    },
+    "bodyFile": "bodies/admit-subject-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/admit-subject-response.xml"
+  }
+}

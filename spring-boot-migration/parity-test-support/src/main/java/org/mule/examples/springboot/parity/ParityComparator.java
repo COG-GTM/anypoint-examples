@@ -8,7 +8,10 @@ import org.skyscreamer.jsonassert.JSONCompareResult;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.DefaultNodeMatcher;
+import org.xmlunit.diff.ComparisonResult;
+import org.xmlunit.diff.ComparisonType;
 import org.xmlunit.diff.Diff;
+import org.xmlunit.diff.DifferenceEvaluators;
 import org.xmlunit.diff.ElementSelectors;
 
 import java.util.ArrayList;
@@ -122,6 +125,23 @@ public final class ParityComparator {
         }
     }
 
+    /**
+     * A fixture text node of the form {@code ~regex} matches any actual text the regex fully matches, for values the
+     * Mule app generates (timestamps, ids). Plain text is still compared by XMLUnit similarity.
+     */
+    private static ComparisonResult regexText(org.xmlunit.diff.Comparison comparison, ComparisonResult outcome) {
+        if (outcome == ComparisonResult.EQUAL || comparison.getType() != ComparisonType.TEXT_VALUE) {
+            return outcome;
+        }
+        Object control = comparison.getControlDetails().getValue();
+        Object test = comparison.getTestDetails().getValue();
+        if (control instanceof String c && c.strip().startsWith("~") && test instanceof String t
+                && t.strip().matches(c.strip().substring(1))) {
+            return ComparisonResult.EQUAL;
+        }
+        return outcome;
+    }
+
     private static List<String> compareXml(String expected, String actual) {
         try {
             Diff diff = DiffBuilder.compare(expected).withTest(actual)
@@ -129,6 +149,7 @@ public final class ParityComparator {
                     .ignoreComments()
                     .normalizeWhitespace()
                     .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndText, ElementSelectors.byName))
+                    .withDifferenceEvaluator(DifferenceEvaluators.chain(DifferenceEvaluators.Default, ParityComparator::regexText))
                     .checkForSimilar()
                     .build();
             List<String> mismatches = new ArrayList<>();
