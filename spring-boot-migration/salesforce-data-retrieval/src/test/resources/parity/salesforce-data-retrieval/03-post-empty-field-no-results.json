@@ -1,0 +1,80 @@
+{
+  "name": "03-post-empty-field-no-results",
+  "description": "An empty Field adds nothing to the select list (note the double space the MEL concatenation leaves: \"SELECT id, name  from Contact where Name like '%young%'\"); no matching records gives an empty list, rendered as []. README: 'Field: can be empty as Id field is displayed by default'.",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "salesforceDataRetrievalFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (flow salesforceDataRetrievalFlow: sfdc:query-all with the MEL query, foreach byte-array-to-string + 'flowVars.response + payload', set-payload #[response], byte-array-to-string, catch-exception-strategy 'Invalid Salesforce query.'); salesforce-data-retrieval/README.md (Example of specific Use Case)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "object=Contact&field=&searchKey=Name&searchValue=young"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name  from Contact where Name like '%young%'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 0,
+        "done": true,
+        "records": []
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name  from Contact where Name like '%young%'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "[]"
+  }
+}

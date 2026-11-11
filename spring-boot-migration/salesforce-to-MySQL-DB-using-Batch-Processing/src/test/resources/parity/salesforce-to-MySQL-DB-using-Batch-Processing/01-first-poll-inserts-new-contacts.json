@@ -1,0 +1,115 @@
+{
+  "name": "01-first-poll-inserts-new-contacts",
+  "description": "First run (no stored watermark) at 2015-10-10T10:00:10.123Z: the default watermark is now minus 10 s in UTC ISO format (2015-10-10T10:00:00.123Z). Both Salesforce contacts are new to the empty contact table, so both are INSERTed (first_name, last_name, email), and the watermark advances to the MAX LastModifiedDate. SalesforceToMySQLDBUsingBatchProcessingIT#testMainFlow expects a contact created in Salesforce to be present in the database.",
+  "given": {
+    "now": "2015-10-10T10:00:10.123Z",
+    "watermark": null,
+    "contacts": []
+  },
+  "source": {
+    "muleApp": "salesforce-to-MySQL-DB-using-Batch-Processing",
+    "flow": "triggerFlow",
+    "evidence": "documented",
+    "reference": "salesforce-to-MySQL-DB-using-Batch-Processing/src/main/app/salesforce-to-database.xml (flow triggerFlow: poll 60 s, watermark default-expression groovy now-10000 ms formatted yyyy-MM-dd'T'HH:mm:ss.SSS'Z' UTC, selector=MAX selector-expression=#[payload.LastModifiedDate], sfdc:query 'SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > #[timestamp]'; batch:job salesforce-to-database-Batch: queryExistingContactInDbStep (dw mapping + db:select ... WHERE email=?), upsertContactInDbStep choice db:insert / db:update); src/main/resources/contact.sql"
+  },
+  "request": {
+    "method": "POLL",
+    "path": "triggerFlow"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > 2015-10-10T10:00:00.123Z"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 2,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/003A1"
+            },
+            "Email": "ada@example.com",
+            "FirstName": "Ada",
+            "LastModifiedDate": "2015-10-10T10:00:04.000+0000",
+            "LastName": "Lovelace"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/003A2"
+            },
+            "Email": "grace@example.com",
+            "FirstName": "Grace",
+            "LastModifiedDate": "2015-10-10T10:00:07.000+0000",
+            "LastName": "Hopper"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > 2015-10-10T10:00:00.123Z"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "bodyFormat": "JSON",
+    "body": {
+      "watermark": "2015-10-10T10:00:07.000Z",
+      "contacts": [
+        {
+          "email": "ada@example.com",
+          "first_name": "Ada",
+          "last_name": "Lovelace"
+        },
+        {
+          "email": "grace@example.com",
+          "first_name": "Grace",
+          "last_name": "Hopper"
+        }
+      ]
+    }
+  }
+}

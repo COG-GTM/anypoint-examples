@@ -1,0 +1,128 @@
+{
+  "name": "02-callback-exchanges-code-and-runs-query",
+  "description": "Salesforce redirects back to /oauth2callback with the authorization code and the state from the redirect: the code is exchanged at accessTokenUrl (authorization_code grant with consumer key/secret and the same redirect_uri), then the rest of the flow runs with the new token: the fixed SOQL query and 'Salesforce query returned N contacts.' (SalesforceOauthIT expects the page to contain 'Salesforce query returned').",
+  "given": {
+    "authorized": false,
+    "pendingState": "parity-state-1"
+  },
+  "source": {
+    "muleApp": "authenticating-salesforce-using-oauth2",
+    "flow": "salesforce-oauthFlow1",
+    "evidence": "documented",
+    "reference": "authenticating-salesforce-using-oauth2/src/main/app/salesforce-oauth.xml (sfdc:config-with-oauth consumerKey=${sfdc.key}, oauth-callback-config domain=localhost localPort=8081 path=oauth2callback; flow salesforce-oauthFlow1: sfdc:authorize authorizationUrl/accessTokenUrl display=PAGE, sfdc:query, foreach logger 'contact: #[payload]', set-payload 'Salesforce query returned #[payload.size()] contacts.')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/oauth2callback?code=aPrxparityAuthCode%3D%3D&state=parity-state-1"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!OAUTH",
+        "refresh_token": "5Aepparity-refresh",
+        "signature": "c2lnbmF0dXJl",
+        "scope": "full refresh_token",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1414414165000"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 5,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001INNfoAAH"
+            },
+            "Id": "0032000001INNfoAAH",
+            "LastName": "Pickwick",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001INGnuAAH"
+            },
+            "Id": "0032000001INGnuAAH",
+            "LastName": "GaultThe",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IOBe4AAH"
+            },
+            "Id": "0032000001IOBe4AAH",
+            "LastName": "Hobbit",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IOuBtAAL"
+            },
+            "Id": "0032000001IOuBtAAL",
+            "LastName": "Darko",
+            "LastModifiedDate": "2014-08-29T15:48:11.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IP8uiAAD"
+            },
+            "Id": "0032000001IP8uiAAD",
+            "LastName": "Burke",
+            "LastModifiedDate": "2014-09-11T19:19:58.000+0000"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=authorization_code&code=aPrxparityAuthCode%3D%3D&client_id=parity-consumer-key&client_secret=parity-consumer-secret&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Foauth2callback"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!OAUTH"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Salesforce query returned 5 contacts."
+  }
+}

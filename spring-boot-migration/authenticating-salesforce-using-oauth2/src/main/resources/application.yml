@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: authenticating-salesforce-using-oauth2
+
+server:
+  port: ${http.port:8081}
+
+# Mule sfdc:config-with-oauth consumerKey="${sfdc.key}" consumerSecret="${sfdc.secret}" (e.g. -Dsfdc.key=...)
+sfdc:
+  key: ""
+  secret: ""
+  api-version: "61.0"
+  oauth:
+    # sfdc:authorize authorizationUrl / accessTokenUrl / display
+    authorization-url: https://login.salesforce.com/services/oauth2/authorize
+    access-token-url: https://login.salesforce.com/services/oauth2/token
+    display: PAGE
+    # sfdc:oauth-callback-config domain / localPort / path (redirect URI = http://localhost:8081/oauth2callback)
+    callback:
+      domain: localhost
+      local-port: 8081
+      path: oauth2callback

@@ -1,0 +1,96 @@
+{
+  "name": "04-failed-query-changes-nothing",
+  "description": "The poll's Salesforce query fails: the batch does not run, the table is unchanged and the watermark is not advanced.",
+  "given": {
+    "now": "2015-10-10T12:01:00.000Z",
+    "watermark": "2015-10-10T10:30:00.000Z",
+    "contacts": [
+      {
+        "email": "ada@example.com",
+        "first_name": "Augusta Ada",
+        "last_name": "King"
+      }
+    ]
+  },
+  "source": {
+    "muleApp": "salesforce-to-MySQL-DB-using-Batch-Processing",
+    "flow": "triggerFlow",
+    "evidence": "documented",
+    "reference": "salesforce-to-MySQL-DB-using-Batch-Processing/src/main/app/salesforce-to-database.xml (flow triggerFlow: poll 60 s, watermark default-expression groovy now-10000 ms formatted yyyy-MM-dd'T'HH:mm:ss.SSS'Z' UTC, selector=MAX selector-expression=#[payload.LastModifiedDate], sfdc:query 'SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > #[timestamp]'; batch:job salesforce-to-database-Batch: queryExistingContactInDbStep (dw mapping + db:select ... WHERE email=?), upsertContactInDbStep choice db:insert / db:update); src/main/resources/contact.sql"
+  },
+  "request": {
+    "method": "POLL",
+    "path": "triggerFlow"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > 2015-10-10T10:30:00.000Z"
+      },
+      "status": 500,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "message": "An unexpected error occurred",
+          "errorCode": "UNKNOWN_EXCEPTION"
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Email,FirstName,LastModifiedDate,LastName FROM Contact WHERE LastModifiedDate > 2015-10-10T10:30:00.000Z"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "bodyFormat": "JSON",
+    "body": {
+      "watermark": "2015-10-10T10:30:00.000Z",
+      "contacts": [
+        {
+          "email": "ada@example.com",
+          "first_name": "Augusta Ada",
+          "last_name": "King"
+        }
+      ]
+    }
+  }
+}

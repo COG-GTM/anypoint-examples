@@ -1,0 +1,14 @@
+spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:contact.sql
+poll:
+  enabled: false
+sfdc:
+  user: parity@example.com
+  password: parity-password
+  securityToken: TOKEN123
+  consumerKey: parity-consumer-key
+  consumerSecret: parity-consumer-secret
+  login-url: ${parity.downstream.base-url}

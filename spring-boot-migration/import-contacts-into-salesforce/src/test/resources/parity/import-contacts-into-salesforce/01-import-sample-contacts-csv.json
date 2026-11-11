@@ -1,0 +1,24 @@
+{
+  "name": "01-import-sample-contacts-csv",
+  "description": "The sample contacts.csv dropped into the input folder is moved to the output folder and its two rows are created as Salesforce Contacts with the DataWeave field mapping (firstname->FirstName, surname->LastName, email->Email, phone->Phone; values stay strings, so the phone's leading zero is kept). The token call is the REST login that replaces the connector's SOAP login (README: Behavioural deltas).",
+  "source": { "muleApp": "import-contacts-into-salesforce", "flow": "Contacts_to_SFDC", "evidence": "documented",
+              "reference": "import-contacts-into-salesforce/src/main/app/contacts-to-SFDC.xml (file:inbound-endpoint, dw:transform-message 'Map CSV to Contacts', sfdc:create type=Contact); src/main/resources/contacts.csv; ImportContactsToSfdcIT#testImport (John / Doe created)" },
+  "request": { "method": "FILE", "path": "contacts.csv", "bodyFile": "bodies/contacts.csv" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/services/oauth2/token", "status": 200, "headers": { "Content-Type": "application/json" },
+      "body": { "access_token": "00Dparity!SESSION", "instance_url": "{{downstream.base-url}}", "id": "https://login.salesforce.com/id/00Dparity/005parity", "token_type": "Bearer", "issued_at": "1446000000000", "signature": "c2lnbmF0dXJl" } },
+    { "method": "POST", "urlPath": "/services/data/v61.0/composite/sobjects", "status": 200, "headers": { "Content-Type": "application/json" },
+      "body": [ { "id": "003parity0000001", "success": true, "errors": [] }, { "id": "003parity0000002", "success": true, "errors": [] } ] }
+  ],
+  "expectedOutbound": [
+    { "method": "POST", "urlPath": "/services/oauth2/token", "count": 1,
+      "headers": { "Content-Type": "~application/x-www-form-urlencoded.*" }, "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123" },
+    { "method": "POST", "urlPath": "/services/data/v61.0/composite/sobjects", "count": 1,
+      "headers": { "Authorization": "Bearer 00Dparity!SESSION", "Content-Type": "~application/json.*" }, "bodyFormat": "JSON",
+      "body": { "allOrNone": false, "records": [
+        { "attributes": { "type": "Contact" }, "FirstName": "John", "LastName": "Doe", "Email": "john.doe@texasComp.com", "Phone": "096548763" },
+        { "attributes": { "type": "Contact" }, "FirstName": "Jane", "LastName": "Doe", "Email": "jane.doe@texasComp.com", "Phone": "091558780" } ] } }
+  ],
+  "expected": { "bodyFormat": "JSON", "body": { "input": [], "output": ["contacts.csv"] } }
+}

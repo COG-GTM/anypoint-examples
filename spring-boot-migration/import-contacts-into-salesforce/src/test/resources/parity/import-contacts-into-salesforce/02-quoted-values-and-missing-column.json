@@ -1,0 +1,25 @@
+{
+  "name": "02-quoted-values-and-missing-column",
+  "description": "DataWeave's CSV reader honours quoted fields (embedded commas) and reads columns by header name regardless of order; a column absent from the file maps to null. One sObject create call carries every row.",
+  "source": { "muleApp": "import-contacts-into-salesforce", "flow": "Contacts_to_SFDC", "evidence": "documented",
+              "reference": "import-contacts-into-salesforce/src/main/app/contacts-to-SFDC.xml (dw:transform-message 'Map CSV to Contacts': payload map { FirstName: $.firstname, LastName: $.surname, Email: $.email, Phone: $.phone }); DataWeave 1.0 CSV reader (header=true, quote='\"')" },
+  "request": { "method": "FILE", "path": "new-hires.csv",
+               "body": "email,surname,firstname\nada@example.com,\"Lovelace, Countess\",Ada\ngrace@example.com,Hopper,Grace\n" },
+  "downstream": [
+    { "method": "POST", "urlPath": "/services/oauth2/token", "status": 200, "headers": { "Content-Type": "application/json" },
+      "body": { "access_token": "00Dparity!SESSION", "instance_url": "{{downstream.base-url}}", "id": "https://login.salesforce.com/id/00Dparity/005parity", "token_type": "Bearer", "issued_at": "1446000000000", "signature": "c2lnbmF0dXJl" } },
+    { "method": "POST", "urlPath": "/services/data/v61.0/composite/sobjects", "status": 200, "headers": { "Content-Type": "application/json" },
+      "body": [ { "id": "003parity0000003", "success": true, "errors": [] }, { "id": "003parity0000004", "success": true, "errors": [] } ] }
+  ],
+  "expectedOutbound": [
+    { "method": "POST", "urlPath": "/services/oauth2/token", "count": 1,
+      "headers": { "Content-Type": "~application/x-www-form-urlencoded.*" }, "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123" },
+    { "method": "POST", "urlPath": "/services/data/v61.0/composite/sobjects", "count": 1,
+      "headers": { "Authorization": "Bearer 00Dparity!SESSION" }, "bodyFormat": "JSON",
+      "body": { "allOrNone": false, "records": [
+        { "attributes": { "type": "Contact" }, "FirstName": "Ada", "LastName": "Lovelace, Countess", "Email": "ada@example.com", "Phone": null },
+        { "attributes": { "type": "Contact" }, "FirstName": "Grace", "LastName": "Hopper", "Email": "grace@example.com", "Phone": null } ] } }
+  ],
+  "expected": { "bodyFormat": "JSON", "body": { "input": [], "output": ["new-hires.csv"] } }
+}

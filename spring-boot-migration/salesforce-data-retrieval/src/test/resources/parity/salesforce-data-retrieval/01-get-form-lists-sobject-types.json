@@ -1,0 +1,123 @@
+{
+  "name": "01-get-form-lists-sobject-types",
+  "description": "GET / runs describe-global and renders retrieval/index.html with the DataWeave XML <option> list (value=name, text=label, XML declaration included, as in example.xml) in place of #[message.payload]. SalesforceIdRetrievalIT#testDisplayData asserts at least one <option value=...>...</option>.",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "showFormFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (showFormFlow: sfdc:describe-global, dw:transform-message, parse-template retrieval/index.html); src/main/resources/example.xml; src/test/resources/sample_data/DescribeGlobalResult.dwl"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/sobjects",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "encoding": "UTF-8",
+        "maxBatchSize": 200,
+        "sobjects": [
+          {
+            "activateable": false,
+            "createable": true,
+            "custom": true,
+            "customSetting": false,
+            "deletable": true,
+            "deprecatedAndHidden": false,
+            "feedEnabled": false,
+            "keyPrefix": "key",
+            "label": "Label1",
+            "labelPlural": "Label1s",
+            "layoutable": true,
+            "mergeable": false,
+            "mruEnabled": false,
+            "name": "LabelName1",
+            "queryable": true,
+            "replicateable": true,
+            "retrieveable": true,
+            "searchable": true,
+            "triggerable": true,
+            "undeletable": true,
+            "updateable": true,
+            "urls": {
+              "sobject": "/services/data/v61.0/sobjects/LabelName1"
+            }
+          },
+          {
+            "activateable": false,
+            "createable": true,
+            "custom": true,
+            "customSetting": false,
+            "deletable": true,
+            "deprecatedAndHidden": false,
+            "feedEnabled": false,
+            "keyPrefix": "key",
+            "label": "Label2",
+            "labelPlural": "Label2s",
+            "layoutable": true,
+            "mergeable": false,
+            "mruEnabled": false,
+            "name": "LabelName2",
+            "queryable": true,
+            "replicateable": true,
+            "retrieveable": true,
+            "searchable": true,
+            "triggerable": true,
+            "undeletable": true,
+            "updateable": true,
+            "urls": {
+              "sobject": "/services/data/v61.0/sobjects/LabelName2"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/sobjects",
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/form-with-two-objects.html"
+  }
+}

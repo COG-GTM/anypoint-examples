@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: salesforce-to-MySQL-DB-using-Batch-Processing
+  main:
+    web-application-type: none
+  # Mule db:mysql-config database="company" host="${mysql.host}" port="3306" user="${mysql.user}" password="${mysql.password}".
+  # The contact table is created from contact.sql beforehand, as in the Mule example. The watermark table and the
+  # Spring Batch job repository tables are created in the same schema.
+  datasource:
+    url: jdbc:mysql://${mysql.host}:3306/company
+    username: ${mysql.user}
+    password: ${mysql.password}
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+mysql:
+  host: localhost
+  user: ""
+  password: ""
+
+# Mule poll / watermark
+poll:
+  enabled: true
+  frequency: 60000
+  watermark:
+    default-look-back: 10s
+
+# Mule sfdc:config (username / password / securityToken keep their Mule keys, e.g. -Dsfdc.user=...).
+# The REST API needs a Connected App: consumerKey / consumerSecret are new (see README "Behavioural deltas").
+sfdc:
+  user: ""
+  password: ""
+  securityToken: ""
+  consumerKey: ""
+  consumerSecret: ""
+  login-url: https://login.salesforce.com
+  api-version: "61.0"

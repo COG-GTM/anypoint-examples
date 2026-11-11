@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: salesforce-data-synchronization-using-watermarking-and-batch-processing
+  main:
+    web-application-type: none
+  # Watermark table + Spring Batch job repository. File-based so the watermark survives restarts,
+  # like Mule's persistent object store.
+  datasource:
+    url: jdbc:h2:file:./data/salesforce-watermarking;AUTO_SERVER=TRUE
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+# Mule poll / watermark
+poll:
+  enabled: true
+  frequency: 10000
+  watermark:
+    default-expression: YESTERDAY
+
+# Mule sfdc:config (username / password / securityToken keep their Mule keys, e.g. -Dsfdc.user=...).
+# The REST API needs a Connected App: consumerKey / consumerSecret are new (see README "Behavioural deltas").
+sfdc:
+  user: ""
+  password: ""
+  securityToken: ""
+  consumerKey: ""
+  consumerSecret: ""
+  login-url: https://login.salesforce.com
+  api-version: "61.0"

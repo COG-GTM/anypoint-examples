@@ -1,0 +1,84 @@
+{
+  "name": "03-authorized-request-queries-directly",
+  "description": "Once a token is stored, sfdc:authorize does not redirect: GET / runs the query with the stored access token straight away (no token request) and returns the count.",
+  "given": {
+    "authorized": {
+      "access_token": "00Dparity!STORED",
+      "refresh_token": "5Aepparity-refresh"
+    }
+  },
+  "source": {
+    "muleApp": "authenticating-salesforce-using-oauth2",
+    "flow": "salesforce-oauthFlow1",
+    "evidence": "documented",
+    "reference": "authenticating-salesforce-using-oauth2/src/main/app/salesforce-oauth.xml (sfdc:config-with-oauth consumerKey=${sfdc.key}, oauth-callback-config domain=localhost localPort=8081 path=oauth2callback; flow salesforce-oauthFlow1: sfdc:authorize authorizationUrl/accessTokenUrl display=PAGE, sfdc:query, foreach logger 'contact: #[payload]', set-payload 'Salesforce query returned #[payload.size()] contacts.')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 3,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001INNfoAAH"
+            },
+            "Id": "0032000001INNfoAAH",
+            "LastName": "Pickwick",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001INGnuAAH"
+            },
+            "Id": "0032000001INGnuAAH",
+            "LastName": "GaultThe",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IOBe4AAH"
+            },
+            "Id": "0032000001IOBe4AAH",
+            "LastName": "Hobbit",
+            "LastModifiedDate": "2014-08-25T13:21:00.000+0000"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!STORED"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Salesforce query returned 3 contacts."
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "name": "02-post-query-users-by-name",
+  "description": "The IT's form (object=user, field=email, searchKey=name, searchValue=mule) builds \"SELECT id, name ,email from user where name like '%mule%'\" and returns every record; reply.txt lines (Email=..., Id=..., Name=...) are all contained. Response text = Mule ObjectToString (byte-array-to-string-transformer) of the list of per-record strings: CollectionUtils.toString(list, 50) of MapUtils.toString(record) - verified against mule-core-3.8.0 bytecode; records are the connector's HashMap (field order as in the README log of authenticating-salesforce-using-oauth2).",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "salesforceDataRetrievalFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (flow salesforceDataRetrievalFlow: sfdc:query-all with the MEL query, foreach byte-array-to-string + 'flowVars.response + payload', set-payload #[response], byte-array-to-string, catch-exception-strategy 'Invalid Salesforce query.'); SalesforceIdRetrievalIT#testGetData + src/test/resources/reply.txt"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "object=user&field=email&searchKey=name&searchValue=mule"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name ,email from user where name like '%mule%'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 2,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "User",
+              "url": "/services/data/v61.0/sobjects/User/00520000003LtYCAA0"
+            },
+            "Id": "00520000003LtYCAA0",
+            "Name": "Mule orgA",
+            "Email": "kicks+a@mulesoft.com"
+          },
+          {
+            "attributes": {
+              "type": "User",
+              "url": "/services/data/v61.0/sobjects/User/00520000003LtvGAAS"
+            },
+            "Id": "00520000003LtvGAAS",
+            "Name": "Mule orgA Integration",
+            "Email": "kicks+a-integration@mulesoft.com"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name ,email from user where name like '%mule%'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "[{Email=kicks+a@mulesoft.com, Id=00520000003LtYCAA0, type=User, Name=Mule orgA}, {Email=kicks+a-integration@mulesoft.com, Id=00520000003LtvGAAS, type=User, Name=Mule orgA Integration}]"
+  }
+}

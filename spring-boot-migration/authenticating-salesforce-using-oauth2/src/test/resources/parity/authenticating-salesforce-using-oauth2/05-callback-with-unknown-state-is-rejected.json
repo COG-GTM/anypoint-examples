@@ -1,0 +1,25 @@
+{
+  "name": "05-callback-with-unknown-state-is-rejected",
+  "description": "A callback whose state was not issued by this app (a forged or replayed authorization code) is rejected with 403 before any token request, so the stored Salesforce session cannot be swapped for another org's. Spring-only hardening, listed under Behavioural deltas: Mule used the state only to find the suspended event.",
+  "given": {
+    "authorized": false,
+    "pendingState": "parity-state-2"
+  },
+  "source": {
+    "muleApp": "authenticating-salesforce-using-oauth2",
+    "flow": "salesforce-oauthFlow1",
+    "evidence": "documented",
+    "reference": "authenticating-salesforce-using-oauth2/src/main/app/salesforce-oauth.xml (sfdc:oauth-callback-config path=oauth2callback); module README Behavioural deltas (OAuth state)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/oauth2callback?code=attackerCode&state=not-issued-by-this-app"
+  },
+  "downstream": [],
+  "expectedOutbound": [],
+  "expected": {
+    "status": 403,
+    "bodyFormat": "TEXT",
+    "body": "Salesforce authorization failed: unknown OAuth state"
+  }
+}

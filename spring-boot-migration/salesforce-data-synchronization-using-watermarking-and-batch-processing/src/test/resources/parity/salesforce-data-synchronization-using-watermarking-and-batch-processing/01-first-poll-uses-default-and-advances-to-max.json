@@ -1,0 +1,103 @@
+{
+  "name": "01-first-poll-uses-default-and-advances-to-max",
+  "description": "First run: no stored watermark, so the query uses the default expression YESTERDAY (a SOQL date literal). Both returned contacts are logged by Batch_Step (the connector's HashMap order, SOAP date format) and the watermark becomes the MAX LastModifiedDate.",
+  "given": {
+    "watermark": null
+  },
+  "source": {
+    "muleApp": "salesforce-data-synchronization-using-watermarking-and-batch-processing",
+    "flow": "triggerFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-synchronization-using-watermarking-and-batch-processing/src/main/app/watermarking.xml (flow triggerFlow: poll fixed-frequency 10 s, watermark variable=timestamp default-expression=YESTERDAY selector=MAX selector-expression=#[payload.LastModifiedDate], sfdc:query 'SELECT Id,Name,LastModifiedDate FROM Contact WHERE LastModifiedDate > #[flowVars['timestamp']]'; batch:job watermarkingBatch Batch_Step logger 'Contact recently modified: #[payload]'); README 'How it Works'"
+  },
+  "request": {
+    "method": "POLL",
+    "path": "triggerFlow"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id,Name,LastModifiedDate FROM Contact WHERE LastModifiedDate > YESTERDAY"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 2,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IP8uiAAD"
+            },
+            "Id": "0032000001IP8uiAAD",
+            "Name": "Edmund Burke",
+            "LastModifiedDate": "2015-06-17T11:30:15.000+0000"
+          },
+          {
+            "attributes": {
+              "type": "Contact",
+              "url": "/services/data/v61.0/sobjects/Contact/0032000001IOuBtAAL"
+            },
+            "Id": "0032000001IOuBtAAL",
+            "Name": "Donnie Darko",
+            "LastModifiedDate": "2015-06-17T10:00:00.000+0000"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id,Name,LastModifiedDate FROM Contact WHERE LastModifiedDate > YESTERDAY"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "bodyFormat": "JSON",
+    "body": {
+      "watermark": "2015-06-17T11:30:15.000Z",
+      "log": [
+        "Contact recently modified: {LastModifiedDate=2015-06-17T11:30:15.000Z, Id=0032000001IP8uiAAD, type=Contact, Name=Edmund Burke}",
+        "Contact recently modified: {LastModifiedDate=2015-06-17T10:00:00.000Z, Id=0032000001IOuBtAAL, type=Contact, Name=Donnie Darko}"
+      ]
+    }
+  }
+}

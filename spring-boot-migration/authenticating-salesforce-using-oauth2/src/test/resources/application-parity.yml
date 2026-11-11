@@ -1,0 +1,5 @@
+sfdc:
+  key: parity-consumer-key
+  secret: parity-consumer-secret
+  oauth:
+    access-token-url: ${parity.downstream.base-url}/services/oauth2/token

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: salesforce-data-retrieval
+
+server:
+  port: ${http.port:8081}
+
+# Mule sfdc:config (username / password / securityToken keep their Mule keys, e.g. -Dsfdc.username=...).
+# The REST API needs a Connected App: consumerKey / consumerSecret are new (see README "Behavioural deltas").
+sfdc:
+  username: ""
+  password: ""
+  securityToken: ""
+  consumerKey: ""
+  consumerSecret: ""
+  login-url: https://login.salesforce.com
+  api-version: "61.0"

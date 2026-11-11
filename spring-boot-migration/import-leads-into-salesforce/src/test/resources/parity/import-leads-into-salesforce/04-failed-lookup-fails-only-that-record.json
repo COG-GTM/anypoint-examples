@@ -1,0 +1,150 @@
+{
+  "name": "04-failed-lookup-fails-only-that-record",
+  "description": "The lookup for the first lead fails (Salesforce 500). That record fails in LeadExistsStep, is not offered to LeadInsertStep (default accept-policy NO_FAILURES) and is logged by LogFailuresStep; the job continues (max-failed-records=1000) and creates the second lead. on-complete reports 2 loaded / 1 failed.",
+  "source": {
+    "muleApp": "import-leads-into-salesforce",
+    "flow": "CreateLeadsBatch",
+    "evidence": "documented",
+    "reference": "import-leads-into-salesforce/src/main/app/import-leads-into-salesforce.xml (batch:job CreateLeadsBatch: dw 'Transform CSV to Maps', LeadExistsStep sfdc:query 'SELECT Id FROM Lead WHERE Email = ...', LeadInsertStep accept-expression !recordVars['exists'] + batch:commit size=200 + sfdc:create type=Lead, LogFailuresStep ONLY_FAILURES, on-complete '#[payload.loadedRecords] Loaded Records #[payload.failedRecords] Failed Records')"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "leads.csv",
+    "bodyFile": "bodies/leads.csv"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id FROM Lead WHERE Email = 'faucibus@egetmetus.org'"
+      },
+      "status": 500,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "message": "An unexpected error occurred. Please include this ErrorId if you contact support: 1234567890-12345 (-1234567890)",
+          "errorCode": "UNKNOWN_EXCEPTION"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id FROM Lead WHERE Email = 'sem.egestas@mollis.org'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 0,
+        "done": true,
+        "records": []
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v61.0/composite/sobjects",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "id": "00Qparitynew000",
+          "success": true,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id FROM Lead WHERE Email = 'faucibus@egetmetus.org'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT Id FROM Lead WHERE Email = 'sem.egestas@mollis.org'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v61.0/composite/sobjects",
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION",
+        "Content-Type": "~application/json.*"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "allOrNone": false,
+        "records": [
+          {
+            "attributes": {
+              "type": "Lead"
+            },
+            "Company": "Eu Odio PC",
+            "Email": "sem.egestas@mollis.org",
+            "FirstName": "Cole",
+            "LastName": "Burks"
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "bodyFormat": "JSON",
+    "body": {
+      "input": [],
+      "output": [
+        "leads.csv"
+      ],
+      "loadedRecords": 2,
+      "failedRecords": 1
+    }
+  }
+}
