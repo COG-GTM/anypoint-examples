@@ -19,7 +19,7 @@
 | `dw:transform-message` → `OpportunitySearch` (`title STARTS_WITH`, conditional) | `NetSuiteSearch.OpportunitySearch#titleStartsWith` | |
 | `netsuite:search searchRecord="CUSTOMER" / "ITEM_SUPPLY_PLAN_BASIC" / "OPPORTUNITY"` | `NetSuiteSearchClient#searchCustomers` / `#searchItemSupplyPlans` / `#searchOpportunities` (WebClient POST `/search/{searchRecord}`) | Typed criteria in, `List<NetSuiteRecord>` out. |
 | `dw:transform-message` `payload map $` (`application/json`) | Jackson serialisation of `List<NetSuiteRecord>` (`produces = application/json`) | |
-| `logger` | omitted | |
+| `logger level="INFO"` "Get customers/items/oportunities completes successfully." | `log.info(...)` with the same messages in `NetSuiteApiController` | |
 | `netsuite-api-console` (`apikit:console`) | springdoc (`/v3/api-docs`, `/swagger-ui.html`) | Delta 2. |
 
 ## Configuration
