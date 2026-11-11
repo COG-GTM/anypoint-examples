@@ -7,6 +7,8 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,7 @@ public class CustomBusinessEventsController {
     }
 
     @RequestMapping(path = "/customBusinessEvents")
-    public String track(@RequestBody String body) throws JsonProcessingException {
+    public ResponseEntity<String> track(@RequestBody String body) throws JsonProcessingException {
         @SuppressWarnings("unchecked")
         Map<String, Object> payload = objectMapper.readValue(body, HashMap.class);
 
@@ -44,7 +46,7 @@ public class CustomBusinessEventsController {
 
         double discount = discountFor(payload.get(ITEM_NAME));
         double discounted = ((Number) payload.get(PRICE)).doubleValue() * (1 - discount);
-        return Double.toString(discounted);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(Double.toString(discounted));
     }
 
     private static double discountFor(Object itemName) {
