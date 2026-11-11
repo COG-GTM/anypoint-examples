@@ -1,0 +1,20 @@
+{
+  "name": "04-lastname-missing",
+  "description": "Without the lastname parameter the MEL template renders null, the query matches no employee and the response is an empty JSON array.",
+  "source": {
+    "muleApp": "querying-a-mysql-database",
+    "flow": "database-to-jsonFlow",
+    "evidence": "documented",
+    "reference": "querying-a-mysql-database/src/main/app/database-to-json.xml (#[message.inboundProperties['http.query.params'].lastname] inside db:dynamic-query)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": [],
+    "jsonCompareMode": "STRICT"
+  }
+}

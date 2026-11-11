@@ -1,0 +1,2 @@
+# The datasource comes from the Testcontainers MySQL @ServiceConnection in QueryingAMysqlDatabaseParityTest,
+# seeded with the example's import.sql (employees-seed.sql).

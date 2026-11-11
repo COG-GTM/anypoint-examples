@@ -1,0 +1,28 @@
+{
+  "name": "07-invalid-email-filtered",
+  "description": "An email that the regex-filter rejects stops the flow without an exception: the listener answers 200 with an empty body.",
+  "source": {
+    "muleApp": "implementing-a-choice-exception-strategy",
+    "flow": "choice-error-handlingFlow1",
+    "evidence": "documented",
+    "reference": "implementing-a-choice-exception-strategy/src/main/app/choice-error-handling.xml (regex-filter on #[payload['email']] with no onUnaccepted; no exception strategy fires)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "not-an-email",
+      "item name": "aa",
+      "item units": 10,
+      "item price per unit": 1,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "NONE"
+  }
+}

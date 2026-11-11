@@ -1,0 +1,29 @@
+{
+  "name": "04-zero-units",
+  "description": "item units < 1 throws IllegalArgumentException (README: 'This applies to negative item units as well').",
+  "source": {
+    "muleApp": "implementing-a-choice-exception-strategy",
+    "flow": "choice-error-handlingFlow1",
+    "evidence": "documented",
+    "reference": "implementing-a-choice-exception-strategy/README.md step 6; implementing-a-choice-exception-strategy/src/main/java/org/mule/examples/InputDataValidator.java (Integer.parseInt(item units) < 1)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@aaa.aa",
+      "item name": "aa",
+      "item units": 0,
+      "item price per unit": 1,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "Invalid input data: {item name=aa, membership=free, item price per unit=1, email=aaa@aaa.aa, item units=0}"
+  }
+}

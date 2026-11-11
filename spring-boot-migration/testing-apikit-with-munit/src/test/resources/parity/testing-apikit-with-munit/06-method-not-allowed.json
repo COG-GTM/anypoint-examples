@@ -1,0 +1,7 @@
+{
+  "name": "06-method-not-allowed",
+  "description": "PATCH is not declared for /munit in the RAML, so APIkit raises MethodNotAllowedException, mapped to 405 with a JSON message.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "api-main", "evidence": "documented", "reference": "testing-apikit-with-munit/src/main/app/api.xml (apikit:mapping statusCode=405 MethodNotAllowedException -> payload { \"message\": \"Method not allowed\" }); testing-apikit-with-munit/src/main/api/api.raml (/munit declares get, post, put, delete only)" },
+  "request": { "method": "PATCH", "path": "/api/munit" },
+  "expected": { "status": 405, "headers": { "Content-Type": "~application/json.*" }, "bodyFormat": "JSON", "body": { "message": "Method not allowed" }, "jsonCompareMode": "STRICT" }
+}

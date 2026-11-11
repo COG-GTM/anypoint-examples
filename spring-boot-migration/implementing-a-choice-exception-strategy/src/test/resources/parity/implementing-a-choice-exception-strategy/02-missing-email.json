@@ -1,0 +1,28 @@
+{
+  "name": "02-missing-email",
+  "description": "Missing email: InputDataValidator throws NullPointerException; second catch-exception-strategy answers 400 'Missing input data: #[payload]' with the HashMap payload.",
+  "source": {
+    "muleApp": "implementing-a-choice-exception-strategy",
+    "flow": "choice-error-handlingFlow1",
+    "evidence": "documented",
+    "reference": "implementing-a-choice-exception-strategy/README.md step 5; implementing-a-choice-exception-strategy/src/test/resources/message_wrong.json; implementing-a-choice-exception-strategy/src/main/app/choice-error-handling.xml (catch-exception-strategy causedBy NullPointerException); implementing-a-choice-exception-strategy/src/main/java/org/mule/examples/InputDataValidator.java"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "item name": "aa",
+      "item units": 10,
+      "item price per unit": 1,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "Missing input data: {item name=aa, membership=free, item price per unit=1, item units=10}"
+  }
+}

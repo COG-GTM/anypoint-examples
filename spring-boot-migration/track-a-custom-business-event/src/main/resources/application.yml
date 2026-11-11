@@ -1,0 +1,10 @@
+# mule-app.properties: http.port=8081
+http:
+  port: 8081
+server:
+  port: ${http.port}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

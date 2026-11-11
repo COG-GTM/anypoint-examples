@@ -1,0 +1,19 @@
+{
+  "name": "03-get-not-allowed",
+  "description": "The listener only allows POST: a GET is rejected with 405 and nothing is written.",
+  "source": {
+    "muleApp": "legacy-modernization",
+    "flow": "Fulfillment_LegacySystemModernization",
+    "evidence": "documented",
+    "reference": "legacy-modernization/src/main/app/FufillmentWebService.xml (http:listener allowedMethods=\"POST\" path=\"OrderFulfillment\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/OrderFulfillment"
+  },
+  "expected": {
+    "status": 405,
+    "bodyFormat": "IGNORE"
+  },
+  "expectedFiles": []
+}

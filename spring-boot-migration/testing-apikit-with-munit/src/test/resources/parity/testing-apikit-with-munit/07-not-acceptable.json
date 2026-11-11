@@ -1,0 +1,7 @@
+{
+  "name": "07-not-acceptable",
+  "description": "The RAML only declares application/json responses, so Accept: application/xml raises NotAcceptableException, mapped to 406 with a JSON message.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "api-main", "evidence": "documented", "reference": "testing-apikit-with-munit/src/main/app/api.xml (apikit:mapping statusCode=406 NotAcceptableException -> payload { \"message\": \"Not acceptable\" }); testing-apikit-with-munit/src/main/api/api.raml (get responses 200 body application/json only)" },
+  "request": { "method": "GET", "path": "/api/munit", "headers": { "Accept": "application/xml" } },
+  "expected": { "status": 406, "headers": { "Content-Type": "~application/json.*" }, "bodyFormat": "JSON", "body": { "message": "Not acceptable" }, "jsonCompareMode": "STRICT" }
+}

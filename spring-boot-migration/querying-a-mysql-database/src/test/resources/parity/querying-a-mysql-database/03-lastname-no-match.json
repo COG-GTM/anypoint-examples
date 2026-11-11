@@ -1,0 +1,20 @@
+{
+  "name": "03-lastname-no-match",
+  "description": "A last name with no rows yields an empty JSON array (object-to-json of an empty result list).",
+  "source": {
+    "muleApp": "querying-a-mysql-database",
+    "flow": "database-to-jsonFlow",
+    "evidence": "documented",
+    "reference": "querying-a-mysql-database/src/main/app/database-to-json.xml (db:select + json:object-to-json-transformer); querying-a-mysql-database/README.md (lastname=<parameter> form); querying-a-mysql-database/src/main/resources/import.sql (no employee with last_name Nobody)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?lastname=Nobody"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": [],
+    "jsonCompareMode": "STRICT"
+  }
+}

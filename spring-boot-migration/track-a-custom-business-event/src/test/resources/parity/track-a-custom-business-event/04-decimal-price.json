@@ -1,0 +1,40 @@
+{
+  "name": "04-decimal-price",
+  "description": "A decimal unit price is discounted the same way: 20.5 * (1 - 0.2) = 16.400000000000002 (IEEE-754 double, as JRuby/Java print it).",
+  "source": {
+    "muleApp": "track-a-custom-business-event",
+    "flow": "custom-business-eventsFlow1",
+    "evidence": "documented",
+    "reference": "track-a-custom-business-event/src/main/app/custom-business-events.xml (jruby $payload['item price per unit'] * (1 - $discount) on a JSON decimal)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/customBusinessEvents",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "aaa@abc.sk",
+      "item name": "jeans",
+      "item units": 1,
+      "item price per unit": 20.5,
+      "membership": "free"
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "16.400000000000002"
+  },
+  "expectedEvents": [
+    {
+      "name": "Price",
+      "transactionId": "custom-business-event-example-transaction",
+      "metadata": {
+        "item name": "jeans",
+        "item units": "1",
+        "item price per unit": "20.5"
+      }
+    }
+  ]
+}

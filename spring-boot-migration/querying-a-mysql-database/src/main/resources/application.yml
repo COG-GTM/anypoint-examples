@@ -1,0 +1,10 @@
+# Mule properties: http.port and jdbc.url (MySQL_Configuration url="${jdbc.url}").
+http:
+  port: 8081
+jdbc:
+  url: jdbc:mysql://localhost:3306/company?user=generatedata&password=generatedata
+server:
+  port: ${http.port}
+spring:
+  datasource:
+    url: ${jdbc.url}

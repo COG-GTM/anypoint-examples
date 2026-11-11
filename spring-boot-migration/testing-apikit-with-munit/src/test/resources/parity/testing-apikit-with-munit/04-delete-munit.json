@@ -1,0 +1,7 @@
+{
+  "name": "04-delete-munit",
+  "description": "DELETE /api/munit returns 200 and 'DELETE RESPONSE'.",
+  "source": { "muleApp": "testing-apikit-with-munit", "flow": "delete:/munit:api-config", "evidence": "munit", "reference": "testing-apikit-with-munit/src/test/munit/api-test-suite.xml (DELETE /munit asserts http.status 200 and payload DELETE RESPONSE); testing-apikit-with-munit/src/main/app/api.xml (set-payload #['DELETE RESPONSE'])" },
+  "request": { "method": "DELETE", "path": "/api/munit" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "DELETE RESPONSE" }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "02-url-key-payload-2",
+  "description": "url_key=payload_2 routes to exampleSub_Flow2 (my_variable=var_value_2) so the response is response_payload_2.",
+  "source": { "muleApp": "munit-short-tutorial", "flow": "exampleFlow", "evidence": "munit", "reference": "munit-short-tutorial/src/test/munit/production-code-test-suite.xml (doc-test-exampleFlow-functionalTest_2: url_key=payload_2 -> assert-payload-equals 'response_payload_2'); munit-short-tutorial/src/main/app/production-code.xml (exampleFlow, exampleFlow2, exampleSub_Flow1/2)" },
+  "request": { "method": "GET", "path": "/?url_key=payload_2" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "response_payload_2" }
+}

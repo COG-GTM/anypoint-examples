@@ -1,0 +1,12 @@
+# HTTP_Listener_Configuration port="1080", listener path="OrderFulfillment".
+http:
+  port: 1080
+server:
+  port: ${http.port}
+spring:
+  webservices:
+    path: /OrderFulfillment
+legacy:
+  output:
+    # file:outbound-endpoint path="src/main/resources/Output"
+    path: src/main/resources/Output
