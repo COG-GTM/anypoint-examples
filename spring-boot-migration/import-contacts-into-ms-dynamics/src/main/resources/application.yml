@@ -1,0 +1,15 @@
+spring:
+  main:
+    web-application-type: none
+
+# Mule file:inbound-endpoint path / moveToDirectory / pollingFrequency.
+contacts:
+  input-dir: ${CONTACTS_INPUT_DIR:src/main/resources/input}
+  output-dir: ${CONTACTS_OUTPUT_DIR:src/main/resources/output}
+  polling-frequency: 10000
+
+# Mule dynamicscrm:config (crm.* in mule-app.properties).
+crm:
+  base-url: ${CRM_BASE_URL:https://yourorg.crm.dynamics.com}
+  api-version: v9.2
+  access-token: ${CRM_ACCESS_TOKEN:}

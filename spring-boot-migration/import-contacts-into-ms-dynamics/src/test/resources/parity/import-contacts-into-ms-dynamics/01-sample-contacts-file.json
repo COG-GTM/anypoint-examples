@@ -1,0 +1,61 @@
+{
+  "name": "sample-contacts-file",
+  "description": "The bundled contacts.csv creates one Dynamics contact per row, in row order (surname -> lastname, email -> emailaddress1, phone -> telephone1), and the file is moved to the output directory.",
+  "source": {
+    "muleApp": "import-contacts-into-ms-dynamics",
+    "flow": "crm-create-account",
+    "evidence": "documented",
+    "reference": "import-contacts-into-ms-dynamics/src/main/app/import-contacts-into-ms-dynamics.xml (flow crm-create-account: file:inbound-endpoint moveToDirectory=src/main/resources/output, dw 'CSV To Map' firstname/lastname<-surname/businessphone<-phone/email, foreach dynamicscrm:create logicalName=contact attributes firstname/lastname/emailaddress1/telephone1); sample input src/main/resources/contacts.csv; import-contacts-into-ms-dynamics/README.md"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "contacts.csv",
+    "body": "firstname,surname,phone,email\nJohn,Doe,096548763,john.doe@texasComp.com\nJane,Doe,091558780,jane.doe@texasComp.com\n"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "status": 204,
+      "headers": {
+        "OData-EntityId": "https://yourorg.crm.dynamics.com/api/data/v9.2/contacts(00000000-0000-0000-0000-000000000001)"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "firstname": "John",
+        "lastname": "Doe",
+        "emailaddress1": "john.doe@texasComp.com",
+        "telephone1": "096548763"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "firstname": "Jane",
+        "lastname": "Doe",
+        "emailaddress1": "jane.doe@texasComp.com",
+        "telephone1": "091558780"
+      }
+    }
+  ],
+  "expected": {
+    "status": 0,
+    "bodyFormat": "IGNORE"
+  }
+}

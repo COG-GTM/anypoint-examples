@@ -1,0 +1,5 @@
+contacts:
+  polling-frequency: 100
+crm:
+  base-url: ${parity.downstream.base-url}
+  access-token: parity-token
