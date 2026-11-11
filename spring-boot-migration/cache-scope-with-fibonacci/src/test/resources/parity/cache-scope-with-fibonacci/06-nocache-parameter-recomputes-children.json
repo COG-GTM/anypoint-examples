@@ -1,0 +1,19 @@
+{
+  "name": "nocache-parameter-recomputes-children",
+  "description": "nocache sends n-1 and n-2 with the nocache property (cache skipped, result not stored); their own children use the cache again. Cached so far: 0..12. n=16 (miss): 15 [nocache] -> 14 (miss: 13 miss = 0+0+1, 12 hit -> 2) + 13 (hit) + 1 = 3; 14 [nocache] -> 13 hit + 12 hit + 1 = 1; COST = 3 + 1 + 1 = 5.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "documented",
+    "reference": "cache-scope-with-fibonacci/src/main/app/cache-scope.xml (global function fibonacciRequest(n, cached) sets outbound nocache; ee:cache filterExpression nocache == null)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/fibonacci?n=16&nocache=true"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Fibonacci(16) = 987\nCOST: 5"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "short-date",
+  "description": "Date length != 10 -> 400.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java (validation)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?stock=AAPL&date=2012-1-26"
+  },
+  "expected": {
+    "status": 400,
+    "bodyFormat": "TEXT",
+    "body": "date format must be YYYY-MM-DD"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

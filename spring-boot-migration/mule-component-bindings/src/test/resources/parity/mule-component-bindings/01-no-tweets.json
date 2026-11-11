@@ -1,0 +1,117 @@
+{
+  "name": "no-tweets",
+  "description": "Stock found, first Twitter page empty: one binding call, empty classify, zero social stats.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java; mule-component-bindings/src/main/java/stockstats/impl/stocklytics/StocklyticsStockService.java; mule-component-bindings/src/test/resources/reply.json (shape)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?stock=AAPL&date=2012-10-26"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": {
+      "closingDate": "2012-10-26",
+      "financialStats": {
+        "open": 602.84,
+        "close": 604.0,
+        "high": 614.0,
+        "low": 598.17,
+        "volume": 36373100
+      },
+      "socialStats": {
+        "tweetsLoaded": 0,
+        "moreTweets": false,
+        "negativeTweets": 0,
+        "neutralTweets": 0,
+        "positiveTweets": 0
+      }
+    }
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/historicalPrices/1.0",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "2012-10-26": {
+          "open": 602.84,
+          "close": 604.0,
+          "high": 614.0,
+          "low": 598.17,
+          "volume": 36373100
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/1.1/search/tweets.json",
+      "queryParams": {
+        "q": "$AAPL",
+        "since": "2012-10-26",
+        "until": "2012-11-05"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "statuses": []
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/bulkClassifyJson",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": []
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/historicalPrices/1.0",
+      "headers": {
+        "api_key": "test-stocklytics-key",
+        "format": "JSON",
+        "stock": "AAPL",
+        "start": "2012-10-26",
+        "end": "2012-10-26"
+      },
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "urlPath": "/1.1/search/tweets.json",
+      "queryParams": {
+        "q": "$AAPL",
+        "since": "2012-10-26",
+        "until": "2012-11-05"
+      },
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/bulkClassifyJson",
+      "headers": {
+        "appid": "test-app-id"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "data": []
+      },
+      "count": 1
+    }
+  ]
+}

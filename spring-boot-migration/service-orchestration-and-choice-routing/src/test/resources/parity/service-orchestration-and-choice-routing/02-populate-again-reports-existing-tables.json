@@ -1,0 +1,21 @@
+{
+  "name": "populate-again-reports-existing-tables",
+  "description": "The DDL fails the second time; the catch-exception-strategy answers 'table already populated'.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "databaseInitialisation",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (databaseInitialisation catch-exception-strategy set-payload)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/populate"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "table already populated"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

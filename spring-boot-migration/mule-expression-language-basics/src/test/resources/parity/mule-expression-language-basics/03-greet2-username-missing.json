@@ -1,0 +1,12 @@
+{
+  "name": "greet2-username-missing",
+  "description": "Example 2: username == empty (absent) selects 'No username provided'.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "greetingFlow2",
+    "evidence": "munit",
+    "reference": "mule-expression-language-basics/src/test/java/org/mule/examples/MuleExpressionLanguageBasicsIT.java; mule-expression-language-basics/src/main/app/greeting.xml (greetingFlow2 when username == empty)"
+  },
+  "request": { "method": "GET", "path": "/greet2?age=1" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "No username provided" }
+}

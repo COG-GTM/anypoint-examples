@@ -1,0 +1,12 @@
+{
+  "name": "only-new-values-cost",
+  "description": "n=12 misses for 12 and 11 only (10 and 9 are cached): COST = (0 + 0 + 1) + 0 + 1 = 2.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "documented",
+    "reference": "cache-scope-with-fibonacci/src/main/app/cache-scope.xml (ee:cache keyed by n, FibonacciResponseGenerator sets cost 0 on hits) (cost = fib1.cost + fib2.cost + 1)"
+  },
+  "request": { "method": "GET", "path": "/fibonacci?n=12" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Fibonacci(12) = 144\nCOST: 2" }
+}

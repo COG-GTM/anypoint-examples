@@ -1,0 +1,12 @@
+{
+  "name": "unknown-language-defaults-to-english",
+  "description": "An unmapped language (German) also falls through to the otherwise branch.",
+  "source": {
+    "muleApp": "content-based-routing",
+    "flow": "content-based-routingFlow",
+    "evidence": "documented",
+    "reference": "content-based-routing/src/main/app/content-based-routing.xml (otherwise -> replyInDefaultLanguage)"
+  },
+  "request": { "method": "GET", "path": "/?language=German" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello!" }
+}

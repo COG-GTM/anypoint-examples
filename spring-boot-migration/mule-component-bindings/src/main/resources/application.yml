@@ -1,0 +1,17 @@
+server:
+  # StockServiceFlow listener (HTTP_Listener_Configuration2) port="8180"
+  port: ${http.port:8180}
+spring:
+  application:
+    name: mule-component-bindings
+twitter:
+  base-url: https://api.twitter.com
+  # Twitter app-only bearer token; supply via TWITTER_BEARER_TOKEN, never commit it.
+  bearer-token: ${TWITTER_BEARER_TOKEN:}
+stockstats:
+  stocklytics:
+    base-url: https://api.stocklytics.com
+    api-key: ${STOCKLYTICS_API_KEY:}
+  sentiment140:
+    base-url: https://www.sentiment140.com
+    app-id: ${SENTIMENT140_APP_ID:}

@@ -1,0 +1,12 @@
+{
+  "name": "sum-two-integers",
+  "description": "The MUnit/IT input {a:1,b:2}: Rhino sums to the Double 3.0.",
+  "source": {
+    "muleApp": "addition-using-javascript-transformer",
+    "flow": "javascript-calculatorFlow1",
+    "evidence": "munit",
+    "reference": "addition-using-javascript-transformer/src/test/java/org/mule/examples/AdditionUsingJavascriptTransformerIT.java (assertEquals \"Sum is: 3.0.\"); addition-using-javascript-transformer/src/main/app/javascript-calculator.xml (scripting:transformer JavaScript + set-payload 'Sum is: #[payload].')"
+  },
+  "request": { "method": "POST", "path": "/", "headers": { "Content-Type": "application/json" }, "body": { "a": 1, "b": 2 } },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Sum is: 3.0." }
+}

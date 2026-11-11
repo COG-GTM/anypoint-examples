@@ -1,0 +1,5 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: content-based-routing

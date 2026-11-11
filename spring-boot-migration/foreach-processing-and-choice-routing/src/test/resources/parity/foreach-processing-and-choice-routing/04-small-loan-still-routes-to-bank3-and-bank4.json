@@ -1,0 +1,100 @@
+{
+  "name": "small-loan-still-routes-to-bank3-and-bank4",
+  "description": "The second condition 'amount >= 10000 || amount <= 19999' is always true, so a 5000 loan also goes to Bank 3 and Bank 4; Bank 5 is never called.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (lookupBanks: >= 10000 || <= 19999; otherwise Bank5 unreachable)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=5000&term=6"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Bank #3, rate: 5.5"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "creditScore": 750,
+        "creditHistory": 10
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank3",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #3",
+        "interestRate": 5.5
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank4",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #4",
+        "interestRate": 8.0
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "name": "Ann",
+        "ssn": 1234
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank3",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank4",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank5",
+      "count": 0,
+      "bodyFormat": "JSON",
+      "body": null
+    }
+  ]
+}

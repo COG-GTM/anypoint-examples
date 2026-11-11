@@ -1,0 +1,107 @@
+{
+  "name": "region-table",
+  "description": "Every region branch of the Groovy switch, plus states not listed (UNKNOWN) and an empty state (UNKNOWN, BillingState empty). The extra has_given_contact_permission column is not mapped.",
+  "source": {
+    "muleApp": "dataweave-with-flowreflookup",
+    "flow": "CreateNewSalesforceAccountFlow / LookUpSalesRegionFlow",
+    "evidence": "documented",
+    "reference": "dataweave-with-flowreflookup/src/main/app/dataweave-with-flowref.xml (LookUpSalesRegionFlow Groovy switch; DataWeave payload map)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "regions.csv",
+    "bodyFile": "files/regions.csv"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "IGNORE"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "id": "001000000000001AAA",
+          "success": true,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer parity-test-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "allOrNone": false,
+        "records": [
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "NE Co",
+            "BillingStreet": "1 A St",
+            "BillingCity": "Boston",
+            "BillingState": "MA",
+            "BillingPostalCode": "02108",
+            "Region__c": "North East"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "MW Co",
+            "BillingStreet": "2 B St",
+            "BillingCity": "Chicago",
+            "BillingState": "IL",
+            "BillingPostalCode": "60601",
+            "Region__c": "Mid West"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "SW Co",
+            "BillingStreet": "3 C St",
+            "BillingCity": "Phoenix",
+            "BillingState": "AZ",
+            "BillingPostalCode": "85001",
+            "Region__c": "South West"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Unknown Co",
+            "BillingStreet": "4 D St",
+            "BillingCity": "Philadelphia",
+            "BillingState": "PA",
+            "BillingPostalCode": "19104",
+            "Region__c": "UNKNOWN"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Blank Co",
+            "BillingStreet": "5 E St",
+            "BillingCity": "Nowhere",
+            "BillingState": "",
+            "BillingPostalCode": "00000",
+            "Region__c": "UNKNOWN"
+          }
+        ]
+      }
+    }
+  ]
+}

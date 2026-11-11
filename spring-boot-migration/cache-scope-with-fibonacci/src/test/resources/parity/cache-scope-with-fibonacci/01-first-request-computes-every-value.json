@@ -1,0 +1,12 @@
+{
+  "name": "first-request-computes-every-value",
+  "description": "Cold cache: Fibonacci(10) misses for n = 10..0, so COST is 11 (fixtures run in order against one app instance, like the IT).",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "munit",
+    "reference": "cache-scope-with-fibonacci/src/test/java/org/mule/examples/CacheScopeWithFibonacciIT.java (first request n=10); cache-scope-with-fibonacci/src/main/app/cache-scope.xml (ee:cache keyed by n, FibonacciResponseGenerator sets cost 0 on hits)"
+  },
+  "request": { "method": "GET", "path": "/fibonacci?n=10" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Fibonacci(10) = 55\nCOST: 11" }
+}

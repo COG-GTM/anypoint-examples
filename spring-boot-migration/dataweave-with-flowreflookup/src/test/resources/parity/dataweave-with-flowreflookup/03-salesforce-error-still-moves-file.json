@@ -1,0 +1,73 @@
+{
+  "name": "salesforce-error-still-moves-file",
+  "description": "A failed Salesforce create is not retried: the file was already moved by moveToDirectory when it was read, and exactly one create call is made.",
+  "source": {
+    "muleApp": "dataweave-with-flowreflookup",
+    "flow": "CreateNewSalesforceAccountFlow / LookUpSalesRegionFlow",
+    "evidence": "documented",
+    "reference": "dataweave-with-flowreflookup/src/main/app/dataweave-with-flowref.xml (file:inbound-endpoint moveToDirectory, no exception strategy)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "rejected.csv",
+    "bodyFile": "files/rejected.csv"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "IGNORE"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "status": 401,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "message": "INVALID_SESSION_ID",
+          "errorCode": "INVALID_SESSION_ID"
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer parity-test-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "allOrNone": false,
+        "records": [
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Universal Exports",
+            "BillingStreet": "55 Main St",
+            "BillingCity": "Miami",
+            "BillingState": "FL",
+            "BillingPostalCode": "33126",
+            "Region__c": "South East"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Best Widgets",
+            "BillingStreet": "1966 Latrobe Rd",
+            "BillingCity": "El Dorado Hills",
+            "BillingState": "CA",
+            "BillingPostalCode": "95762",
+            "Region__c": "West Coast"
+          }
+        ]
+      }
+    }
+  ]
+}

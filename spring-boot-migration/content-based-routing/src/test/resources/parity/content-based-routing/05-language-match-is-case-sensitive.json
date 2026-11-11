@@ -1,0 +1,12 @@
+{
+  "name": "language-match-is-case-sensitive",
+  "description": "MEL == is String.equals, so 'spanish' does not match 'Spanish' and gets the default reply.",
+  "source": {
+    "muleApp": "content-based-routing",
+    "flow": "content-based-routingFlow",
+    "evidence": "documented",
+    "reference": "content-based-routing/src/main/app/content-based-routing.xml (when expression=#[flowVars['language'] == 'Spanish'])"
+  },
+  "request": { "method": "GET", "path": "/?language=spanish" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello!" }
+}

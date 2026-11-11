@@ -1,0 +1,42 @@
+{
+  "name": "samsung-failure-is-rejected",
+  "description": "A non-200 Samsung reply fails the http.status=200 filter; the catch-exception-strategy returns a REJECTED receipt with totalPrice 0.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "samsungOrder",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (samsungOrder message-filter throwOnUnaccepted, catch-exception-strategy Groovy REJECTED/0)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders",
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ord:processOrder xmlns:ord=\"http://orders.se.mulesoft.com/\"><order><orderId>15</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>s-2</name><productId>AX03</productId><quantity>3</quantity></item></orderItems></order></ord:processOrder></soap:Body></soap:Envelope>"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "XML",
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:processOrderResponse xmlns:ns2=\"http://orders.se.mulesoft.com/\"><summary><orderId>15</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>s-2</name><productId>AX03</productId><purchaseReceipt><status>REJECTED</status><totalPrice>0.0</totalPrice></purchaseReceipt><quantity>3</quantity></item></orderItems></summary></ns2:processOrderResponse></soap:Body></soap:Envelope>"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "status": 500,
+      "headers": {
+        "Content-Type": "text/xml"
+      },
+      "body": "Server Error"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "bodyFormat": "XML",
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchase xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderRequest><name>s-2</name><quantity>3</quantity></orderRequest></ns2:purchase></soap:Body></soap:Envelope>"
+    }
+  ]
+}

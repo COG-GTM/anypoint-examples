@@ -1,0 +1,4 @@
+samsung:
+  base-url: ${parity.downstream.base-url}
+price:
+  base-url: ${parity.downstream.base-url}

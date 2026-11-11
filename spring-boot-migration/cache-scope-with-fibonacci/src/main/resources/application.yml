@@ -1,0 +1,8 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: cache-scope-with-fibonacci
+  cache:
+    type: simple
+    cache-names: fibonacci

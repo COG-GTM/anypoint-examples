@@ -1,0 +1,74 @@
+{
+  "name": "sample-companies",
+  "description": "The bundled companies.csv: BillingState is upper-cased and the region comes from the lookup flow (fl -> South East, CA -> West Coast); both rows go to one Salesforce create call.",
+  "source": {
+    "muleApp": "dataweave-with-flowreflookup",
+    "flow": "CreateNewSalesforceAccountFlow / LookUpSalesRegionFlow",
+    "evidence": "munit",
+    "reference": "dataweave-with-flowreflookup/src/test/java/org/mule/examples/DataWeaveWithFlowRefIT.java (Universal Exports -> Region__c 'South East'); dataweave-with-flowreflookup/src/main/app/dataweave-with-flowref.xml (dw:transform-message, sfdc:create type=Account)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "companies.csv",
+    "bodyFile": "files/companies.csv"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "IGNORE"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "id": "001000000000001AAA",
+          "success": true,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/data/v59.0/composite/sobjects",
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer parity-test-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "allOrNone": false,
+        "records": [
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Universal Exports",
+            "BillingStreet": "55 Main St",
+            "BillingCity": "Miami",
+            "BillingState": "FL",
+            "BillingPostalCode": "33126",
+            "Region__c": "South East"
+          },
+          {
+            "attributes": {
+              "type": "Account"
+            },
+            "Name": "Best Widgets",
+            "BillingStreet": "1966 Latrobe Rd",
+            "BillingCity": "El Dorado Hills",
+            "BillingState": "CA",
+            "BillingPostalCode": "95762",
+            "Region__c": "West Coast"
+          }
+        ]
+      }
+    }
+  ]
+}

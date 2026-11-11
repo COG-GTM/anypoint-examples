@@ -1,0 +1,41 @@
+{
+  "name": "ajax-soap-proxy",
+  "description": "The /orders/soap channel forwards the SOAP envelope to orderService and returns its reply.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "orderProxy",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/mule-config.xml (orderProxy http:request POST orders port 1080)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders/soap",
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ord:processOrder xmlns:ord=\"http://orders.se.mulesoft.com/\"><order><orderId>12</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>s-1</name><productId>AX02</productId><quantity>1</quantity></item></orderItems></order></ord:processOrder></soap:Body></soap:Envelope>"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "XML",
+    "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:processOrderResponse xmlns:ns2=\"http://orders.se.mulesoft.com/\"><summary><orderId>12</orderId><customer><address>Main Street 123</address><firstName>John</firstName><lastName>Doe</lastName></customer><orderItems><item><manufacturer>Samsung</manufacturer><name>s-1</name><productId>AX02</productId><purchaseReceipt><id>1</id><status>ACCEPTED</status><totalPrice>2550.0</totalPrice></purchaseReceipt><quantity>1</quantity></item></orderItems></summary></ns2:processOrderResponse></soap:Body></soap:Envelope>"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml"
+      },
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchaseResponse xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderResponse><id>1</id><price>2550</price><result>ACCEPTED</result></orderResponse></ns2:purchaseResponse></soap:Body></soap:Envelope>"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "repeat-request-is-cache-hit",
+  "description": "The same n again is served from the cache.",
+  "source": {
+    "muleApp": "cache-scope-with-fibonacci",
+    "flow": "cache-exampleFlow1 / calculateFibonacci",
+    "evidence": "documented",
+    "reference": "cache-scope-with-fibonacci/src/main/app/cache-scope.xml (ee:cache keyed by n, FibonacciResponseGenerator sets cost 0 on hits)"
+  },
+  "request": { "method": "GET", "path": "/fibonacci?n=10" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Fibonacci(10) = 55\nCOST: 0" }
+}

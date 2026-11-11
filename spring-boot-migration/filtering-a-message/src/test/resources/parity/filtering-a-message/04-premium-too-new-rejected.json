@@ -1,0 +1,17 @@
+{
+  "name": "premium-too-new-rejected",
+  "description": "Premium member with fewer than 6 months is rejected whatever the purchases.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "documented",
+    "reference": "filtering-a-message/src/main/app/filtering.xml; filtering-a-message/src/main/java/org/mule/examples/filters/FreeMembershipDiscountFilter.java (isPremium branch)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "purchases": 5000, "months": 5, "membership": "premium" }
+  },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "" }
+}

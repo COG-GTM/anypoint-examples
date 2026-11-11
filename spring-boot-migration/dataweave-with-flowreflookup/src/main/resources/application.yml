@@ -1,0 +1,19 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: dataweave-with-flowreflookup
+  main:
+    # The Mule app has no HTTP listener; it is driven by the file poller only.
+    web-application-type: none
+input:
+  dir: src/main/resources/input
+output:
+  dir: src/main/resources/output
+polling:
+  frequency: 10000
+salesforce:
+  # Mule used sfdc:config (username/password/securityToken); supply an instance URL + OAuth token instead.
+  base-url: ${SALESFORCE_BASE_URL:https://login.salesforce.com}
+  access-token: ${SALESFORCE_ACCESS_TOKEN:}
+  api-version: v59.0

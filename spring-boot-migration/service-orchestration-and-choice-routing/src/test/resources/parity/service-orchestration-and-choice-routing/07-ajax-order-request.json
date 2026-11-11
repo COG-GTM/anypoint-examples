@@ -1,0 +1,106 @@
+{
+  "name": "ajax-order-request",
+  "description": "The /orders/request channel: sample-request.json goes through orderService and comes back in the sample-response.json shape. Receipts follow the flows (Galaxy 30 x 2550, product 23 cached at 159 x 10); the sample's copied Samsung receipt on the Philips item is not reproducible.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "orderRequest",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/test/resources/sample-request.json, sample-response.json (shape); service-orchestration-and-choice-routing/src/main/app/mule-config.xml (orderRequest DataWeave)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders/request",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "orderId": "123",
+      "customer": {
+        "firstName": "Nial",
+        "lastName": "Darbey",
+        "address": "Buenos Aires"
+      },
+      "orderItems": [
+        {
+          "item": {
+            "manufacturer": "Samsung",
+            "name": "Galaxy",
+            "productId": "i9000",
+            "quantity": "30"
+          }
+        },
+        {
+          "item": {
+            "manufacturer": "Philips",
+            "name": "P3123",
+            "productId": "23",
+            "quantity": "10"
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": {
+      "orderId": "123",
+      "customer": {
+        "firstName": "Nial",
+        "lastName": "Darbey",
+        "address": "Buenos Aires"
+      },
+      "orderItems": [
+        {
+          "item": {
+            "manufacturer": "Samsung",
+            "name": "Galaxy",
+            "productId": "i9000",
+            "purchaseReceipt": {
+              "id": "1",
+              "status": "ACCEPTED",
+              "totalPrice": 76500.0
+            },
+            "quantity": "30"
+          }
+        },
+        {
+          "item": {
+            "manufacturer": "Philips",
+            "name": "P3123",
+            "productId": "23",
+            "purchaseReceipt": {
+              "status": "ACCEPTED",
+              "totalPrice": 1590.0
+            },
+            "quantity": "10"
+          }
+        }
+      ]
+    }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml"
+      },
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchaseResponse xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderResponse><id>1</id><price>76500</price><result>ACCEPTED</result></orderResponse></ns2:purchaseResponse></soap:Body></soap:Envelope>"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/samsung/orders",
+      "bodyFormat": "XML",
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:purchase xmlns:ns2=\"http://samsung.se.mulesoft.com/\"><orderRequest><name>Galaxy</name><quantity>30</quantity></orderRequest></ns2:purchase></soap:Body></soap:Envelope>"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/api/prices/23",
+      "count": 0
+    }
+  ]
+}

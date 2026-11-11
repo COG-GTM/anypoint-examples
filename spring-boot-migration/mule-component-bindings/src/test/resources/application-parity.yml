@@ -1,0 +1,10 @@
+twitter:
+  base-url: ${parity.downstream.base-url}
+  bearer-token: test-token
+stockstats:
+  stocklytics:
+    base-url: ${parity.downstream.base-url}
+    api-key: test-stocklytics-key
+  sentiment140:
+    base-url: ${parity.downstream.base-url}
+    app-id: test-app-id

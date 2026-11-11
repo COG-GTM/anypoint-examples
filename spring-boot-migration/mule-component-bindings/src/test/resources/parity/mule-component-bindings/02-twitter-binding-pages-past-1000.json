@@ -1,0 +1,900 @@
+{
+  "name": "twitter-binding-pages-past-1000",
+  "description": "TwitterFlow's twitter:search only passes query/since/until, so every page returns the same 100 tweets: 11 binding calls (1100 > 1000) set moreTweets, the list is cut to 1000, and only the last occurrence of each tweet id receives a sentiment (idToTweet map); unclassified tweets count as positive.",
+  "source": {
+    "muleApp": "mule-component-bindings",
+    "flow": "StockServiceFlow",
+    "evidence": "documented",
+    "reference": "mule-component-bindings/src/main/java/stockstats/impl/StockStatsResourceImpl.java (paging loop, maxResults 1000); mule-component-bindings/src/main/app/mule-component-bindings.xml (TwitterFlow twitter:search query/since/until); mule-component-bindings/src/main/java/stockstats/impl/mule/TwitterRequestProcessor.java (until = date + 10d); mule-component-bindings/src/main/java/stockstats/impl/sentiment140/Sentiment140SentimentService.java; stockstats/SocialStats.java"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/stockStats?stock=AAPL&date=2012-10-26"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": {
+      "closingDate": "2012-10-26",
+      "financialStats": {
+        "open": 602.84,
+        "close": 604.0,
+        "high": 614.0,
+        "low": 598.17,
+        "volume": 36373100
+      },
+      "socialStats": {
+        "tweetsLoaded": 1000,
+        "moreTweets": true,
+        "negativeTweets": 10,
+        "neutralTweets": 20,
+        "positiveTweets": 970
+      }
+    }
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/historicalPrices/1.0",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "2012-10-26": {
+          "open": 602.84,
+          "close": 604.0,
+          "high": 614.0,
+          "low": 598.17,
+          "volume": 36373100
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/1.1/search/tweets.json",
+      "queryParams": {
+        "q": "$AAPL",
+        "since": "2012-10-26",
+        "until": "2012-11-05"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "statuses": [
+          {
+            "id": 1,
+            "text": "tweet 1 about $AAPL"
+          },
+          {
+            "id": 2,
+            "text": "tweet 2 about $AAPL"
+          },
+          {
+            "id": 3,
+            "text": "tweet 3 about $AAPL"
+          },
+          {
+            "id": 4,
+            "text": "tweet 4 about $AAPL"
+          },
+          {
+            "id": 5,
+            "text": "tweet 5 about $AAPL"
+          },
+          {
+            "id": 6,
+            "text": "tweet 6 about $AAPL"
+          },
+          {
+            "id": 7,
+            "text": "tweet 7 about $AAPL"
+          },
+          {
+            "id": 8,
+            "text": "tweet 8 about $AAPL"
+          },
+          {
+            "id": 9,
+            "text": "tweet 9 about $AAPL"
+          },
+          {
+            "id": 10,
+            "text": "tweet 10 about $AAPL"
+          },
+          {
+            "id": 11,
+            "text": "tweet 11 about $AAPL"
+          },
+          {
+            "id": 12,
+            "text": "tweet 12 about $AAPL"
+          },
+          {
+            "id": 13,
+            "text": "tweet 13 about $AAPL"
+          },
+          {
+            "id": 14,
+            "text": "tweet 14 about $AAPL"
+          },
+          {
+            "id": 15,
+            "text": "tweet 15 about $AAPL"
+          },
+          {
+            "id": 16,
+            "text": "tweet 16 about $AAPL"
+          },
+          {
+            "id": 17,
+            "text": "tweet 17 about $AAPL"
+          },
+          {
+            "id": 18,
+            "text": "tweet 18 about $AAPL"
+          },
+          {
+            "id": 19,
+            "text": "tweet 19 about $AAPL"
+          },
+          {
+            "id": 20,
+            "text": "tweet 20 about $AAPL"
+          },
+          {
+            "id": 21,
+            "text": "tweet 21 about $AAPL"
+          },
+          {
+            "id": 22,
+            "text": "tweet 22 about $AAPL"
+          },
+          {
+            "id": 23,
+            "text": "tweet 23 about $AAPL"
+          },
+          {
+            "id": 24,
+            "text": "tweet 24 about $AAPL"
+          },
+          {
+            "id": 25,
+            "text": "tweet 25 about $AAPL"
+          },
+          {
+            "id": 26,
+            "text": "tweet 26 about $AAPL"
+          },
+          {
+            "id": 27,
+            "text": "tweet 27 about $AAPL"
+          },
+          {
+            "id": 28,
+            "text": "tweet 28 about $AAPL"
+          },
+          {
+            "id": 29,
+            "text": "tweet 29 about $AAPL"
+          },
+          {
+            "id": 30,
+            "text": "tweet 30 about $AAPL"
+          },
+          {
+            "id": 31,
+            "text": "tweet 31 about $AAPL"
+          },
+          {
+            "id": 32,
+            "text": "tweet 32 about $AAPL"
+          },
+          {
+            "id": 33,
+            "text": "tweet 33 about $AAPL"
+          },
+          {
+            "id": 34,
+            "text": "tweet 34 about $AAPL"
+          },
+          {
+            "id": 35,
+            "text": "tweet 35 about $AAPL"
+          },
+          {
+            "id": 36,
+            "text": "tweet 36 about $AAPL"
+          },
+          {
+            "id": 37,
+            "text": "tweet 37 about $AAPL"
+          },
+          {
+            "id": 38,
+            "text": "tweet 38 about $AAPL"
+          },
+          {
+            "id": 39,
+            "text": "tweet 39 about $AAPL"
+          },
+          {
+            "id": 40,
+            "text": "tweet 40 about $AAPL"
+          },
+          {
+            "id": 41,
+            "text": "tweet 41 about $AAPL"
+          },
+          {
+            "id": 42,
+            "text": "tweet 42 about $AAPL"
+          },
+          {
+            "id": 43,
+            "text": "tweet 43 about $AAPL"
+          },
+          {
+            "id": 44,
+            "text": "tweet 44 about $AAPL"
+          },
+          {
+            "id": 45,
+            "text": "tweet 45 about $AAPL"
+          },
+          {
+            "id": 46,
+            "text": "tweet 46 about $AAPL"
+          },
+          {
+            "id": 47,
+            "text": "tweet 47 about $AAPL"
+          },
+          {
+            "id": 48,
+            "text": "tweet 48 about $AAPL"
+          },
+          {
+            "id": 49,
+            "text": "tweet 49 about $AAPL"
+          },
+          {
+            "id": 50,
+            "text": "tweet 50 about $AAPL"
+          },
+          {
+            "id": 51,
+            "text": "tweet 51 about $AAPL"
+          },
+          {
+            "id": 52,
+            "text": "tweet 52 about $AAPL"
+          },
+          {
+            "id": 53,
+            "text": "tweet 53 about $AAPL"
+          },
+          {
+            "id": 54,
+            "text": "tweet 54 about $AAPL"
+          },
+          {
+            "id": 55,
+            "text": "tweet 55 about $AAPL"
+          },
+          {
+            "id": 56,
+            "text": "tweet 56 about $AAPL"
+          },
+          {
+            "id": 57,
+            "text": "tweet 57 about $AAPL"
+          },
+          {
+            "id": 58,
+            "text": "tweet 58 about $AAPL"
+          },
+          {
+            "id": 59,
+            "text": "tweet 59 about $AAPL"
+          },
+          {
+            "id": 60,
+            "text": "tweet 60 about $AAPL"
+          },
+          {
+            "id": 61,
+            "text": "tweet 61 about $AAPL"
+          },
+          {
+            "id": 62,
+            "text": "tweet 62 about $AAPL"
+          },
+          {
+            "id": 63,
+            "text": "tweet 63 about $AAPL"
+          },
+          {
+            "id": 64,
+            "text": "tweet 64 about $AAPL"
+          },
+          {
+            "id": 65,
+            "text": "tweet 65 about $AAPL"
+          },
+          {
+            "id": 66,
+            "text": "tweet 66 about $AAPL"
+          },
+          {
+            "id": 67,
+            "text": "tweet 67 about $AAPL"
+          },
+          {
+            "id": 68,
+            "text": "tweet 68 about $AAPL"
+          },
+          {
+            "id": 69,
+            "text": "tweet 69 about $AAPL"
+          },
+          {
+            "id": 70,
+            "text": "tweet 70 about $AAPL"
+          },
+          {
+            "id": 71,
+            "text": "tweet 71 about $AAPL"
+          },
+          {
+            "id": 72,
+            "text": "tweet 72 about $AAPL"
+          },
+          {
+            "id": 73,
+            "text": "tweet 73 about $AAPL"
+          },
+          {
+            "id": 74,
+            "text": "tweet 74 about $AAPL"
+          },
+          {
+            "id": 75,
+            "text": "tweet 75 about $AAPL"
+          },
+          {
+            "id": 76,
+            "text": "tweet 76 about $AAPL"
+          },
+          {
+            "id": 77,
+            "text": "tweet 77 about $AAPL"
+          },
+          {
+            "id": 78,
+            "text": "tweet 78 about $AAPL"
+          },
+          {
+            "id": 79,
+            "text": "tweet 79 about $AAPL"
+          },
+          {
+            "id": 80,
+            "text": "tweet 80 about $AAPL"
+          },
+          {
+            "id": 81,
+            "text": "tweet 81 about $AAPL"
+          },
+          {
+            "id": 82,
+            "text": "tweet 82 about $AAPL"
+          },
+          {
+            "id": 83,
+            "text": "tweet 83 about $AAPL"
+          },
+          {
+            "id": 84,
+            "text": "tweet 84 about $AAPL"
+          },
+          {
+            "id": 85,
+            "text": "tweet 85 about $AAPL"
+          },
+          {
+            "id": 86,
+            "text": "tweet 86 about $AAPL"
+          },
+          {
+            "id": 87,
+            "text": "tweet 87 about $AAPL"
+          },
+          {
+            "id": 88,
+            "text": "tweet 88 about $AAPL"
+          },
+          {
+            "id": 89,
+            "text": "tweet 89 about $AAPL"
+          },
+          {
+            "id": 90,
+            "text": "tweet 90 about $AAPL"
+          },
+          {
+            "id": 91,
+            "text": "tweet 91 about $AAPL"
+          },
+          {
+            "id": 92,
+            "text": "tweet 92 about $AAPL"
+          },
+          {
+            "id": 93,
+            "text": "tweet 93 about $AAPL"
+          },
+          {
+            "id": 94,
+            "text": "tweet 94 about $AAPL"
+          },
+          {
+            "id": 95,
+            "text": "tweet 95 about $AAPL"
+          },
+          {
+            "id": 96,
+            "text": "tweet 96 about $AAPL"
+          },
+          {
+            "id": 97,
+            "text": "tweet 97 about $AAPL"
+          },
+          {
+            "id": 98,
+            "text": "tweet 98 about $AAPL"
+          },
+          {
+            "id": 99,
+            "text": "tweet 99 about $AAPL"
+          },
+          {
+            "id": 100,
+            "text": "tweet 100 about $AAPL"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/bulkClassifyJson",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": [
+          {
+            "id": "1",
+            "polarity": 0
+          },
+          {
+            "id": "2",
+            "polarity": 0
+          },
+          {
+            "id": "3",
+            "polarity": 0
+          },
+          {
+            "id": "4",
+            "polarity": 0
+          },
+          {
+            "id": "5",
+            "polarity": 0
+          },
+          {
+            "id": "6",
+            "polarity": 0
+          },
+          {
+            "id": "7",
+            "polarity": 0
+          },
+          {
+            "id": "8",
+            "polarity": 0
+          },
+          {
+            "id": "9",
+            "polarity": 0
+          },
+          {
+            "id": "10",
+            "polarity": 0
+          },
+          {
+            "id": "11",
+            "polarity": 2
+          },
+          {
+            "id": "12",
+            "polarity": 2
+          },
+          {
+            "id": "13",
+            "polarity": 2
+          },
+          {
+            "id": "14",
+            "polarity": 2
+          },
+          {
+            "id": "15",
+            "polarity": 2
+          },
+          {
+            "id": "16",
+            "polarity": 2
+          },
+          {
+            "id": "17",
+            "polarity": 2
+          },
+          {
+            "id": "18",
+            "polarity": 2
+          },
+          {
+            "id": "19",
+            "polarity": 2
+          },
+          {
+            "id": "20",
+            "polarity": 2
+          },
+          {
+            "id": "21",
+            "polarity": 2
+          },
+          {
+            "id": "22",
+            "polarity": 2
+          },
+          {
+            "id": "23",
+            "polarity": 2
+          },
+          {
+            "id": "24",
+            "polarity": 2
+          },
+          {
+            "id": "25",
+            "polarity": 2
+          },
+          {
+            "id": "26",
+            "polarity": 2
+          },
+          {
+            "id": "27",
+            "polarity": 2
+          },
+          {
+            "id": "28",
+            "polarity": 2
+          },
+          {
+            "id": "29",
+            "polarity": 2
+          },
+          {
+            "id": "30",
+            "polarity": 2
+          },
+          {
+            "id": "31",
+            "polarity": 4
+          },
+          {
+            "id": "32",
+            "polarity": 4
+          },
+          {
+            "id": "33",
+            "polarity": 4
+          },
+          {
+            "id": "34",
+            "polarity": 4
+          },
+          {
+            "id": "35",
+            "polarity": 4
+          },
+          {
+            "id": "36",
+            "polarity": 4
+          },
+          {
+            "id": "37",
+            "polarity": 4
+          },
+          {
+            "id": "38",
+            "polarity": 4
+          },
+          {
+            "id": "39",
+            "polarity": 4
+          },
+          {
+            "id": "40",
+            "polarity": 4
+          },
+          {
+            "id": "41",
+            "polarity": 4
+          },
+          {
+            "id": "42",
+            "polarity": 4
+          },
+          {
+            "id": "43",
+            "polarity": 4
+          },
+          {
+            "id": "44",
+            "polarity": 4
+          },
+          {
+            "id": "45",
+            "polarity": 4
+          },
+          {
+            "id": "46",
+            "polarity": 4
+          },
+          {
+            "id": "47",
+            "polarity": 4
+          },
+          {
+            "id": "48",
+            "polarity": 4
+          },
+          {
+            "id": "49",
+            "polarity": 4
+          },
+          {
+            "id": "50",
+            "polarity": 4
+          },
+          {
+            "id": "51",
+            "polarity": 4
+          },
+          {
+            "id": "52",
+            "polarity": 4
+          },
+          {
+            "id": "53",
+            "polarity": 4
+          },
+          {
+            "id": "54",
+            "polarity": 4
+          },
+          {
+            "id": "55",
+            "polarity": 4
+          },
+          {
+            "id": "56",
+            "polarity": 4
+          },
+          {
+            "id": "57",
+            "polarity": 4
+          },
+          {
+            "id": "58",
+            "polarity": 4
+          },
+          {
+            "id": "59",
+            "polarity": 4
+          },
+          {
+            "id": "60",
+            "polarity": 4
+          },
+          {
+            "id": "61",
+            "polarity": 4
+          },
+          {
+            "id": "62",
+            "polarity": 4
+          },
+          {
+            "id": "63",
+            "polarity": 4
+          },
+          {
+            "id": "64",
+            "polarity": 4
+          },
+          {
+            "id": "65",
+            "polarity": 4
+          },
+          {
+            "id": "66",
+            "polarity": 4
+          },
+          {
+            "id": "67",
+            "polarity": 4
+          },
+          {
+            "id": "68",
+            "polarity": 4
+          },
+          {
+            "id": "69",
+            "polarity": 4
+          },
+          {
+            "id": "70",
+            "polarity": 4
+          },
+          {
+            "id": "71",
+            "polarity": 4
+          },
+          {
+            "id": "72",
+            "polarity": 4
+          },
+          {
+            "id": "73",
+            "polarity": 4
+          },
+          {
+            "id": "74",
+            "polarity": 4
+          },
+          {
+            "id": "75",
+            "polarity": 4
+          },
+          {
+            "id": "76",
+            "polarity": 4
+          },
+          {
+            "id": "77",
+            "polarity": 4
+          },
+          {
+            "id": "78",
+            "polarity": 4
+          },
+          {
+            "id": "79",
+            "polarity": 4
+          },
+          {
+            "id": "80",
+            "polarity": 4
+          },
+          {
+            "id": "81",
+            "polarity": 4
+          },
+          {
+            "id": "82",
+            "polarity": 4
+          },
+          {
+            "id": "83",
+            "polarity": 4
+          },
+          {
+            "id": "84",
+            "polarity": 4
+          },
+          {
+            "id": "85",
+            "polarity": 4
+          },
+          {
+            "id": "86",
+            "polarity": 4
+          },
+          {
+            "id": "87",
+            "polarity": 4
+          },
+          {
+            "id": "88",
+            "polarity": 4
+          },
+          {
+            "id": "89",
+            "polarity": 4
+          },
+          {
+            "id": "90",
+            "polarity": 4
+          },
+          {
+            "id": "91",
+            "polarity": 4
+          },
+          {
+            "id": "92",
+            "polarity": 4
+          },
+          {
+            "id": "93",
+            "polarity": 4
+          },
+          {
+            "id": "94",
+            "polarity": 4
+          },
+          {
+            "id": "95",
+            "polarity": 4
+          },
+          {
+            "id": "96",
+            "polarity": 4
+          },
+          {
+            "id": "97",
+            "polarity": 4
+          },
+          {
+            "id": "98",
+            "polarity": 4
+          },
+          {
+            "id": "99",
+            "polarity": 4
+          },
+          {
+            "id": "100",
+            "polarity": 4
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/1.1/search/tweets.json",
+      "queryParams": {
+        "q": "$AAPL",
+        "since": "2012-10-26",
+        "until": "2012-11-05"
+      },
+      "count": 11
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/bulkClassifyJson",
+      "count": 1
+    }
+  ]
+}

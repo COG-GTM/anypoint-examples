@@ -1,0 +1,12 @@
+{
+  "name": "greet1-query-param",
+  "description": "Example 1: set-payload 'Hello #[...http.query.params.username]'.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "greetingFlow1",
+    "evidence": "munit",
+    "reference": "mule-expression-language-basics/src/test/java/org/mule/examples/MuleExpressionLanguageBasicsIT.java; mule-expression-language-basics/src/main/app/greeting.xml (greetingFlow1)"
+  },
+  "request": { "method": "GET", "path": "/greet1?username=Mule&age=1" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello Mule" }, "expectedFile": null
+}

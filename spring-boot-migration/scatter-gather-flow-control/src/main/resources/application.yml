@@ -1,0 +1,14 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: scatter-gather-flow-control
+  mail:
+    # smtp:gmail-connector + smtp:outbound-endpoint attributes; supply real values via environment/system properties.
+    host: ${smtp.host:smtp.gmail.com}
+    port: ${smtp.port:465}
+    username: ${smtp.user:}
+    password: ${smtp.password:}
+    protocol: ${smtp.protocol:smtps}
+    properties:
+      mail.smtp.auth: ${smtp.auth:true}

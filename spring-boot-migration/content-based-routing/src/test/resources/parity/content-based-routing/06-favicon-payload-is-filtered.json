@@ -1,0 +1,12 @@
+{
+  "name": "favicon-payload-is-filtered",
+  "description": "expression-filter #[payload != '/favicon.ico'] drops the message; the listener answers 200 with an empty body.",
+  "source": {
+    "muleApp": "content-based-routing",
+    "flow": "content-based-routingFlow",
+    "evidence": "documented",
+    "reference": "content-based-routing/src/main/app/content-based-routing.xml (expression-filter doc:name=\"Filter favicon\")"
+  },
+  "request": { "method": "POST", "path": "/?language=Spanish", "headers": { "Content-Type": "text/plain" }, "body": "/favicon.ico" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "" }
+}

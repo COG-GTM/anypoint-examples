@@ -1,0 +1,20 @@
+{
+  "name": "orders-get-not-allowed",
+  "description": "The orderService listener only allows POST.",
+  "source": {
+    "muleApp": "service-orchestration-and-choice-routing",
+    "flow": "orderService",
+    "evidence": "documented",
+    "reference": "service-orchestration-and-choice-routing/src/main/app/fulfillment.xml (http:listener allowedMethods=\"POST\" path=\"orders\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/orders"
+  },
+  "expected": {
+    "status": 405,
+    "bodyFormat": "IGNORE"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}

@@ -1,0 +1,93 @@
+{
+  "name": "boundary-20000-routes-to-bank1-and-bank2",
+  "description": "20000 satisfies amount >= 20000.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "documented",
+    "reference": "foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (lookupBanks: payload.getLoanAmount() >= 20000)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=20000&term=12"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Bank #1, rate: 2.0"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "creditScore": 750,
+        "creditHistory": 10
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank1",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #1",
+        "interestRate": 2.0
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank2",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "bankName": "Bank #2",
+        "interestRate": 9.5
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheCreditAgencyService",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "name": "Ann",
+        "ssn": 1234
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank1",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/mule/TheBank2",
+      "count": 1,
+      "bodyFormat": "JSON",
+      "body": {
+        "creditProfile": {
+          "creditScore": 750,
+          "creditHistory": 10
+        }
+      }
+    }
+  ]
+}

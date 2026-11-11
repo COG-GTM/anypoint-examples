@@ -1,0 +1,3 @@
+salesforce:
+  base-url: ${parity.downstream.base-url}
+  access-token: parity-test-token

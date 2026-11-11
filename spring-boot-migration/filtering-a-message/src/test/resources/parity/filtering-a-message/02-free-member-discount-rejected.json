@@ -1,0 +1,17 @@
+{
+  "name": "free-member-discount-rejected",
+  "description": "Free member, 6 months, 100 purchases: the custom filter rejects the message and the listener answers 200 with an empty body.",
+  "source": {
+    "muleApp": "filtering-a-message",
+    "flow": "filteringFlow1",
+    "evidence": "munit",
+    "reference": "filtering-a-message/src/test/java/org/mule/examples/FilteringMessageIT.java (empty response) + src/test/resources/message1.json; filtering-a-message/src/main/app/filtering.xml; filtering-a-message/src/main/java/org/mule/examples/filters/FreeMembershipDiscountFilter.java"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": { "Content-Type": "application/json" },
+    "body": { "purchases": 100, "months": 6, "membership": "free" }
+  },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "" }
+}

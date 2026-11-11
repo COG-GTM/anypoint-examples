@@ -1,0 +1,17 @@
+server:
+  # orderService listener (HTTP_Listener_Configuration3) port="1080"; the other Mule listeners share this port.
+  port: ${http.port:1080}
+spring:
+  application:
+    name: service-orchestration-and-choice-routing
+  datasource:
+    # Derby_Data_Source: jdbc:derby:muleEmbeddedDB;create=true (in-memory here)
+    url: jdbc:derby:memory:muleEmbeddedDB;create=true
+    driver-class-name: org.apache.derby.iapi.jdbc.AutoloadedDriver
+  sql:
+    init:
+      mode: never
+samsung:
+  base-url: http://localhost:${local.server.port:${server.port}}
+price:
+  base-url: http://localhost:${local.server.port:${server.port}}

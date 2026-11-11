@@ -1,0 +1,12 @@
+{
+  "name": "greet3-adult",
+  "description": "age > 18 coerces the query String to a number: 30 > 18 is true.",
+  "source": {
+    "muleApp": "mule-expression-language-basics",
+    "flow": "docs-greetingFlow3",
+    "evidence": "documented",
+    "reference": "mule-expression-language-basics/src/main/app/greeting.xml (docs-greetingFlow3 #[age > 18])"
+  },
+  "request": { "method": "GET", "path": "/greet3?username=Max&age=30" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello Max" }, "expectedFile": "Max, 30, true"
+}

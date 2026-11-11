@@ -1,0 +1,21 @@
+{
+  "name": "missing-term-is-incomplete",
+  "description": "Any missing name/ssn/amount/term -> 'Error: incomplete request' without calling any service.",
+  "source": {
+    "muleApp": "foreach-processing-and-choice-routing",
+    "flow": "LoanBrokerFlow",
+    "evidence": "munit",
+    "reference": "foreach-processing-and-choice-routing/src/test/java/org/mule/examples/ForEachProcessingAndChoiceRoutingIT.java; foreach-processing-and-choice-routing/src/main/app/loanbroker-simple.xml (otherwise: payload=\"Error: incomplete request\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/?name=Ann&ssn=1234&amount=5000"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Error: incomplete request"
+  },
+  "downstream": [],
+  "expectedOutbound": []
+}
