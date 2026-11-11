@@ -1,6 +1,8 @@
 package org.mule.examples.springboot.legacymodernization;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,18 +25,25 @@ public final class LegacyFulfillmentCsv {
     public static String render(ShippingOrderConfirmation confirmation) {
         ShippingOrder order = confirmation.shippingOrder;
         StringBuilder csv = new StringBuilder(line(HEADER));
-        for (OrderItem item : order.order.orderItemList) {
+        List<OrderItem> items = order.order == null || order.order.orderItemList == null
+                ? List.of() : order.order.orderItemList;
+        for (OrderItem item : items) {
             csv.append(line(Stream.of(
-                    List.of(item.merchantSKU, String.valueOf(item.quantity)),
+                    Arrays.asList(item.merchantSKU, String.valueOf(item.quantity)),
                     address(order.billingAddress),
                     address(order.shippingAddress),
-                    List.of(order.shippingId)).flatMap(List::stream).toList()));
+                    Arrays.asList(order.shippingId)).flatMap(List::stream).toList()));
         }
         return csv.toString();
     }
 
     private static List<String> address(Address a) {
-        return List.of(a.name, a.line1 + " " + a.line2, a.city, a.stateOrProvinceCode, a.countryCode, a.postalCode);
+        if (a == null) {
+            return Arrays.asList(new String[6]);
+        }
+        String street = a.line1 == null && a.line2 == null
+                ? null : Objects.toString(a.line1, "") + " " + Objects.toString(a.line2, "");
+        return Arrays.asList(a.name, street, a.city, a.stateOrProvinceCode, a.countryCode, a.postalCode);
     }
 
     private static String line(List<String> values) {
