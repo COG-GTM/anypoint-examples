@@ -1,0 +1,19 @@
+{
+  "name": "01-echo-message",
+  "description": "GET /message echoes the request path.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "munit",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); http-request-response-with-logger/src/test/java/org/mule/example/echo/HttpRequestResponseWithLoggerTest.java (testEcho: GET /message expects '/message')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/message"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/message"
+  }
+}

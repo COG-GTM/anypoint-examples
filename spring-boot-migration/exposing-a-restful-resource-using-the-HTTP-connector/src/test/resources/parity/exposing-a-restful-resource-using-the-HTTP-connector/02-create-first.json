@@ -1,0 +1,36 @@
+{
+  "name": "02-create-first",
+  "description": "POST /person stores the person, returns 201, the literal success payload and Location http://0.0.0.0:8081/person/1.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "storePersonFlow",
+    "evidence": "munit",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/test/java/org/mule/examples/HttpRestfulResourceIT.java (postPerson: reply equals REPLY); exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (storePersonFlow: http:response-builder statusCode=201, header Location=http://0.0.0.0:8081/person/#[personId]; personId.incrementAndGet())"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "firstname": "Tito",
+      "lastname": "Lamela",
+      "address": {
+        "streetAddress": "Lincoln St.",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "90401"
+      },
+      "age": 12
+    }
+  },
+  "expected": {
+    "status": 201,
+    "headers": {
+      "Location": "http://0.0.0.0:8081/person/1"
+    },
+    "bodyFormat": "TEXT",
+    "body": "{ \"status\": \"success\", \"statusDescription\": \"person created successfully\"}"
+  }
+}

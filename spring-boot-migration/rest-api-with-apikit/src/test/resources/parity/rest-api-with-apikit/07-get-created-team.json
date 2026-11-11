@@ -1,0 +1,28 @@
+{
+  "name": "07-get-created-team",
+  "description": "The created team is retrievable and has played 0 matches.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "LeagueAPI.addTeam / getTeam (matches = matchesPlayed = 0)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams/CEL"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "id": "CEL",
+      "name": "Celta de Vigo",
+      "homeCity": "Vigo",
+      "stadium": "Balaidos",
+      "matches": 0
+    }
+  }
+}

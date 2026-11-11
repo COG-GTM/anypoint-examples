@@ -1,0 +1,19 @@
+{
+  "name": "04-echo-nested-path",
+  "description": "The wildcard listener echoes a nested path in full.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "documented",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); http.request.path is the full path matched by listener path='/*'"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/a/b/c"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/a/b/c"
+  }
+}

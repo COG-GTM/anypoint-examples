@@ -1,0 +1,19 @@
+{
+  "name": "06-echo-post",
+  "description": "The listener has no allowedMethods, so POST is echoed too.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "documented",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); http:listener has no allowedMethods attribute"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/echo"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/echo"
+  }
+}

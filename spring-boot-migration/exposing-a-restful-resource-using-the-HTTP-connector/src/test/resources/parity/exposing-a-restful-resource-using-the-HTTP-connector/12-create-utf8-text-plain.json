@@ -1,0 +1,36 @@
+{
+  "name": "12-create-utf8-text-plain",
+  "description": "A UTF-8 JSON body sent as text/plain with no charset keeps its non-ASCII characters. Mule declares UTF-8 and json-to-object-transformer ignores the Content-Type.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "storePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (mule encoding UTF-8; storePersonFlow json:json-to-object-transformer returnClass=org.mule.examples.Person)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "text/plain"
+    },
+    "body": {
+      "firstname": "José",
+      "lastname": "Müller",
+      "address": {
+        "streetAddress": "Straße 1",
+        "city": "Zürich",
+        "state": "ZH",
+        "zipCode": "8001"
+      },
+      "age": 40
+    }
+  },
+  "expected": {
+    "status": 201,
+    "headers": {
+      "Location": "http://0.0.0.0:8081/person/4"
+    },
+    "bodyFormat": "TEXT",
+    "body": "{ \"status\": \"success\", \"statusDescription\": \"person created successfully\"}"
+  }
+}

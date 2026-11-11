@@ -1,0 +1,19 @@
+{
+  "name": "01-get-login-page",
+  "description": "GET /login renders login/index.html verbatim.",
+  "source": {
+    "muleApp": "login-form-using-the-http-connector",
+    "flow": "loginPage",
+    "evidence": "munit",
+    "reference": "login-form-using-the-http-connector/src/test/java/org/mule/examples/HttpLoginHtmlFormIT.java (GET /login payload equals index.html); login-form-using-the-http-connector/src/main/app/login-form-using-the-http-connector.xml (http:listener allowedMethods=GET path=/login; parse-template location=src/main/resources/login/index.html)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/login"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/index.html"
+  }
+}

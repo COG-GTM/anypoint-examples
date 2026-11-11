@@ -1,0 +1,33 @@
+{
+  "name": "13-get-first-round-match",
+  "description": "GET /api/fixture/RMA/BAR returns the match. RMA:BAR is a first-round match in Mule's HashMap order; its date is relative to 'now' and its score is random, so only those fields are ignored.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/java/org/mule/examples/leagues/model/League.java (buildFixture: HashMap<String,Team> iteration; first round dates now-7/-6 days at 18:00 with random scores); response/Match.java"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/fixture/RMA/BAR"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "homeTeam": "RMA",
+      "awayTeam": "BAR",
+      "date": "x",
+      "homeTeamScore": 0,
+      "awayTeamScore": 0
+    },
+    "ignorePaths": [
+      "date",
+      "homeTeamScore",
+      "awayTeamScore"
+    ]
+  }
+}

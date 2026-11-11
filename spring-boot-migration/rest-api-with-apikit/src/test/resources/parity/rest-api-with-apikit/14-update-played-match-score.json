@@ -1,0 +1,25 @@
+{
+  "name": "14-update-played-match-score",
+  "description": "PUT a score on an already-played match: 204, empty body.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "put:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (put:/fixture: updateScore then set-payload NullPayload); rest-api-with-apikit/src/main/resources/leagues.raml (put example {homeTeamScore: 3, awayTeamScore: 0}, responses 204); LeagueAPI.updateScore"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/api/fixture/RMA/BAR",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "homeTeamScore": 3,
+      "awayTeamScore": 0
+    }
+  },
+  "expected": {
+    "status": 204,
+    "bodyFormat": "NONE"
+  }
+}

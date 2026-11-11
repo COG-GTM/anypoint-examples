@@ -1,0 +1,44 @@
+{
+  "name": "03-list-teams-by-city",
+  "description": "GET /api/teams?city=Madrid filters on homeCity.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/teams:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (queryParameters city); rest-api-with-apikit/src/main/java/org/mule/examples/leagues/model/League.java (getTeams(homeCity))"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams?city=Madrid"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "jsonCompareMode": "NON_EXTENSIBLE",
+    "body": {
+      "teams": [
+        {
+          "name": "Atletico Madrid",
+          "id": "ATL",
+          "homeCity": "Madrid",
+          "stadium": "Vicente Calderon"
+        },
+        {
+          "name": "Rayo Vallecano",
+          "id": "RAY",
+          "homeCity": "Madrid",
+          "stadium": "Campo de Vallecas"
+        },
+        {
+          "name": "Real Madrid",
+          "id": "RMA",
+          "homeCity": "Madrid",
+          "stadium": "Santiago Bernabeu"
+        }
+      ]
+    }
+  }
+}

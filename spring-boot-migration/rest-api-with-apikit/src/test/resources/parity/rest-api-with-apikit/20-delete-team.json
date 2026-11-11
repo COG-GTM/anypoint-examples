@@ -1,0 +1,18 @@
+{
+  "name": "20-delete-team",
+  "description": "DELETE /api/teams/ZAR removes the team and its matches: 204, empty body.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "delete:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (delete:/teams/{teamId}); rest-api-with-apikit/src/main/resources/leagues.raml (delete responses 204); League.deleteTeam"
+  },
+  "request": {
+    "method": "DELETE",
+    "path": "/api/teams/ZAR"
+  },
+  "expected": {
+    "status": 204,
+    "bodyFormat": "NONE"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "28-update-score-null-400",
+  "description": "An explicit JSON null score fails match-schema-input.json (type: integer), so the response is 400.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "main (apikit:router)",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (put body schema match-schema-input.json: homeTeamScore type integer); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=400)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/api/fixture/SEV/ATL",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "homeTeamScore": null,
+      "awayTeamScore": 1
+    }
+  },
+  "expected": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Bad request"
+    }
+  }
+}

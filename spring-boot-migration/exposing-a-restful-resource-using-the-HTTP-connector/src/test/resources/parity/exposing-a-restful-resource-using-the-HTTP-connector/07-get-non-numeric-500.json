@@ -1,0 +1,17 @@
+{
+  "name": "07-get-non-numeric-500",
+  "description": "A non-numeric id fails Integer.valueOf; no choice-exception-strategy branch matches, so the error-response-builder falls back to 500.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (set-variable personId=#[Integer.valueOf(...)]; choice-exception-strategy only handles FilterUnacceptedException)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person/abc"
+  },
+  "expected": {
+    "status": 500
+  }
+}

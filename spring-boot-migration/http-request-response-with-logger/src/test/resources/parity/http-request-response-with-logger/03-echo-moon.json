@@ -1,0 +1,19 @@
+{
+  "name": "03-echo-moon",
+  "description": "GET /moon echoes /moon.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "documented",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); http-request-response-with-logger/README.md (Run it!: /moon returns /moon)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/moon"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/moon"
+  }
+}

@@ -1,0 +1,16 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: processing-orders-with-dataweave-and-APIkit
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+orders:
+  input-dir: src/main/resources/input
+  output-dir: src/main/resources/output
+  polling-frequency: 1000
+  # Blank = this app's own /api/currencies on the local server port (Mule: localhost:${http.port}/api/).
+  currency-base-url:

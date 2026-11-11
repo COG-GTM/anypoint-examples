@@ -1,0 +1,24 @@
+{
+  "name": "16-get-match-unknown-404",
+  "description": "No match with an unknown team: NotFoundException → 404.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=404); LeagueAPI.getMatch"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/fixture/BAR/XXX"
+  },
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

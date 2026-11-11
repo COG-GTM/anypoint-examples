@@ -1,0 +1,8 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: http-request-response-with-logger
+  web:
+    resources:
+      add-mappings: false

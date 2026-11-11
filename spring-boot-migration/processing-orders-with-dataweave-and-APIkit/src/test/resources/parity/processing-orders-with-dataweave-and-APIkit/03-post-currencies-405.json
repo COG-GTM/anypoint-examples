@@ -1,0 +1,28 @@
+{
+  "name": "03-post-currencies-405",
+  "description": "currency.raml only declares GET on /currencies: 405.",
+  "source": {
+    "muleApp": "processing-orders-with-dataweave-and-APIkit",
+    "flow": "currency-main",
+    "evidence": "documented",
+    "reference": "processing-orders-with-dataweave-and-APIkit/src/main/app/currency.xml (apikit:mapping-exception-strategy currency-apiKitGlobalExceptionMapping: statusCode=405 MethodNotAllowedException); processing-orders-with-dataweave-and-APIkit/src/main/api/currency.raml"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/currencies",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  },
+  "expected": {
+    "status": 405,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Method not allowed"
+    }
+  }
+}

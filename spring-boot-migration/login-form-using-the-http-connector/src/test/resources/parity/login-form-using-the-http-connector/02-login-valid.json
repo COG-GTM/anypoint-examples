@@ -1,0 +1,26 @@
+{
+  "name": "02-login-valid",
+  "description": "mule/mule passes the filter: 200, Content-Type text/html; charset=UTF-8 and the success template with the username.",
+  "source": {
+    "muleApp": "login-form-using-the-http-connector",
+    "flow": "doLogin",
+    "evidence": "munit",
+    "reference": "login-form-using-the-http-connector/src/test/java/org/mule/examples/HttpLoginHtmlFormIT.java (POST /login {username=mule,password=mule} contains the success text); login-form-using-the-http-connector/src/main/app/login-form-using-the-http-connector.xml (expression-filter payload.username == 'mule' && payload.password == 'mule'; parse-template loginSuccessful.html; set-property Content-Type=text/html; charset=UTF-8)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/login",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "username=mule&password=mule"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/html; ?charset=UTF-8"
+    },
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/loginSuccessful-mule.html"
+  }
+}

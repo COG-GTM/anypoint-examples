@@ -1,0 +1,30 @@
+{
+  "name": "27-update-team-null-name-400",
+  "description": "An explicit JSON null for name fails teamid-schema-input.json (type: string), so the response is 400.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "main (apikit:router)",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (/{teamId} put body schema teamid-schema-input.json: name type string); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=400 BadRequestException)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/api/teams/BAR",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": null
+    }
+  },
+  "expected": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Bad request"
+    }
+  }
+}

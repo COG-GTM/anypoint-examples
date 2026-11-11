@@ -1,0 +1,45 @@
+{
+  "name": "05-list-all",
+  "description": "GET /person returns all stored persons in id order.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonsFlow",
+    "evidence": "munit",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/test/java/org/mule/examples/HttpRestfulResourceIT.java (getPersons: list contains person.json); exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (personDataStore.values(), HashMap of small Integer keys iterates in key order)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": [
+      {
+        "firstname": "Tito",
+        "lastname": "Lamela",
+        "address": {
+          "streetAddress": "Lincoln St.",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "90401"
+        },
+        "age": 12
+      },
+      {
+        "firstname": "John",
+        "lastname": "Doe",
+        "address": {
+          "streetAddress": "Main St.",
+          "city": "Springfield",
+          "state": "IL",
+          "zipCode": "62701"
+        },
+        "age": 34
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "04-login-unknown-user",
+  "description": "An unknown user is rejected the same way, echoing the submitted username.",
+  "source": {
+    "muleApp": "login-form-using-the-http-connector",
+    "flow": "doLogin",
+    "evidence": "documented",
+    "reference": "login-form-using-the-http-connector/src/main/app/login-form-using-the-http-connector.xml (catch-exception-strategy; loginFailure.html 'Wrong password for username #[payload.username]')"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/login",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "username=hacker&password=mule"
+  },
+  "expected": {
+    "status": 403,
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/loginFailure-hacker.html"
+  }
+}

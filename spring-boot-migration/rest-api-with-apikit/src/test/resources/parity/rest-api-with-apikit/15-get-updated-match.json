@@ -1,0 +1,31 @@
+{
+  "name": "15-get-updated-match",
+  "description": "The stored score is returned.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "LeagueAPI.updateScore / getMatch; response/Match.java date format yyyy-MM-dd'T'HH:mm:ssZ"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/fixture/RMA/BAR"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "homeTeam": "RMA",
+      "awayTeam": "BAR",
+      "date": "x",
+      "homeTeamScore": 3,
+      "awayTeamScore": 0
+    },
+    "ignorePaths": [
+      "date"
+    ]
+  }
+}

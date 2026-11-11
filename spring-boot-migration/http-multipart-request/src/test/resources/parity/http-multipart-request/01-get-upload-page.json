@@ -1,0 +1,19 @@
+{
+  "name": "01-get-upload-page",
+  "description": "GET /uploadFile renders uploadFile.html verbatim (no MEL in the template).",
+  "source": {
+    "muleApp": "http-multipart-request",
+    "flow": "uploadFileFlow",
+    "evidence": "munit",
+    "reference": "http-multipart-request/src/test/java/org/mule/examples/HttpMultpartRequestIT.java (GET /uploadFile payload contains the HTML); http-multipart-request/src/main/app/http-multipart-request.xml (http:listener allowedMethods=GET path=/uploadFile; parse-template location=uploadFile.html)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/uploadFile"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/uploadFile.html"
+  }
+}

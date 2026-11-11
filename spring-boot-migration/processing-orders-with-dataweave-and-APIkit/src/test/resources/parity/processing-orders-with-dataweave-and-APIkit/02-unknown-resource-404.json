@@ -1,0 +1,24 @@
+{
+  "name": "02-unknown-resource-404",
+  "description": "A path not in currency.raml is 404 'Resource not found'.",
+  "source": {
+    "muleApp": "processing-orders-with-dataweave-and-APIkit",
+    "flow": "currency-main",
+    "evidence": "documented",
+    "reference": "processing-orders-with-dataweave-and-APIkit/src/main/app/currency.xml (apikit:mapping-exception-strategy currency-apiKitGlobalExceptionMapping: statusCode=404 NotFoundException)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/rates"
+  },
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "05-requester-login",
+  "description": "GET /requesterLogin POSTs mule/mule to the app's own /login and relays the success response.",
+  "source": {
+    "muleApp": "login-form-using-the-http-connector",
+    "flow": "requesterLogin",
+    "evidence": "munit",
+    "reference": "login-form-using-the-http-connector/src/test/java/org/mule/examples/HttpLoginHtmlFormIT.java (GET /requesterLogin contains the success text); login-form-using-the-http-connector/src/main/app/login-form-using-the-http-connector.xml (expression-component builds HashMap username/password=mule; http:request method=POST path=/login on HttpRequestConfig port=${http.port})"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/requesterLogin"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/html; ?charset=UTF-8"
+    },
+    "bodyFormat": "TEXT",
+    "bodyFile": "bodies/loginSuccessful-mule.html"
+  }
+}

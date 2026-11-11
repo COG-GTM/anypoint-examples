@@ -1,0 +1,24 @@
+{
+  "name": "11-update-team",
+  "description": "PUT /api/teams/BAR updates only the provided fields: 204, empty body.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "put:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (put:/teams/{teamId}: updateTeam then set-payload NullPayload); rest-api-with-apikit/src/main/resources/leagues.raml (put responses 204); LeagueAPI.updateTeam"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/api/teams/BAR",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "stadium": "Spotify Camp Nou"
+    }
+  },
+  "expected": {
+    "status": 204,
+    "bodyFormat": "NONE"
+  }
+}

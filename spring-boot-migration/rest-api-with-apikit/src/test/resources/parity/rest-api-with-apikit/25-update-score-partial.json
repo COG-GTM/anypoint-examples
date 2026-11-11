@@ -1,0 +1,24 @@
+{
+  "name": "25-update-score-partial",
+  "description": "Only homeTeamScore is sent for SEV/ATL (a first-round match in Mule's HashMap order). The omitted awayTeamScore deserialises to the primitive int default 0. Response is 204.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "put:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/java/org/mule/examples/leagues/request/Score.java (private int homeTeamScore; private int awayTeamScore); rest-api-with-apikit/src/main/resources/leagues.raml (match-schema-input.json: neither score is required)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/api/fixture/SEV/ATL",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "homeTeamScore": 2
+    }
+  },
+  "expected": {
+    "status": 204,
+    "bodyFormat": "NONE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "03-upload-file-named-file",
+  "description": "The stored file name is the Content-Disposition filename; the MUnit test expects /tmp/file.",
+  "source": {
+    "muleApp": "http-multipart-request",
+    "flow": "processFileFlow",
+    "evidence": "munit",
+    "reference": "http-multipart-request/src/test/java/org/mule/examples/HttpMultpartRequestIT.java (TMP_FILE=/tmp/file exists after upload)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/uploadFile",
+    "headers": {
+      "Content-Type": "multipart/form-data; boundary=PARITYBOUNDARY"
+    },
+    "body": "--PARITYBOUNDARY\r\nContent-Disposition: form-data; name=\"file\"; filename=\"file\"\r\nContent-Type: text/plain\r\n\r\nfile uploaded\r\n--PARITYBOUNDARY--\r\n"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "file uploaded"
+  }
+}

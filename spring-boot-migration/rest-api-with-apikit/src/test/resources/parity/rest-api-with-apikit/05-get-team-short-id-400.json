@@ -1,0 +1,24 @@
+{
+  "name": "05-get-team-short-id-400",
+  "description": "teamId must be exactly 3 characters (RAML uriParameters minLength/maxLength 3): BadRequestException → 400.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "main (apikit:router)",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (/{teamId} uriParameters minLength: 3, maxLength: 3); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=400 BadRequestException)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams/BA"
+  },
+  "expected": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Bad request"
+    }
+  }
+}
