@@ -1,0 +1,30 @@
+{
+  "name": "GET /token (legacy query form from redirectFlow) exchanges the code for a bearer token",
+  "source": {
+    "muleApp": "http-oauth-provider",
+    "flow": "oauth2-provider:config (token endpoint)",
+    "evidence": "documented",
+    "reference": "README 'Run it!' step 4 ('data structure containing an access token'); http-oauth-provider/src/main/app/http-oauth-provider.xml client myclientid/myclientsecret, provider defaults (tokenTtlSeconds 86400, no refresh tokens: AUTHORIZATION_CODE only)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/token?grant_type=authorization_code&&client_id=myclientid&client_secret=myclientsecret&code={{code}}&redirect_uri=http://localhost:8082/redirect"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "scope": "READ_RESOURCE",
+      "expires_in": 86400,
+      "token_type": "bearer",
+      "access_token": "<generated opaque token>"
+    },
+    "ignorePaths": [
+      "access_token"
+    ]
+  },
+  "description": "access_token is a generated opaque value (ignored here; ProviderGrantFlowTest asserts it is a non-blank URL-safe token and that it unlocks /resources)."
+}

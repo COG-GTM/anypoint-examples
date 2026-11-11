@@ -1,0 +1,6 @@
+{
+  "name": "GET /resources with a token the provider never issued is rejected with 401",
+  "source": { "muleApp": "http-oauth-provider", "flow": "protectedAuthcodeFlow", "evidence": "documented", "reference": "http-oauth-provider/src/main/app/http-oauth-provider.xml (oauth2-provider:validate throwExceptionOnUnaccepted=true); exact Mule body not documented, not asserted" },
+  "request": { "method": "GET", "path": "/resources", "headers": { "Authorization": "Bearer not-a-token" } },
+  "expected": { "status": 401 }
+}

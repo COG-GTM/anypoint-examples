@@ -96,9 +96,9 @@ GreenMail, LDAP, SFTP).
 | [`querying-a-db-and-attaching-results-to-an-email`](../querying-a-db-and-attaching-results-to-an-email) | [`spring-boot-migration/querying-a-db-and-attaching-results-to-an-email`](./querying-a-db-and-attaching-results-to-an-email) | 7 | Planned |
 | [`extracting-data-from-LDAP-directory`](../extracting-data-from-LDAP-directory) | [`spring-boot-migration/extracting-data-from-LDAP-directory`](./extracting-data-from-LDAP-directory) | 7 | Planned |
 | [`document-integration-using-the-cmis-connector`](../document-integration-using-the-cmis-connector) | [`spring-boot-migration/document-integration-using-the-cmis-connector`](./document-integration-using-the-cmis-connector) | 7 | Planned |
-| [`oauth2-authorization-code-using-the-HTTP-connector`](../oauth2-authorization-code-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-authorization-code-using-the-HTTP-connector`](./oauth2-authorization-code-using-the-HTTP-connector) | 8 | Planned |
-| [`oauth2-client-credentials-using-the-HTTP-connector`](../oauth2-client-credentials-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-client-credentials-using-the-HTTP-connector`](./oauth2-client-credentials-using-the-HTTP-connector) | 8 | Planned |
-| [`http-oauth-provider`](../http-oauth-provider) | [`spring-boot-migration/http-oauth-provider`](./http-oauth-provider) | 8 | Planned |
+| [`oauth2-authorization-code-using-the-HTTP-connector`](../oauth2-authorization-code-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-authorization-code-using-the-HTTP-connector`](./oauth2-authorization-code-using-the-HTTP-connector) | 8 | Migrated (deltas) |
+| [`oauth2-client-credentials-using-the-HTTP-connector`](../oauth2-client-credentials-using-the-HTTP-connector) | [`spring-boot-migration/oauth2-client-credentials-using-the-HTTP-connector`](./oauth2-client-credentials-using-the-HTTP-connector) | 8 | Migrated (deltas) |
+| [`http-oauth-provider`](../http-oauth-provider) | [`spring-boot-migration/http-oauth-provider`](./http-oauth-provider) | 8 | Migrated (deltas) |
 | [`querying-a-mysql-database`](../querying-a-mysql-database) | [`spring-boot-migration/querying-a-mysql-database`](./querying-a-mysql-database) | 9 | Planned |
 | [`legacy-modernization`](../legacy-modernization) | [`spring-boot-migration/legacy-modernization`](./legacy-modernization) | 9 | Planned |
 | [`track-a-custom-business-event`](../track-a-custom-business-event) | [`spring-boot-migration/track-a-custom-business-event`](./track-a-custom-business-event) | 9 | Planned |

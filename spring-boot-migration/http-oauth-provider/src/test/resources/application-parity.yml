@@ -1,0 +1,3 @@
+provider:
+  # Fixtures address both Mule listeners through the one random port of the test server.
+  connector-enabled: false

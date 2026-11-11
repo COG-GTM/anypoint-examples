@@ -1,0 +1,34 @@
+{
+  "name": "POST /token (RFC 6749 form) gives the same token response shape",
+  "source": {
+    "muleApp": "http-oauth-provider",
+    "flow": "oauth2-provider:config (token endpoint)",
+    "evidence": "documented",
+    "reference": "http-oauth-provider/src/main/app/http-oauth-provider.xml; the provider's token endpoint accepts the form-encoded grant as well"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/token",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "grant_type=authorization_code&client_id=myclientid&client_secret=myclientsecret&code={{code}}&redirect_uri=http%3A%2F%2Flocalhost%3A8082%2Fredirect"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "scope": "READ_RESOURCE",
+      "expires_in": 86400,
+      "token_type": "bearer",
+      "access_token": "<generated opaque token>"
+    },
+    "ignorePaths": [
+      "access_token"
+    ]
+  },
+  "description": "access_token is a generated opaque value (ignored here; ProviderGrantFlowTest asserts it is a non-blank URL-safe token and that it unlocks /resources)."
+}

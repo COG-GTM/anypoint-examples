@@ -1,0 +1,11 @@
+{
+  "name": "GET /resources with the issued bearer token returns the payroll JSON",
+  "source": { "muleApp": "http-oauth-provider", "flow": "protectedAuthcodeFlow", "evidence": "documented", "reference": "http-oauth-provider/src/main/app/http-oauth-provider.xml (set-payload ['name':'payroll','uri':'http://localhost:${http.listener.port}/resources/payroll'] + object-to-json); README 'Run it!' step 5 output" },
+  "request": { "method": "GET", "path": "/resources", "headers": { "Authorization": "Bearer {{access_token}}" } },
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~application/json.*" },
+    "bodyFormat": "JSON",
+    "body": { "name": "payroll", "uri": "http://localhost:8082/resources/payroll" }
+  }
+}
