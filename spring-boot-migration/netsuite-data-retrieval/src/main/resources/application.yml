@@ -1,0 +1,11 @@
+server:
+  port: ${http.port:8081}
+
+# Mule netsuite:config-login-authentication (nets.* placeholders in netsuite-api.xml).
+nets:
+  base-url: ${NETS_BASE_URL:https://${nets.account}.suitetalk.api.netsuite.com}
+  email: ${NETS_EMAIL:}
+  password: ${NETS_PASSWORD:}
+  account: ${NETS_ACCOUNT:}
+  role-id: ${NETS_ROLE_ID:}
+  application-id: ${NETS_APPLICATION_ID:}

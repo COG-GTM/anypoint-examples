@@ -1,0 +1,42 @@
+{
+  "name": "items-non-integer-quantity-400",
+  "description": "A non-integer quantity fails APIkit validation (type: integer) -> 400 {\"message\": \"Bad request\"}.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "netsuite-api-main",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (apikit:mapping-exception-strategy netsuite-api-apiKitGlobalExceptionMapping) (apikit:mapping BadRequestException); netsuite-data-retrieval/src/main/api/netsuite-api.raml (/items quantity type integer)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/items?quantity=many"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/CUSTOMER",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/OPPORTUNITY",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 400,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Bad request"
+    }
+  }
+}

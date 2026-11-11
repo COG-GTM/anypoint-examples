@@ -1,0 +1,6 @@
+wday:
+  base-url: ${parity.downstream.base-url}
+  tenant: parity_tenant
+  user: parity-user
+  password: parity-secret
+  version: v25.1

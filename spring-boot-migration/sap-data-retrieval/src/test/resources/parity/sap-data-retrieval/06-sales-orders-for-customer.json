@@ -1,0 +1,102 @@
+{
+  "name": "sales-orders-for-customer",
+  "description": "GET /api/salesOrders?customer_number=10000456&sales_organization=3020 sends BAPI_SALESORDER_GETLIST with both imports and returns the SALES_ORDERS rows as {\"salesOrders\": [...]}.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "get:/salesOrders:sap-api-config",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (flow get:/salesOrders:sap-api-config: DataWeave 'Transform Map to Xml<BAPI_SALESORDER_GETLIST>' CUSTOMER_NUMBER/SALES_ORGANIZATION, functionName=BAPI_SALESORDER_GETLIST, 'salesOrders: SALES_ORDERS.*row map {($$):$} when SALES_ORDERS != \"\" otherwise {message:\"No data found.\"}'); sap-data-retrieval/src/main/resources/sap-api.raml (/salesOrders defaults \" \"); samples inboundPropertiesSO.dwl, BAPI_SALESORDER_GETLIST.xml"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/salesOrders?customer_number=10000456&sales_organization=3020"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "bodyFile": "bodies/BAPI_SALESORDER_GETLIST.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "headers": {
+        "Content-Type": "~application/xml.*",
+        "Authorization": "Basic cGFyaXR5LXVzZXI6cGFyaXR5LXNlY3JldA==",
+        "sap-client": "800",
+        "sap-language": "EN"
+      },
+      "bodyFormat": "XML",
+      "body": "<?xml version='1.0' encoding='UTF-8'?><BAPI_SALESORDER_GETLIST><import><CUSTOMER_NUMBER>10000456</CUSTOMER_NUMBER><SALES_ORGANIZATION>3020</SALES_ORGANIZATION></import></BAPI_SALESORDER_GETLIST>"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "salesOrders": [
+        {
+          "SD_DOC": "1234",
+          "ITM_NUMBER": "000456",
+          "MATERIAL": "MAT1234",
+          "SHORT_TEXT": "TstMat",
+          "DOC_TYPE": "TA",
+          "DOC_DATE": "01-12-2015",
+          "REQ_QTY": "10",
+          "REQ_DATE": "01-12-2015",
+          "PURCH_NO": "1234",
+          "BATCH": "",
+          "VALID_FROM": "01-11-2015",
+          "VALID_TO": "01-12-2016",
+          "BILL_BLOCK": "",
+          "DLV_BLOCK": "",
+          "SOLD_TO": "",
+          "NAME": "",
+          "EXCHG_RATE": "10",
+          "DLV_QTY": "10",
+          "BASE_UOM": "",
+          "NET_PRICE": "9",
+          "COND_P_UNT": "5",
+          "COND_UNIT": "5",
+          "NET_VAL_HD": "8",
+          "NET_VALUE": "8",
+          "DIVISION": "20",
+          "DOC_STATUS": "",
+          "SALES_GRP": "",
+          "SALES_OFF": "",
+          "SALES_ORG": "3020",
+          "SALES_UNIT": "KG",
+          "SHIP_POINT": "",
+          "DISTR_CHAN": "00",
+          "GI_DATE": "01-12-2015",
+          "CURRENCY": "EUR",
+          "PLANT": "",
+          "STORE_LOC": "",
+          "ORD_REASON": "",
+          "REASON_REJ": "",
+          "B_UOM_ISO": "",
+          "CD_UNT_ISO": "",
+          "S_UNIT_ISO": "",
+          "CURR_ISO": "EUR",
+          "PURCH_NO_C": "123",
+          "EXCHG_RATE_V": "10",
+          "MAT_EXT": "",
+          "MAT_GUID": "",
+          "MAT_VERS": "",
+          "CREATION_DATE": "01-11-2015",
+          "CREATION_TIME": "",
+          "STATUS_DOC": ""
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "add-customer-descriptor-from-workday",
+  "description": "Business_Entity_Name can differ from the customer name, and the reply uses Workday's Customer_Reference/@Descriptor, not the submitted name.",
+  "source": {
+    "muleApp": "adding-a-new-customer-to-workday-revenue-management",
+    "flow": "add-customer-flow",
+    "evidence": "documented",
+    "reference": "adding-a-new-customer-to-workday-revenue-management/src/main/app/add_a_new_customer.xml (flow add-customer-flow: http:listener path=/ allowedMethods=POST, xml-to-dom, dw 'XML to Workday PutCustomerRequest XML', wd-connector:invoke type=Revenue_Management||Put_Customer, dw 'Extract Customer Name' Put_Customer_Response.Customer_Reference.@Descriptor, set-payload 'Added customer: #[payload]')"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": "<root>\n  <Account>\n    <CustomerName>ACME Logistics</CustomerName>\n    <BusinessEntityName>ACME Logistics Holdings, Inc.</BusinessEntityName>\n    <Customer_Category_Reference_Type>Customer_Category_ID</Customer_Category_Reference_Type>\n    <Customer_Category_Reference_Value>CUSTOMER_CATEGORY-3</Customer_Category_Reference_Value>\n    <Customer_Status_Reference_Type>Business_Entity_Status_Value_ID</Customer_Status_Reference_Type>\n    <Customer_Status_Reference_Value>INACTIVE</Customer_Status_Reference_Value>\n  </Account>\n</root>"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml; charset=utf-8"
+      },
+      "bodyFile": "bodies/put-customer-response-acme.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "headers": {
+        "Content-Type": "~text/xml.*"
+      },
+      "bodyFormat": "XML",
+      "bodyFile": "bodies/put-customer-acme.xml"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Added customer: ACME Logistics"
+  }
+}

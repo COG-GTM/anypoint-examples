@@ -1,0 +1,50 @@
+{
+  "name": "items-with-raml-defaults",
+  "description": "GET /api/items with no parameters: APIkit applies the RAML defaults quantity=0 and operator=GREATER_THAN.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "get:/items:netsuite-api-config",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (flow get:/items:netsuite-api-config: DataWeave ItemSupplyPlanSearchBasic quantity {operator, searchValue as :number}, searchRecord=ITEM_SUPPLY_PLAN_BASIC); netsuite-data-retrieval/src/main/api/netsuite-api.raml (/items quantity integer default 0, operator enum default GREATER_THAN) -> items-response.json"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/items"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "bodyFile": "bodies/items-response.json"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3, nlauth_application_id=00000000-PARITY-APP"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "quantity": {
+          "operator": "GREATER_THAN",
+          "searchValue": 0
+        }
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "bodyFile": "bodies/items-response.json"
+  }
+}

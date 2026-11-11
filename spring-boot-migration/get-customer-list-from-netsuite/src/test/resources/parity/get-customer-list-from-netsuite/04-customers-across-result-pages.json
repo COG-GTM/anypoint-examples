@@ -1,0 +1,99 @@
+{
+  "name": "customers-across-result-pages",
+  "description": "The Mule netsuite:query operation returns every matching record (the connector pages internally), so a result spanning two NetSuite pages renders all rows, in order. The page is matched in document order; only whitespace between tags is free. bodies/customers-two-pages.html is the readable form.",
+  "source": {
+    "muleApp": "get-customer-list-from-netsuite",
+    "flow": "get-customer-list-from-netsuiteFlow",
+    "evidence": "documented",
+    "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (netsuite:query feeds the whole result to the DataWeave 'payload map'); get-customer-list-from-netsuite/README.md (lists all customers whose last name starts with the parameter)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/customers?lastName=A"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "queryParams": {
+        "offset": "0"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "items": [
+          {
+            "email": "ab@example.com",
+            "firstName": "Byron",
+            "lastName": "Abbott"
+          },
+          {
+            "email": "aa@example.com",
+            "firstName": "Analytics",
+            "lastName": "Angels"
+          }
+        ],
+        "hasMore": true,
+        "count": 2,
+        "offset": 0
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "queryParams": {
+        "offset": "2"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "items": [
+          {
+            "email": "mia.anderson@example.com",
+            "firstName": "Mia",
+            "lastName": "Anderson"
+          }
+        ],
+        "hasMore": false,
+        "count": 1,
+        "offset": 2
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "queryParams": {
+        "offset": "0"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'A%' ORDER BY lastName ASC"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "queryParams": {
+        "offset": "2"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'A%' ORDER BY lastName ASC"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/html.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~(?s)\\s*<!\\-\\-\\\n\\\n\\ \\ \\ \\ MuleSoft\\ Examples\\\n\\ \\ \\ \\ Copyright\\ 2014\\ MuleSoft,\\ Inc\\.\\\n\\\n\\ \\ \\ \\ This\\ product\\ includes\\ software\\ developed\\ at\\\n\\ \\ \\ \\ MuleSoft,\\ Inc\\.\\ \\(http://www\\.mulesoft\\.com/\\)\\.\\\n\\\n\\-\\->\\s*<html>\\s*<body>\\s*<h1>\\s*Netsuite\\ Customer\\ List\\s*</h1>\\s*<table>\\s*<thead>\\s*<tr>\\s*<th>\\s*Last\\ Name\\s*</th>\\s*<th>\\s*First\\ Name\\s*</th>\\s*<th>\\s*Email\\s*</th>\\s*</tr>\\s*</thead>\\s*<tbody>\\s*<div>\\s*<line>\\s*<tr>\\s*<td>\\s*Abbott\\s*</td>\\s*<td>\\s*Byron\\s*</td>\\s*<td>\\s*ab@example\\.com\\s*</td>\\s*</tr>\\s*<tr>\\s*<td>\\s*Angels\\s*</td>\\s*<td>\\s*Analytics\\s*</td>\\s*<td>\\s*aa@example\\.com\\s*</td>\\s*</tr>\\s*<tr>\\s*<td>\\s*Anderson\\s*</td>\\s*<td>\\s*Mia\\s*</td>\\s*<td>\\s*mia\\.anderson@example\\.com\\s*</td>\\s*</tr>\\s*</line>\\s*</div>\\s*</tbody>\\s*</table>\\s*</body>\\s*</html>\\s*"
+  }
+}

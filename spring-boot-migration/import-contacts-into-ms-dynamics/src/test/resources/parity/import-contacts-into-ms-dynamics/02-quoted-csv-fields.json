@@ -1,0 +1,61 @@
+{
+  "name": "quoted-csv-fields",
+  "description": "DataWeave's CSV reader honours RFC 4180 quoting, so quoted values containing commas, spaces and escaped quotes reach Dynamics intact; columns are matched by header name, not position.",
+  "source": {
+    "muleApp": "import-contacts-into-ms-dynamics",
+    "flow": "crm-create-account",
+    "evidence": "documented",
+    "reference": "import-contacts-into-ms-dynamics/src/main/app/import-contacts-into-ms-dynamics.xml (flow crm-create-account: file:inbound-endpoint moveToDirectory=src/main/resources/output, dw 'CSV To Map' firstname/lastname<-surname/businessphone<-phone/email, foreach dynamicscrm:create logicalName=contact attributes firstname/lastname/emailaddress1/telephone1) (mimeType=application/csv read with header=true)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "quoted.csv",
+    "body": "email,phone,surname,firstname\n\"mary.oneil@texasComp.com\",\"+1 (512) 555-0100\",\"O'Neil\",\"Mary Ann\"\nbob.smith@texasComp.com,555-0101,\"Smith, Jr.\",\"Bob \"\"Bobby\"\"\"\n"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "status": 204,
+      "headers": {
+        "OData-EntityId": "https://yourorg.crm.dynamics.com/api/data/v9.2/contacts(00000000-0000-0000-0000-000000000001)"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "firstname": "Mary Ann",
+        "lastname": "O'Neil",
+        "emailaddress1": "mary.oneil@texasComp.com",
+        "telephone1": "+1 (512) 555-0100"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "firstname": "Bob \"Bobby\"",
+        "lastname": "Smith, Jr.",
+        "emailaddress1": "bob.smith@texasComp.com",
+        "telephone1": "555-0101"
+      }
+    }
+  ],
+  "expected": {
+    "status": 0,
+    "bodyFormat": "IGNORE"
+  }
+}

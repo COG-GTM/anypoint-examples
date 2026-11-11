@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BAPI_SALESORDER_GETLIST>
+  <tables>
+    <SALES_ORDERS/>
+  </tables>
+</BAPI_SALESORDER_GETLIST>

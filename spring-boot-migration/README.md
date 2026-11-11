@@ -72,11 +72,11 @@ GreenMail, LDAP, SFTP).
 | [`import-leads-into-salesforce`](../import-leads-into-salesforce) | [`spring-boot-migration/import-leads-into-salesforce`](./import-leads-into-salesforce) | 4 | Planned |
 | [`salesforce-data-synchronization-using-watermarking-and-batch-processing`](../salesforce-data-synchronization-using-watermarking-and-batch-processing) | [`spring-boot-migration/salesforce-data-synchronization-using-watermarking-and-batch-processing`](./salesforce-data-synchronization-using-watermarking-and-batch-processing) | 4 | Planned |
 | [`salesforce-to-MySQL-DB-using-Batch-Processing`](../salesforce-to-MySQL-DB-using-Batch-Processing) | [`spring-boot-migration/salesforce-to-MySQL-DB-using-Batch-Processing`](./salesforce-to-MySQL-DB-using-Batch-Processing) | 4 | Planned |
-| [`get-customer-list-from-netsuite`](../get-customer-list-from-netsuite) | [`spring-boot-migration/get-customer-list-from-netsuite`](./get-customer-list-from-netsuite) | 5 | Planned |
-| [`netsuite-data-retrieval`](../netsuite-data-retrieval) | [`spring-boot-migration/netsuite-data-retrieval`](./netsuite-data-retrieval) | 5 | Planned |
-| [`import-contacts-into-ms-dynamics`](../import-contacts-into-ms-dynamics) | [`spring-boot-migration/import-contacts-into-ms-dynamics`](./import-contacts-into-ms-dynamics) | 5 | Planned |
-| [`adding-a-new-customer-to-workday-revenue-management`](../adding-a-new-customer-to-workday-revenue-management) | [`spring-boot-migration/adding-a-new-customer-to-workday-revenue-management`](./adding-a-new-customer-to-workday-revenue-management) | 5 | Planned |
-| [`sap-data-retrieval`](../sap-data-retrieval) | [`spring-boot-migration/sap-data-retrieval`](./sap-data-retrieval) | 5 | Planned |
+| [`get-customer-list-from-netsuite`](../get-customer-list-from-netsuite) | [`spring-boot-migration/get-customer-list-from-netsuite`](./get-customer-list-from-netsuite) | 5 | Migrated (deltas) |
+| [`netsuite-data-retrieval`](../netsuite-data-retrieval) | [`spring-boot-migration/netsuite-data-retrieval`](./netsuite-data-retrieval) | 5 | Migrated (deltas) |
+| [`import-contacts-into-ms-dynamics`](../import-contacts-into-ms-dynamics) | [`spring-boot-migration/import-contacts-into-ms-dynamics`](./import-contacts-into-ms-dynamics) | 5 | Migrated (deltas) |
+| [`adding-a-new-customer-to-workday-revenue-management`](../adding-a-new-customer-to-workday-revenue-management) | [`spring-boot-migration/adding-a-new-customer-to-workday-revenue-management`](./adding-a-new-customer-to-workday-revenue-management) | 5 | Migrated (deltas) |
+| [`sap-data-retrieval`](../sap-data-retrieval) | [`spring-boot-migration/sap-data-retrieval`](./sap-data-retrieval) | 5 | Migrated (deltas) |
 | [`content-based-routing`](../content-based-routing) | [`spring-boot-migration/content-based-routing`](./content-based-routing) | 6 | Planned |
 | [`scatter-gather-flow-control`](../scatter-gather-flow-control) | [`spring-boot-migration/scatter-gather-flow-control`](./scatter-gather-flow-control) | 6 | Planned |
 | [`foreach-processing-and-choice-routing`](../foreach-processing-and-choice-routing) | [`spring-boot-migration/foreach-processing-and-choice-routing`](./foreach-processing-and-choice-routing) | 6 | Planned |

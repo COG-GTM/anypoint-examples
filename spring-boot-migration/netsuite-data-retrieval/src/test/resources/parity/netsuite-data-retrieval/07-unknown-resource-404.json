@@ -1,0 +1,42 @@
+{
+  "name": "unknown-resource-404",
+  "description": "A path not declared in the RAML raises NotFoundException -> 404 {\"message\": \"Resource not found\"}; NetSuite is not called.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "netsuite-api-main",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (apikit:mapping-exception-strategy netsuite-api-apiKitGlobalExceptionMapping) (apikit:mapping NotFoundException)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/employees"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/CUSTOMER",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/OPPORTUNITY",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

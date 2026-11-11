@@ -1,0 +1,45 @@
+{
+  "name": "add-customer-readme-example",
+  "description": "The README request maps CustomerName to Customer_ID, Customer_Reference_ID and Customer_Name, BusinessEntityName to Business_Entity_Name, and the category/status type+value pairs to ID/@type elements of Put_Customer_Request; the response descriptor is returned as 'Added customer: <descriptor>'.",
+  "source": {
+    "muleApp": "adding-a-new-customer-to-workday-revenue-management",
+    "flow": "add-customer-flow",
+    "evidence": "documented",
+    "reference": "adding-a-new-customer-to-workday-revenue-management/src/main/app/add_a_new_customer.xml (flow add-customer-flow: http:listener path=/ allowedMethods=POST, xml-to-dom, dw 'XML to Workday PutCustomerRequest XML', wd-connector:invoke type=Revenue_Management||Put_Customer, dw 'Extract Customer Name' Put_Customer_Response.Customer_Reference.@Descriptor, set-payload 'Added customer: #[payload]'); adding-a-new-customer-to-workday-revenue-management/README.md (step 5 request body); src/test/resources/sample_data/root_1.xml"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": "<root>\n  <Account>\n    <CustomerName>John Doe</CustomerName>\n    <BusinessEntityName>John Doe</BusinessEntityName>\n    <Customer_Category_Reference_Type>Customer_Category_ID</Customer_Category_Reference_Type>\n    <Customer_Category_Reference_Value>CUSTOMER_CATEGORY-5</Customer_Category_Reference_Value>\n    <Customer_Status_Reference_Type>Business_Entity_Status_Value_ID</Customer_Status_Reference_Type>\n    <Customer_Status_Reference_Value>ACTIVE</Customer_Status_Reference_Value>\n  </Account>\n</root>"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml; charset=utf-8"
+      },
+      "bodyFile": "bodies/put-customer-response-john-doe.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/ccx/service/parity_tenant/Revenue_Management/v25.1",
+      "headers": {
+        "Content-Type": "~text/xml.*"
+      },
+      "bodyFormat": "XML",
+      "bodyFile": "bodies/put-customer-john-doe.xml"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Added customer: John Doe"
+  }
+}

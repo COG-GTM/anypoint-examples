@@ -1,0 +1,36 @@
+{
+  "name": "header-only-file",
+  "description": "A CSV with only the header row maps to an empty list: foreach makes no Dynamics calls and the file is still moved to the output directory.",
+  "source": {
+    "muleApp": "import-contacts-into-ms-dynamics",
+    "flow": "crm-create-account",
+    "evidence": "documented",
+    "reference": "import-contacts-into-ms-dynamics/src/main/app/import-contacts-into-ms-dynamics.xml (flow crm-create-account: file:inbound-endpoint moveToDirectory=src/main/resources/output, dw 'CSV To Map' firstname/lastname<-surname/businessphone<-phone/email, foreach dynamicscrm:create logicalName=contact attributes firstname/lastname/emailaddress1/telephone1)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "empty.csv",
+    "body": "firstname,surname,phone,email\n"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "status": 204,
+      "headers": {
+        "OData-EntityId": "https://yourorg.crm.dynamics.com/api/data/v9.2/contacts(00000000-0000-0000-0000-000000000001)"
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/api/data/v9.2/contacts",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 0,
+    "bodyFormat": "IGNORE"
+  }
+}

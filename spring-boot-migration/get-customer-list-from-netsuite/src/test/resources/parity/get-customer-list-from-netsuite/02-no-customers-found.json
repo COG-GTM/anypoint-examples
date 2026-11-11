@@ -1,0 +1,45 @@
+{
+  "name": "no-customers-found",
+  "description": "When the NetSuite query returns no records the DataWeave 'otherwise' branch renders a single 'No customers found' row. The page is matched in document order (rows and cells may not be reordered); only whitespace between tags is free, since the exact indentation of DataWeave's XML writer isn't documented. bodies/no-customers.html is the readable form of the expected page.",
+  "source": {
+    "muleApp": "get-customer-list-from-netsuite",
+    "flow": "get-customer-list-from-netsuiteFlow",
+    "evidence": "documented",
+    "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (flow get-customer-list-from-netsuiteFlow: expression-filter, netsuite:query, dw:transform-message, parse-template customer/index.html); src/main/resources/customer/index.html (DataWeave: line: ... unless (payload is :empty) otherwise { tr: { td: 'No customers found' } })"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/customers?lastName=Zz"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "items": []
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/rest/query/v1/suiteql",
+      "bodyFormat": "JSON",
+      "body": {
+        "q": "SELECT email,firstName,lastName FROM CUSTOMER WHERE lastName like 'Zz%' ORDER BY lastName ASC"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/html.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~(?s)\\s*<!\\-\\-\\\n\\\n\\ \\ \\ \\ MuleSoft\\ Examples\\\n\\ \\ \\ \\ Copyright\\ 2014\\ MuleSoft,\\ Inc\\.\\\n\\\n\\ \\ \\ \\ This\\ product\\ includes\\ software\\ developed\\ at\\\n\\ \\ \\ \\ MuleSoft,\\ Inc\\.\\ \\(http://www\\.mulesoft\\.com/\\)\\.\\\n\\\n\\-\\->\\s*<html>\\s*<body>\\s*<h1>\\s*Netsuite\\ Customer\\ List\\s*</h1>\\s*<table>\\s*<thead>\\s*<tr>\\s*<th>\\s*Last\\ Name\\s*</th>\\s*<th>\\s*First\\ Name\\s*</th>\\s*<th>\\s*Email\\s*</th>\\s*</tr>\\s*</thead>\\s*<tbody>\\s*<div>\\s*<line>\\s*<tr>\\s*<td>\\s*No\\ customers\\ found\\s*</td>\\s*</tr>\\s*</line>\\s*</div>\\s*</tbody>\\s*</table>\\s*</body>\\s*</html>\\s*"
+  }
+}

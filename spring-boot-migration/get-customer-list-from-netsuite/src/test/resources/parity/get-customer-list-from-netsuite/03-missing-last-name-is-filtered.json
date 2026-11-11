@@ -1,0 +1,16 @@
+{
+  "name": "missing-last-name-is-filtered",
+  "description": "Without a lastName query parameter the expression-filter stops the message: NetSuite is never called and the listener answers 200 with an empty body.",
+  "source": {
+    "muleApp": "get-customer-list-from-netsuite",
+    "flow": "get-customer-list-from-netsuiteFlow",
+    "evidence": "documented",
+    "reference": "get-customer-list-from-netsuite/src/main/app/get-customer-list-from-netsuite.xml (expression-filter #[message.inboundProperties.'http.query.params'.lastName != null]); get-customer-list-from-netsuite/README.md"
+  },
+  "request": { "method": "GET", "path": "/customers" },
+  "downstream": [],
+  "expectedOutbound": [
+    { "method": "POST", "urlPath": "/services/rest/query/v1/suiteql", "count": 0 }
+  ],
+  "expected": { "status": 200, "bodyFormat": "NONE" }
+}

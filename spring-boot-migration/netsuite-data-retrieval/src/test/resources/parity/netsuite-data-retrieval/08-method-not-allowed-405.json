@@ -1,0 +1,42 @@
+{
+  "name": "method-not-allowed-405",
+  "description": "POST on a GET-only resource raises MethodNotAllowedException -> 405 {\"message\": \"Method not allowed\"}.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "netsuite-api-main",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (apikit:mapping-exception-strategy netsuite-api-apiKitGlobalExceptionMapping) (apikit:mapping MethodNotAllowedException); netsuite-data-retrieval/src/main/api/netsuite-api.raml (/customers declares only get)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/customers"
+  },
+  "downstream": [],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/CUSTOMER",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "count": 0
+    },
+    {
+      "method": "POST",
+      "urlPath": "/search/OPPORTUNITY",
+      "count": 0
+    }
+  ],
+  "expected": {
+    "status": 405,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Method not allowed"
+    }
+  }
+}

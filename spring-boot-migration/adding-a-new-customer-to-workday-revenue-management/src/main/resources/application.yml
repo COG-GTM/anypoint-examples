@@ -1,0 +1,11 @@
+server:
+  port: ${http.port:9090}
+
+# Mule wd-connector:config (wday.* in mule-app.properties).
+wday:
+  hostname: ${WDAY_HOSTNAME:wd2-impl-services1.workday.com}
+  base-url: ${WDAY_BASE_URL:https://${wday.hostname}}
+  tenant: ${WDAY_TENANT:}
+  user: ${WDAY_USER:}
+  password: ${WDAY_PASSWORD:}
+  version: ${WDAY_VERSION:v25.1}

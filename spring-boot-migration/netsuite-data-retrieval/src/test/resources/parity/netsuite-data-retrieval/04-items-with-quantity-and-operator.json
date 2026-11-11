@@ -1,0 +1,50 @@
+{
+  "name": "items-with-quantity-and-operator",
+  "description": "GET /api/items?quantity=5&operator=LESS_THAN_OR_EQUAL_TO passes the operator through and the quantity as a number.",
+  "source": {
+    "muleApp": "netsuite-data-retrieval",
+    "flow": "get:/items:netsuite-api-config",
+    "evidence": "documented",
+    "reference": "netsuite-data-retrieval/src/main/app/netsuite-api.xml (flow get:/items:netsuite-api-config: DataWeave ItemSupplyPlanSearchBasic quantity {operator, searchValue as :number}, searchRecord=ITEM_SUPPLY_PLAN_BASIC); netsuite-data-retrieval/src/main/api/netsuite-api.raml (/items quantity integer default 0, operator enum default GREATER_THAN) -> items-response.json"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/items?quantity=5&operator=LESS_THAN_OR_EQUAL_TO"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "bodyFile": "bodies/items-response.json"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/search/ITEM_SUPPLY_PLAN_BASIC",
+      "headers": {
+        "Content-Type": "~application/json.*",
+        "Authorization": "NLAuth nlauth_account=TSTDRV0001, nlauth_email=parity@example.com, nlauth_signature=parity-secret, nlauth_role=3, nlauth_application_id=00000000-PARITY-APP"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "quantity": {
+          "operator": "LESS_THAN_OR_EQUAL_TO",
+          "searchValue": 5
+        }
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "bodyFile": "bodies/items-response.json"
+  }
+}

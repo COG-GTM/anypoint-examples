@@ -1,0 +1,6 @@
+netsuite:
+  base-url: ${parity.downstream.base-url}
+  email: parity@example.com
+  password: parity-secret
+  account: TSTDRV0001
+  role-id: "3"

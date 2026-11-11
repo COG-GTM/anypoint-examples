@@ -1,0 +1,51 @@
+{
+  "name": "sales-orders-defaults-no-data",
+  "description": "Without parameters APIkit applies the RAML defaults (a single space) and an empty SALES_ORDERS table returns {\"salesOrders\": {\"message\": \"No data found.\"}}.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "get:/salesOrders:sap-api-config",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (flow get:/salesOrders:sap-api-config: DataWeave 'Transform Map to Xml<BAPI_SALESORDER_GETLIST>' CUSTOMER_NUMBER/SALES_ORGANIZATION, functionName=BAPI_SALESORDER_GETLIST, 'salesOrders: SALES_ORDERS.*row map {($$):$} when SALES_ORDERS != \"\" otherwise {message:\"No data found.\"}'); sap-data-retrieval/src/main/resources/sap-api.raml (/salesOrders defaults \" \"); samples inboundPropertiesSO.dwl, BAPI_SALESORDER_GETLIST.xml"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/salesOrders"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "bodyFile": "bodies/BAPI_SALESORDER_GETLIST-empty.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_SALESORDER_GETLIST",
+      "headers": {
+        "Content-Type": "~application/xml.*",
+        "Authorization": "Basic cGFyaXR5LXVzZXI6cGFyaXR5LXNlY3JldA==",
+        "sap-client": "800",
+        "sap-language": "EN"
+      },
+      "bodyFormat": "XML",
+      "body": "<?xml version='1.0' encoding='UTF-8'?><BAPI_SALESORDER_GETLIST><import><CUSTOMER_NUMBER> </CUSTOMER_NUMBER><SALES_ORGANIZATION> </SALES_ORGANIZATION></import></BAPI_SALESORDER_GETLIST>"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "salesOrders": {
+        "message": "No data found."
+      }
+    }
+  }
+}

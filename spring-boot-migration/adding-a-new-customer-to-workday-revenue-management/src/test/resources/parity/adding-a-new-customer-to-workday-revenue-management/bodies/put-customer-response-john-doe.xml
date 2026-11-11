@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Body>
+    <wd:Put_Customer_Response xmlns:wd="urn:com.workday/bsvc" wd:version="v25.1">
+      <wd:Customer_Reference wd:Descriptor="John Doe">
+        <wd:ID wd:type="WID">3e5a1c0b2d8f4a6b9c7d0e1f2a3b4c5d</wd:ID>
+        <wd:ID wd:type="Customer_Reference_ID">John Doe</wd:ID>
+      </wd:Customer_Reference>
+    </wd:Put_Customer_Response>
+  </env:Body>
+</env:Envelope>

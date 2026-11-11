@@ -1,0 +1,71 @@
+{
+  "name": "customers-without-name",
+  "description": "Without 'name' the selection value is the wildcard '*'.",
+  "source": {
+    "muleApp": "sap-data-retrieval",
+    "flow": "get:/customers:sap-api-config",
+    "evidence": "documented",
+    "reference": "sap-data-retrieval/src/main/app/sap-api.xml (flow get:/customers:sap-api-config: DataWeave 'Transform Map to Xml<BAPI_CUSTOMER_FIND>', sap:outbound-endpoint functionName=BAPI_CUSTOMER_FIND xmlVersion=2, DataWeave 'customers: RESULT_TAB.*row map {($$):$}'); samples src/test/resources/sample_data/inboundProperties.dwl, BAPI_CUSTOMER_FIND.xml (FIELDVALUE ... otherwise \"*\")"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/customers?max_count=10"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_CUSTOMER_FIND",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/xml"
+      },
+      "bodyFile": "bodies/BAPI_CUSTOMER_FIND.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/functions/BAPI_CUSTOMER_FIND",
+      "headers": {
+        "Content-Type": "~application/xml.*",
+        "Authorization": "Basic cGFyaXR5LXVzZXI6cGFyaXR5LXNlY3JldA==",
+        "sap-client": "800",
+        "sap-language": "EN"
+      },
+      "bodyFormat": "XML",
+      "body": "<?xml version='1.0' encoding='UTF-8'?><BAPI_CUSTOMER_FIND><import><MAX_CNT>10</MAX_CNT><PL_HOLD>X</PL_HOLD></import><tables><SELOPT_TAB><row><COMP_CODE>0001</COMP_CODE><TABNAME>KNA1</TABNAME><FIELDNAME>NAME1</FIELDNAME><FIELDVALUE>*</FIELDVALUE></row></SELOPT_TAB></tables></BAPI_CUSTOMER_FIND>"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "customers": [
+        {
+          "COMP_CODE": "0001",
+          "TABNAME": "KNA1",
+          "FIELDNAME": "NAME1",
+          "FIELDVALUE": "CustomerName",
+          "CUSTOMER": "10000456",
+          "PSTG_BLK_G": "",
+          "PSTG_BLK_C": "",
+          "DEL_FLAG_G": "",
+          "DEL_FLAG_C": "",
+          "TYPE": "Customer",
+          "ID": "Id",
+          "NUMBER": "1234",
+          "MESSAGE": "Test data preview",
+          "LOG_NO": "",
+          "LOG_MSG_NO": "",
+          "MESSAGE_V1": "",
+          "MESSAGE_V2": "",
+          "MESSAGE_V3": "",
+          "MESSAGE_V4": ""
+        }
+      ]
+    }
+  }
+}
