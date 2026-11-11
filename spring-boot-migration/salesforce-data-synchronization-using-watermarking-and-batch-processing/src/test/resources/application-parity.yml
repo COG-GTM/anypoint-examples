@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:watermarking-parity;DB_CLOSE_DELAY=-1
+poll:
+  enabled: false
+sfdc:
+  user: parity@example.com
+  password: parity-password
+  securityToken: TOKEN123
+  consumerKey: parity-consumer-key
+  consumerSecret: parity-consumer-secret
+  login-url: ${parity.downstream.base-url}

@@ -1,0 +1,9 @@
+sfdc:
+  user: parity@example.com
+  password: parity-password
+  securityToken: TOKEN123
+  consumerKey: parity-consumer-key
+  consumerSecret: parity-consumer-secret
+  login-url: ${parity.downstream.base-url}
+file:
+  polling-frequency: 200

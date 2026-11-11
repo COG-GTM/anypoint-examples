@@ -1,0 +1,489 @@
+{
+  "name": "06-post-more-than-50-records-is-truncated",
+  "description": "51 matching records: Mule's ObjectToString renders a collection with CollectionUtils.toString(collection, 50), i.e. only the first 50 elements followed by ' [..]'. Record key order is the connector HashMap's ({Id, type, Name}).",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "salesforceDataRetrievalFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (flow salesforceDataRetrievalFlow: sfdc:query-all with the MEL query, foreach byte-array-to-string + 'flowVars.response + payload', set-payload #[response], byte-array-to-string, catch-exception-strategy 'Invalid Salesforce query.'); mule-core-3.8.0 org.mule.util.StringMessageUtils#toString(Object) -> CollectionUtils.toString(Collection, 50)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "object=Account&field=&searchKey=Name&searchValue=Acme"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name  from Account where Name like '%Acme%'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 51,
+        "done": true,
+        "records": [
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000001"
+            },
+            "Id": "001A000000000000001",
+            "Name": "Acme 01"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000002"
+            },
+            "Id": "001A000000000000002",
+            "Name": "Acme 02"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000003"
+            },
+            "Id": "001A000000000000003",
+            "Name": "Acme 03"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000004"
+            },
+            "Id": "001A000000000000004",
+            "Name": "Acme 04"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000005"
+            },
+            "Id": "001A000000000000005",
+            "Name": "Acme 05"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000006"
+            },
+            "Id": "001A000000000000006",
+            "Name": "Acme 06"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000007"
+            },
+            "Id": "001A000000000000007",
+            "Name": "Acme 07"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000008"
+            },
+            "Id": "001A000000000000008",
+            "Name": "Acme 08"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000009"
+            },
+            "Id": "001A000000000000009",
+            "Name": "Acme 09"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000010"
+            },
+            "Id": "001A000000000000010",
+            "Name": "Acme 10"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000011"
+            },
+            "Id": "001A000000000000011",
+            "Name": "Acme 11"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000012"
+            },
+            "Id": "001A000000000000012",
+            "Name": "Acme 12"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000013"
+            },
+            "Id": "001A000000000000013",
+            "Name": "Acme 13"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000014"
+            },
+            "Id": "001A000000000000014",
+            "Name": "Acme 14"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000015"
+            },
+            "Id": "001A000000000000015",
+            "Name": "Acme 15"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000016"
+            },
+            "Id": "001A000000000000016",
+            "Name": "Acme 16"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000017"
+            },
+            "Id": "001A000000000000017",
+            "Name": "Acme 17"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000018"
+            },
+            "Id": "001A000000000000018",
+            "Name": "Acme 18"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000019"
+            },
+            "Id": "001A000000000000019",
+            "Name": "Acme 19"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000020"
+            },
+            "Id": "001A000000000000020",
+            "Name": "Acme 20"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000021"
+            },
+            "Id": "001A000000000000021",
+            "Name": "Acme 21"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000022"
+            },
+            "Id": "001A000000000000022",
+            "Name": "Acme 22"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000023"
+            },
+            "Id": "001A000000000000023",
+            "Name": "Acme 23"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000024"
+            },
+            "Id": "001A000000000000024",
+            "Name": "Acme 24"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000025"
+            },
+            "Id": "001A000000000000025",
+            "Name": "Acme 25"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000026"
+            },
+            "Id": "001A000000000000026",
+            "Name": "Acme 26"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000027"
+            },
+            "Id": "001A000000000000027",
+            "Name": "Acme 27"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000028"
+            },
+            "Id": "001A000000000000028",
+            "Name": "Acme 28"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000029"
+            },
+            "Id": "001A000000000000029",
+            "Name": "Acme 29"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000030"
+            },
+            "Id": "001A000000000000030",
+            "Name": "Acme 30"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000031"
+            },
+            "Id": "001A000000000000031",
+            "Name": "Acme 31"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000032"
+            },
+            "Id": "001A000000000000032",
+            "Name": "Acme 32"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000033"
+            },
+            "Id": "001A000000000000033",
+            "Name": "Acme 33"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000034"
+            },
+            "Id": "001A000000000000034",
+            "Name": "Acme 34"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000035"
+            },
+            "Id": "001A000000000000035",
+            "Name": "Acme 35"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000036"
+            },
+            "Id": "001A000000000000036",
+            "Name": "Acme 36"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000037"
+            },
+            "Id": "001A000000000000037",
+            "Name": "Acme 37"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000038"
+            },
+            "Id": "001A000000000000038",
+            "Name": "Acme 38"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000039"
+            },
+            "Id": "001A000000000000039",
+            "Name": "Acme 39"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000040"
+            },
+            "Id": "001A000000000000040",
+            "Name": "Acme 40"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000041"
+            },
+            "Id": "001A000000000000041",
+            "Name": "Acme 41"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000042"
+            },
+            "Id": "001A000000000000042",
+            "Name": "Acme 42"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000043"
+            },
+            "Id": "001A000000000000043",
+            "Name": "Acme 43"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000044"
+            },
+            "Id": "001A000000000000044",
+            "Name": "Acme 44"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000045"
+            },
+            "Id": "001A000000000000045",
+            "Name": "Acme 45"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000046"
+            },
+            "Id": "001A000000000000046",
+            "Name": "Acme 46"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000047"
+            },
+            "Id": "001A000000000000047",
+            "Name": "Acme 47"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000048"
+            },
+            "Id": "001A000000000000048",
+            "Name": "Acme 48"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000049"
+            },
+            "Id": "001A000000000000049",
+            "Name": "Acme 49"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000050"
+            },
+            "Id": "001A000000000000050",
+            "Name": "Acme 50"
+          },
+          {
+            "attributes": {
+              "type": "Account",
+              "url": "/services/data/v61.0/sobjects/Account/001A000000000000051"
+            },
+            "Id": "001A000000000000051",
+            "Name": "Acme 51"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name  from Account where Name like '%Acme%'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "[{Id=001A000000000000001, type=Account, Name=Acme 01}, {Id=001A000000000000002, type=Account, Name=Acme 02}, {Id=001A000000000000003, type=Account, Name=Acme 03}, {Id=001A000000000000004, type=Account, Name=Acme 04}, {Id=001A000000000000005, type=Account, Name=Acme 05}, {Id=001A000000000000006, type=Account, Name=Acme 06}, {Id=001A000000000000007, type=Account, Name=Acme 07}, {Id=001A000000000000008, type=Account, Name=Acme 08}, {Id=001A000000000000009, type=Account, Name=Acme 09}, {Id=001A000000000000010, type=Account, Name=Acme 10}, {Id=001A000000000000011, type=Account, Name=Acme 11}, {Id=001A000000000000012, type=Account, Name=Acme 12}, {Id=001A000000000000013, type=Account, Name=Acme 13}, {Id=001A000000000000014, type=Account, Name=Acme 14}, {Id=001A000000000000015, type=Account, Name=Acme 15}, {Id=001A000000000000016, type=Account, Name=Acme 16}, {Id=001A000000000000017, type=Account, Name=Acme 17}, {Id=001A000000000000018, type=Account, Name=Acme 18}, {Id=001A000000000000019, type=Account, Name=Acme 19}, {Id=001A000000000000020, type=Account, Name=Acme 20}, {Id=001A000000000000021, type=Account, Name=Acme 21}, {Id=001A000000000000022, type=Account, Name=Acme 22}, {Id=001A000000000000023, type=Account, Name=Acme 23}, {Id=001A000000000000024, type=Account, Name=Acme 24}, {Id=001A000000000000025, type=Account, Name=Acme 25}, {Id=001A000000000000026, type=Account, Name=Acme 26}, {Id=001A000000000000027, type=Account, Name=Acme 27}, {Id=001A000000000000028, type=Account, Name=Acme 28}, {Id=001A000000000000029, type=Account, Name=Acme 29}, {Id=001A000000000000030, type=Account, Name=Acme 30}, {Id=001A000000000000031, type=Account, Name=Acme 31}, {Id=001A000000000000032, type=Account, Name=Acme 32}, {Id=001A000000000000033, type=Account, Name=Acme 33}, {Id=001A000000000000034, type=Account, Name=Acme 34}, {Id=001A000000000000035, type=Account, Name=Acme 35}, {Id=001A000000000000036, type=Account, Name=Acme 36}, {Id=001A000000000000037, type=Account, Name=Acme 37}, {Id=001A000000000000038, type=Account, Name=Acme 38}, {Id=001A000000000000039, type=Account, Name=Acme 39}, {Id=001A000000000000040, type=Account, Name=Acme 40}, {Id=001A000000000000041, type=Account, Name=Acme 41}, {Id=001A000000000000042, type=Account, Name=Acme 42}, {Id=001A000000000000043, type=Account, Name=Acme 43}, {Id=001A000000000000044, type=Account, Name=Acme 44}, {Id=001A000000000000045, type=Account, Name=Acme 45}, {Id=001A000000000000046, type=Account, Name=Acme 46}, {Id=001A000000000000047, type=Account, Name=Acme 47}, {Id=001A000000000000048, type=Account, Name=Acme 48}, {Id=001A000000000000049, type=Account, Name=Acme 49}, {Id=001A000000000000050, type=Account, Name=Acme 50} [..]]"
+  }
+}

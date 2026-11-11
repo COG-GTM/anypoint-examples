@@ -1,0 +1,81 @@
+{
+  "name": "04-post-invalid-query-is-caught",
+  "description": "Selecting Name twice (README: 'choosing these fields will result in an invalid query') makes Salesforce reject the SOQL; the catch-exception-strategy answers 200 'Invalid Salesforce query.'.",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "salesforceDataRetrievalFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (flow salesforceDataRetrievalFlow: sfdc:query-all with the MEL query, foreach byte-array-to-string + 'flowVars.response + payload', set-payload #[response], byte-array-to-string, catch-exception-strategy 'Invalid Salesforce query.'); salesforce-data-retrieval/README.md steps 5 and 8"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "object=Contact&field=Name&searchKey=Name&searchValue=young"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "access_token": "00Dparity!SESSION",
+        "instance_url": "{{downstream.base-url}}",
+        "id": "https://login.salesforce.com/id/00Dparity/005parity",
+        "token_type": "Bearer",
+        "issued_at": "1446000000000",
+        "signature": "c2lnbmF0dXJl"
+      }
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name ,Name from Contact where Name like '%young%'"
+      },
+      "status": 400,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": [
+        {
+          "message": "duplicate field selected: Name",
+          "errorCode": "INVALID_FIELD"
+        }
+      ]
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/services/oauth2/token",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/x-www-form-urlencoded.*"
+      },
+      "bodyFormat": "TEXT",
+      "body": "grant_type=password&client_id=parity-consumer-key&client_secret=parity-consumer-secret&username=parity%40example.com&password=parity-passwordTOKEN123"
+    },
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/queryAll",
+      "queryParams": {
+        "q": "SELECT id, name ,Name from Contact where Name like '%young%'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!SESSION"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Invalid Salesforce query."
+  }
+}

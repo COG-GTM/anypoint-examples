@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: import-leads-into-salesforce
+  main:
+    web-application-type: none
+  # Spring Batch job repository (Mule kept batch state in its own queue store)
+  datasource:
+    url: jdbc:h2:mem:import-leads;DB_CLOSE_DELAY=-1
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+# Mule file:inbound-endpoint path / moveToDirectory / pollingFrequency
+file:
+  input-path: src/main/resources/input
+  output-path: src/main/resources/output
+  polling-frequency: 10000
+
+# Mule sfdc:config (username / password / securityToken keep their Mule keys, e.g. -Dsfdc.user=...).
+# The REST API needs a Connected App: consumerKey / consumerSecret are new (see README "Behavioural deltas").
+sfdc:
+  user: ""
+  password: ""
+  securityToken: ""
+  consumerKey: ""
+  consumerSecret: ""
+  login-url: https://login.salesforce.com
+  api-version: "61.0"

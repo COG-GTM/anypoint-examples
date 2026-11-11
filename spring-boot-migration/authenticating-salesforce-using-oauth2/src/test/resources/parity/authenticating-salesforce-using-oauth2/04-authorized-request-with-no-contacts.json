@@ -1,0 +1,56 @@
+{
+  "name": "04-authorized-request-with-no-contacts",
+  "description": "An org without contacts: the query returns no records and the flow answers with a zero count.",
+  "given": {
+    "authorized": {
+      "access_token": "00Dparity!STORED",
+      "refresh_token": "5Aepparity-refresh"
+    }
+  },
+  "source": {
+    "muleApp": "authenticating-salesforce-using-oauth2",
+    "flow": "salesforce-oauthFlow1",
+    "evidence": "documented",
+    "reference": "authenticating-salesforce-using-oauth2/src/main/app/salesforce-oauth.xml (sfdc:config-with-oauth consumerKey=${sfdc.key}, oauth-callback-config domain=localhost localPort=8081 path=oauth2callback; flow salesforce-oauthFlow1: sfdc:authorize authorizationUrl/accessTokenUrl display=PAGE, sfdc:query, foreach logger 'contact: #[payload]', set-payload 'Salesforce query returned #[payload.size()] contacts.')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "downstream": [
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "totalSize": 0,
+        "done": true,
+        "records": []
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "GET",
+      "urlPath": "/services/data/v61.0/query",
+      "queryParams": {
+        "q": "SELECT id,lastname,lastmodifieddate from contact limit 10"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer 00Dparity!STORED"
+      }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Salesforce query returned 0 contacts."
+  }
+}

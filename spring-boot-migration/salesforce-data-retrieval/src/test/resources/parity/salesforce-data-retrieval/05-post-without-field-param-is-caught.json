@@ -1,0 +1,25 @@
+{
+  "name": "05-post-without-field-param-is-caught",
+  "description": "Without a 'field' form parameter, payload.field is null and payload.field.isEmpty() fails while the query is being built, so Salesforce is never called (no downstream request at all) and the catch-exception-strategy answers 'Invalid Salesforce query.'.",
+  "source": {
+    "muleApp": "salesforce-data-retrieval",
+    "flow": "salesforceDataRetrievalFlow",
+    "evidence": "documented",
+    "reference": "salesforce-data-retrieval/src/main/app/salesforce-id-retrieval.xml (flow salesforceDataRetrievalFlow: sfdc:query-all with the MEL query, foreach byte-array-to-string + 'flowVars.response + payload', set-payload #[response], byte-array-to-string, catch-exception-strategy 'Invalid Salesforce query.')"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": "object=Contact&searchKey=Name&searchValue=young"
+  },
+  "downstream": [],
+  "expectedOutbound": [],
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "Invalid Salesforce query."
+  }
+}
