@@ -1,0 +1,49 @@
+{
+  "name": "existing-collection-saves-every-row-in-order",
+  "given": {
+    "existingCollection": true
+  },
+  "description": "When 'customers' already exists the choice router only logs 'Customer Collection already exists.' and foreach saves one document per CSV row, in file order. Columns not named in the DataWeave mapping are dropped.",
+  "source": {
+    "muleApp": "importing-a-CSV-file-into-Mongo-DB",
+    "flow": "csv-to-mongodbFlow1",
+    "evidence": "documented",
+    "reference": "importing-a-CSV-file-into-Mongo-DB/src/main/app/csv-to-mongodb.xml choice 'Should a collection be created?' (otherwise logger) and foreach/mongo:save-object-from-map; README 'Example Use Case'"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "customers.csv"
+    },
+    "body": "firstname,surname,phone,email,city\nJane,Doe,091558780,jane.doe@texasComp.com,Austin\nBob,Doe,094758360,bob.doe@texasComp.com,Dallas\nWill,Doe,097858712,will.doe@texasComp.com,Houston\n"
+  },
+  "expected": {
+    "headers": {
+      "Collection": "customers",
+      "Input-File-Deleted": "true"
+    },
+    "bodyFormat": "JSON",
+    "jsonCompareMode": "STRICT",
+    "body": [
+      {
+        "firstname": "Jane",
+        "surname": "Doe",
+        "phone": "091558780",
+        "email": "jane.doe@texasComp.com"
+      },
+      {
+        "firstname": "Bob",
+        "surname": "Doe",
+        "phone": "094758360",
+        "email": "bob.doe@texasComp.com"
+      },
+      {
+        "firstname": "Will",
+        "surname": "Doe",
+        "phone": "097858712",
+        "email": "will.doe@texasComp.com"
+      }
+    ]
+  }
+}

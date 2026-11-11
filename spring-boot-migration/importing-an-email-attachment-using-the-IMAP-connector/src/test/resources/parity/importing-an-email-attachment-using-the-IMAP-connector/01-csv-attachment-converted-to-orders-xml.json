@@ -1,0 +1,29 @@
+{
+  "name": "csv-attachment-converted-to-orders-xml",
+  "description": "The Mule IT's email (one attachment named 'report', application/octet-stream, content src/main/resources/input.csv) is read from the mailbox and removed from it; the attachment is mapped CSV -> XML by 'Map CSV to XML' (values kept as text, e.g. units 2.0) and written to orders.xml. The IT asserts that exactly one output file appears; the XML content follows the DataWeave script and the orders.xsd shipped with the IT.",
+  "source": {
+    "muleApp": "importing-an-email-attachment-using-the-IMAP-connector",
+    "flow": "imap-to-csvFlow1",
+    "evidence": "munit",
+    "reference": "importing-an-email-attachment-using-the-IMAP-connector/src/test/java/org/mule/examples/ImportingAnEmailAttachmentUsingTheIMAPConnectorIT.java#recieveImapMessage (email built in prepareTest) and src/main/app/imap-to-xml.xml (attachments-list, set-payload #[payload[0].getContent()], dw 'Map CSV to XML', file:outbound-endpoint outputPattern=\"orders.xml\"); deletion = Mule 3 mail connector default deleteReadMessages=\"true\""
+  },
+  "request": {
+    "method": "EMAIL",
+    "path": "INBOX",
+    "headers": {
+      "From": "sender@localhost",
+      "Subject": "This is the IMAP Subject Line!",
+      "Attachment-Name": "report",
+      "Attachment-Content-Type": "application/octet-stream"
+    },
+    "body": "orderId,name,units,pricePerUnit\n1,aaa,2.0,10\n2,bbb,4.15,5\n"
+  },
+  "expected": {
+    "headers": {
+      "File-Name": "orders.xml",
+      "Messages-Left-In-Inbox": "0"
+    },
+    "bodyFormat": "XML",
+    "body": "<?xml version='1.0' encoding='UTF-8'?><orders><order><orderId>1</orderId><name>aaa</name><units>2.0</units><pricePerUnit>10</pricePerUnit></order><order><orderId>2</orderId><name>bbb</name><units>4.15</units><pricePerUnit>5</pricePerUnit></order></orders>"
+  }
+}

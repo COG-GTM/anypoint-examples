@@ -1,0 +1,14 @@
+# jdbc.url / smtp.host / smtp.port come from the test (MySQL 5.7 and GreenMail Testcontainers). mail.* are the values
+# the Mule IT sets (subject "Mule flow completed!").
+spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:parity-db/employees.sql
+smtp:
+  auth: false
+  starttls: false
+mail:
+  from: sender@localhost
+  to: receiver@localhost
+  subject: Mule flow completed!

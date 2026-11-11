@@ -1,0 +1,17 @@
+# Mule sharepoint:online-connection-config keys. The REST client authenticates with an OAuth bearer token
+# (sharepoint.access-token) instead of the connector's username/password login; see README "Behavioural deltas".
+Sharepoint:
+  SiteUrl: ""
+  Username: ""
+  Password: ""
+sharepoint:
+  access-token: ""
+
+# Target folder under "Shared Documents" (the README asks you to replace ${csvImportFolder}, e.g. my_folder).
+csvImportFolder: my_folder
+
+# file:inbound-endpoint "Poll files": path, moveToDirectory, pollingFrequency="10000".
+file:
+  input-dir: src/main/resources/input
+  move-to-dir: src/main/resources/output
+  polling-frequency: 10000

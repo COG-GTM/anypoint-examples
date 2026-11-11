@@ -1,0 +1,44 @@
+{
+  "name": "single-employee-in-request-order",
+  "description": "Any number of <employee> elements at any depth (xpath //employee) is supported; a single employee gives a one-row CSV.",
+  "source": {
+    "muleApp": "querying-a-db-and-attaching-results-to-an-email",
+    "flow": "attachmentsFlow1",
+    "evidence": "documented",
+    "reference": "querying-a-db-and-attaching-results-to-an-email/src/main/app/attachments.xml splitter expression=\"#[xpath('//employee')]\", db:select, collection-aggregator"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": "<employees><employee>Mona Sosa</employee></employees>"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/csv.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  },
+  "expectedEmail": {
+    "headers": {
+      "Subject": "Mule flow completed!",
+      "From": "sender@localhost",
+      "To": "receiver@localhost",
+      "Content-Type": "~multipart/mixed.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  },
+  "expectedAttachment": {
+    "headers": {
+      "File-Name": "employees.csv",
+      "Content-Type": "~text/plain.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  }
+}

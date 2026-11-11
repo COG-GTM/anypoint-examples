@@ -1,0 +1,3 @@
+# imap.* and file.output-dir come from the test (GreenMail Testcontainer over plain IMAP, temp directory).
+imap:
+  check-frequency: 100

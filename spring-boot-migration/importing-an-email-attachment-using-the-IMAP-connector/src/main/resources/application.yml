@@ -1,0 +1,15 @@
+# Mule imaps:inbound-endpoint "Poll emails": host/user/password from ${imap.*}, port="993" over IMAPS,
+# imaps:connector checkFrequency="100".
+imap:
+  protocol: imaps
+  host: ""
+  port: 993
+  user: ""
+  password: ""
+  folder: INBOX
+  check-frequency: 100
+
+# file:outbound-endpoint path="src/test/resources/output" outputPattern="orders.xml".
+file:
+  output-dir: src/test/resources/output
+  output-pattern: orders.xml

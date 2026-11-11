@@ -1,0 +1,12 @@
+server:
+  port: ${http.port:8081}
+
+# Mule cmis:config "openkm": baseUrl / repositoryId as in cmis-document-integration.xml. The Mule app hard-coded the
+# public OpenKM demo account (user3 / pass3); credentials are left blank here, set cmis.username / cmis.password.
+cmis:
+  base-url: http://demo.openkm.com/OpenKM/cmis/atom
+  repository-id: default
+  username: ""
+  password: ""
+  folder-path: /okm:root/
+  document: classpath:mulesoft-logo.jpg

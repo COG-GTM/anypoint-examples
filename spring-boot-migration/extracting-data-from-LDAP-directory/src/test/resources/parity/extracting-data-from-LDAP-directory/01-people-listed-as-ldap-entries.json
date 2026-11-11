@@ -1,0 +1,19 @@
+{
+  "name": "people-listed-as-ldap-entries",
+  "description": "GET / searches ou=people (one level, filter (objectClass=*)) and returns the string form of the aggregated LDAPEntry list: the three people from ldap.ldif with relative DNs, binary userPassword values base64-encoded. Body text is exactly the README sample; entry and attribute order is compared order-insensitively (README 'Behavioural deltas'). The Mule IT asserts the three dn lines are present.",
+  "source": {
+    "muleApp": "extracting-data-from-LDAP-directory",
+    "flow": "ldapFlow1",
+    "evidence": "documented",
+    "reference": "extracting-data-from-LDAP-directory/README.md step 15 (sample output) with src/main/resources/ldap.ldif and src/main/app/ldap.xml (ldap:search baseDn=\"ou=people\" filter=\"(objectClass=*)\", object-to-string); dn lines also asserted in src/test/java/org/mule/examples/ExtractingDataFromLdapDirectoryIT.java#connectAndExtract"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "[dn: cn=mmc,ou=people\nuid: mmc\nsn: mmc\nuserPassword:: bW1jMTIz\ncn: mmc\nobjectClass: top\nobjectClass: person\nobjectClass: organizationalPerson\nobjectClass: inetOrgPerson\n\n, dn: cn=testuser1,ou=people\nuid: testuser1\nsn: testuser1\nuserPassword:: dGVzdHVzZXIxMTIz\ncn: testuser1\nobjectClass: top\nobjectClass: person\nobjectClass: organizationalPerson\nobjectClass: inetOrgPerson\n\n, dn: cn=admin,ou=people\nuid: admin\nsn: admin\nuserPassword:: bW1jYWRtaW4=\ncn: admin\nobjectClass: top\nobjectClass: person\nobjectClass: organizationalPerson\nobjectClass: inetOrgPerson\n\n]"
+  }
+}

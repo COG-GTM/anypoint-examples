@@ -1,0 +1,10 @@
+# smtp.host / smtp.port / file.input-dir come from the test (GreenMail Testcontainer, temp directory). Values below
+# are the ones the Mule IT sets (mail.subject "Mule flow completed!").
+smtp:
+  starttls: false
+mail:
+  from: sender@localhost
+  to: receiver@localhost
+  subject: Mule flow completed!
+file:
+  polling-frequency: 100

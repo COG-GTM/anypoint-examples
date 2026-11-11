@@ -1,0 +1,5 @@
+# ftp.* (protocol, host, port) are set per test class from the embedded FTP server / SFTP container.
+ftp:
+  user: demo
+  password: demo
+  path: /Upload/

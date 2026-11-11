@@ -1,0 +1,29 @@
+{
+  "name": "sample-orders-emailed-as-list",
+  "description": "input.csv is read (and deleted), mapped to a list of maps with numeric pricePerUnit/units/totalPrice, and sent as a text email from mail.from to mail.to with mail.subject. The Mule IT reads the newest message over IMAP and asserts its body (trimmed) equals src/main/resources/email.txt.",
+  "source": {
+    "muleApp": "sending-a-csv-file-through-email-using-smtp",
+    "flow": "csv-to-smtpFlow",
+    "evidence": "munit",
+    "reference": "sending-a-csv-file-through-email-using-smtp/src/test/java/org/mule/examples/SendingACsvFileThroughEmailUsingSmtpIT.java#sendCSVFile (assertEquals(TEST_EMAIL_BODY = src/main/resources/email.txt, message.trim()); mail.subject 'Mule flow completed!' set in init()); input src/main/resources/input.csv"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "input.csv"
+    },
+    "body": "orderId,name,units,pricePerUnit\n1,aaa,2.0,10\n2,bbb,4.15,5\n"
+  },
+  "expected": {
+    "headers": {
+      "Subject": "Mule flow completed!",
+      "From": "sender@localhost",
+      "To": "receiver@localhost",
+      "Content-Type": "~text/plain.*",
+      "Input-File-Deleted": "true"
+    },
+    "bodyFormat": "TEXT",
+    "body": "[{name=aaa, orderId=1, pricePerUnit=10, units=2, totalPrice=20}, {name=bbb, orderId=2, pricePerUnit=5, units=4.15, totalPrice=20.75}]"
+  }
+}

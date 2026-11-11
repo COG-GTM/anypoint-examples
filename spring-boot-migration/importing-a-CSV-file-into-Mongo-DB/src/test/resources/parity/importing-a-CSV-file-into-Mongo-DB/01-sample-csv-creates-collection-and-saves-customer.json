@@ -1,0 +1,34 @@
+{
+  "name": "sample-csv-creates-collection-and-saves-customer",
+  "description": "input.csv from the Mule project is picked up from the input directory and deleted; the 'customers' collection does not exist yet so it is created (choice 'when' branch), then the single row is saved as {firstname, surname, phone, email} with string values (leading zero of the phone kept). The Mule IT asserts exactly one document.",
+  "source": {
+    "muleApp": "importing-a-CSV-file-into-Mongo-DB",
+    "flow": "csv-to-mongodbFlow1",
+    "evidence": "munit",
+    "reference": "importing-a-CSV-file-into-Mongo-DB/src/test/java/org/mule/examples/ImportCSVfileIntoMongoDBIT.java#sendCSVFile (assertEquals(1, collection.getCount())) with src/main/resources/input.csv; field mapping from src/main/app/csv-to-mongodb.xml dw:transform-message 'CSV to Map'; collection creation from the enricher/choice around mongo:exists-collection"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "input.csv"
+    },
+    "body": "firstname,surname,phone,email\nJohn,Doe,096548763,john.doe@texasComp.com\n"
+  },
+  "expected": {
+    "headers": {
+      "Collection": "customers",
+      "Input-File-Deleted": "true"
+    },
+    "bodyFormat": "JSON",
+    "jsonCompareMode": "STRICT",
+    "body": [
+      {
+        "firstname": "John",
+        "surname": "Doe",
+        "phone": "096548763",
+        "email": "john.doe@texasComp.com"
+      }
+    ]
+  }
+}

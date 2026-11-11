@@ -1,0 +1,16 @@
+# file:inbound-endpoint "Poll files": path="src/main/resources/input", Mule default pollingFrequency 1000 ms.
+file:
+  input-dir: src/main/resources/input
+  polling-frequency: 1000
+
+# smtp:outbound-endpoint "Send an email via SMTP" on the Gmail connector (STARTTLS), port="587".
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  user: ""
+  password: ""
+  starttls: true
+mail:
+  from: ""
+  to: ""
+  subject: ""

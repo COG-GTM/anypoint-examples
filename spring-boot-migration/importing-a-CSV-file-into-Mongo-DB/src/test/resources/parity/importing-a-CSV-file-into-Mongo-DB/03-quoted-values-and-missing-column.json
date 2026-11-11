@@ -1,0 +1,34 @@
+{
+  "name": "quoted-values-and-missing-column",
+  "description": "DataWeave's CSV reader honours double quotes (a comma inside a value) and maps a column that is absent from the header to null, which save-object-from-map stores as a null field.",
+  "source": {
+    "muleApp": "importing-a-CSV-file-into-Mongo-DB",
+    "flow": "csv-to-mongodbFlow1",
+    "evidence": "documented",
+    "reference": "importing-a-CSV-file-into-Mongo-DB/src/main/app/csv-to-mongodb.xml dw:transform-message 'CSV to Map' (phone: $.phone with no phone column)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "input.csv"
+    },
+    "body": "firstname,surname,email\nTim,\"Doe, Jr.\",tim.doe@texasComp.com\n"
+  },
+  "expected": {
+    "headers": {
+      "Collection": "customers",
+      "Input-File-Deleted": "true"
+    },
+    "bodyFormat": "JSON",
+    "jsonCompareMode": "STRICT",
+    "body": [
+      {
+        "firstname": "Tim",
+        "surname": "Doe, Jr.",
+        "phone": null,
+        "email": "tim.doe@texasComp.com"
+      }
+    ]
+  }
+}
