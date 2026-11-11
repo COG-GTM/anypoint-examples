@@ -7,7 +7,6 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +31,7 @@ public class CustomBusinessEventsController {
         this.events = events;
     }
 
-    @RequestMapping(path = "/customBusinessEvents", produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(path = "/customBusinessEvents")
     public String track(@RequestBody String body) throws JsonProcessingException {
         @SuppressWarnings("unchecked")
         Map<String, Object> payload = objectMapper.readValue(body, HashMap.class);
