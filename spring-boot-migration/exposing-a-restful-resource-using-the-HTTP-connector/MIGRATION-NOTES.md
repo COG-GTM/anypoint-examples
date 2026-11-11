@@ -11,7 +11,7 @@
 | `spring:bean personDataStore` (HashMap) + `personId` (AtomicInteger) | `PersonStore` (`ConcurrentSkipListMap` + `AtomicInteger`) | Ordered map, so lists come back in id order, which is how a HashMap of small Integer keys iterates |
 | `http:listener allowedMethods="GET" path="/person"` + `json:object-to-json-transformer` (`retrievePersonsFlow`) | `PersonController#all` (`@GetMapping("/person")`), Jackson |  |
 | `http:listener allowedMethods="POST" path="/person"` + `http:response-builder statusCode=201` + `Location` header (`storePersonFlow`) | `PersonController#create` (`@PostMapping`, `ResponseEntity.status(201).header("Location", ...)`) | `Location` stays hard-coded to `http://0.0.0.0:8081/person/<id>`, as in the Mule XML |
-| `json:json-to-object-transformer returnClass=org.mule.examples.Person` | `@RequestBody String` + `ObjectMapper.readValue(body, Person.class)` (any Content-Type; `int age` coerces `"12"`) |  |
+| `json:json-to-object-transformer returnClass=org.mule.examples.Person` | `@RequestBody byte[]` + `ObjectMapper.readValue(body, Person.class)` (any Content-Type; `int age` coerces `"12"`) |  |
 | `set-payload` success JSON string | `PersonController.CREATED_BODY` | Same literal text |
 | `http:listener path="/person/{personId}"` + `Integer.valueOf(...)` + `logger level=ERROR` (`retrievePersonFlow`) | `PersonController#one` (`@GetMapping("/person/{personId}")`), `log.error("Person id is {}")` |  |
 | `message-filter throwOnUnaccepted` + `rollback-exception-strategy` (404 / `Not Found`) | `Optional.orElseGet(() -> 404 + filter message)` | Body is the README-documented filter message |
@@ -38,6 +38,7 @@
 | 09-create-without-content-type | `text/plain` body still parsed as JSON → 201 | documented |
 | 10-get-created-without-content-type | That person is stored | documented |
 | 11-create-invalid-json-500 | Invalid JSON → 500 | documented |
+| 12-13 *-utf8-* | A UTF-8 body sent as `text/plain` with no charset round-trips unchanged | documented |
 
 ## Behavioural deltas
 

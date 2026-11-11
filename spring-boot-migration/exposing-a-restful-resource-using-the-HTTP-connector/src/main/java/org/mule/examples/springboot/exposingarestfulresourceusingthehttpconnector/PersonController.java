@@ -2,6 +2,7 @@ package org.mule.examples.springboot.exposingarestfulresourceusingthehttpconnect
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,11 @@ public class PersonController {
     /**
      * Mule flow {@code storePersonFlow}; the Location header is hard-coded to 0.0.0.0:8081 exactly as in the Mule
      * response-builder. Like {@code json:json-to-object-transformer}, the body is parsed as JSON whatever its
-     * Content-Type.
+     * Content-Type. Bytes go straight to Jackson, which detects the UTF encoding (Mule declares UTF-8), so a missing
+     * charset doesn't fall back to ISO-8859-1.
      */
     @PostMapping(path = "/person")
-    public ResponseEntity<String> create(@RequestBody String body) throws JsonProcessingException {
+    public ResponseEntity<String> create(@RequestBody byte[] body) throws IOException {
         int id = store.add(mapper.readValue(body, Person.class));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", LOCATION_PREFIX + id)

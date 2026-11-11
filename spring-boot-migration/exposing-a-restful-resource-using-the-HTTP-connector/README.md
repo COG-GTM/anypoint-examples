@@ -21,7 +21,7 @@ OpenAPI: `http://localhost:8081/v3/api-docs`, UI: `/swagger-ui.html`.
 
 ## Parity tests
 
-`RestfulResourceParityTest` replays the 11 stateful fixtures in `src/test/resources/parity/exposing-a-restful-resource-using-the-HTTP-connector/` in file-name order against one store (empty list, create → 201 + `Location: http://0.0.0.0:8081/person/1`, get, second create with a string `age`, list, missing id → 404 with the documented filter message, non-numeric id → 500, PUT → 405, a POST without a JSON `Content-Type` still creating a person, invalid JSON → 500).
+`RestfulResourceParityTest` replays the 13 stateful fixtures in `src/test/resources/parity/exposing-a-restful-resource-using-the-HTTP-connector/` in file-name order against one store (empty list, create → 201 + `Location: http://0.0.0.0:8081/person/1`, get, second create with a string `age`, list, missing id → 404 with the documented filter message, non-numeric id → 500, PUT → 405, a POST without a JSON `Content-Type` still creating a person, invalid JSON → 500, a UTF-8 body sent as `text/plain` keeping its non-ASCII characters).
 
 Run against a live Mule runtime as well: `mvn -pl exposing-a-restful-resource-using-the-HTTP-connector -am verify -Dparity.mule.base-url=http://localhost:8081`.
 

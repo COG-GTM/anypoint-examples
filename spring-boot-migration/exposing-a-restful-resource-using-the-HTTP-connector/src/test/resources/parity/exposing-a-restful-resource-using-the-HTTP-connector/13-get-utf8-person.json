@@ -1,0 +1,29 @@
+{
+  "name": "13-get-utf8-person",
+  "description": "The non-ASCII names read back unchanged.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (retrievePersonFlow: personDataStore.get(personId))"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person/4"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": {
+      "firstname": "José",
+      "lastname": "Müller",
+      "address": {
+        "streetAddress": "Straße 1",
+        "city": "Zürich",
+        "state": "ZH",
+        "zipCode": "8001"
+      },
+      "age": 40
+    }
+  }
+}
