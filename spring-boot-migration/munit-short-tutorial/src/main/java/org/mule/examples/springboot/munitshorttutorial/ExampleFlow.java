@@ -1,6 +1,5 @@
 package org.mule.examples.springboot.munitshorttutorial;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,7 @@ public class ExampleFlow {
         this.exampleFlow2 = exampleFlow2;
     }
 
-    @GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(path = "/")
     public String receive(@RequestParam(name = "url_key", required = false) String urlKey) {
         return process(new FlowEvent(urlKey)).getPayload().toString();
     }

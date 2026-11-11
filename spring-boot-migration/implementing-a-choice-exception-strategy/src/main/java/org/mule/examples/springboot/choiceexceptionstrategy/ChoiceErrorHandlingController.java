@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +29,7 @@ public class ChoiceErrorHandlingController {
         this.renderer = renderer;
     }
 
-    @PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    @PostMapping(path = "/")
     public ResponseEntity<String> handle(@RequestBody String body) throws JsonProcessingException {
         @SuppressWarnings("unchecked")
         Map<String, Object> order = objectMapper.readValue(body, LinkedHashMap.class);
