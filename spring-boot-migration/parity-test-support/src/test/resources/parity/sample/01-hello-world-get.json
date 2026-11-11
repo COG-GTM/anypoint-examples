@@ -1,0 +1,12 @@
+{
+  "name": "hello-world-get",
+  "description": "GET /helloWorld returns the constant payload 'Hello World'.",
+  "source": {
+    "muleApp": "hello-world",
+    "flow": "HelloWorldFlow1",
+    "evidence": "documented",
+    "reference": "hello-world/src/main/app/HelloWorld.xml (set-payload value=\"Hello World\"); hello-world/README.md"
+  },
+  "request": { "method": "GET", "path": "/helloWorld" },
+  "expected": { "status": 200, "bodyFormat": "TEXT", "body": "Hello World" }
+}

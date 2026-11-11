@@ -10,3 +10,5 @@ These examples are also available from Mulesoft Exchange and can be imported to 
 
 You may also access the README.md file from the folder for each of these examples.
 The README.md file contains the use case and instructions on how to setup and run these examples.
+
+Spring Boot 3 / Java 17 versions of these examples, each with parity tests against the original Mule behaviour, live in [`spring-boot-migration/`](spring-boot-migration/README.md).

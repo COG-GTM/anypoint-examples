@@ -1,0 +1,9 @@
+# Shared defaults imported by every AbstractParityTest (spring.config.import).
+# Module-specific overrides go in the module's src/test/resources/application-parity.yml.
+spring:
+  main:
+    banner-mode: off
+logging:
+  level:
+    root: WARN
+    org.mule.examples.springboot: INFO
