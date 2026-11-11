@@ -1,0 +1,9 @@
+{
+  "name": "GET /authorization?onCompleteRedirectTo=... answers 302 to Box authorize with client_id, encoded state, custom parameters and redirect_uri",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "oauth2:authorization-request (localAuthorizationUrl listener)", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (authorizationUrl=https://www.box.com/api/oauth2/authorize, localAuthorizationUrl=https://localhost:8082/authorization, redirectionUrl=https://localhost:8082/redirectUrl, custom-parameters box_device_id=1 box_device_name=device1); Mule 3.8 AuthorizationRequestHandler (302) + AuthorizationRequestUrlBuilder (response_type, client_id, state, custom params, redirect_uri; URLEncoder values) + StateEncoder (':onCompleteRedirectTo=' suffix)" },
+  "request": { "method": "GET", "path": "/authorization?onCompleteRedirectTo=http://localhost:8081/web/loginDone" },
+  "expected": {
+    "status": 302,
+    "headers": { "Location": "https://www.box.com/api/oauth2/authorize?response_type=code&client_id=parity-box-id&state=%3AonCompleteRedirectTo%3Dhttp%3A%2F%2Flocalhost%3A8081%2Fweb%2FloginDone&box_device_id=1&box_device_name=device1&redirect_uri=https%3A%2F%2Flocalhost%3A8082%2FredirectUrl" }
+  }
+}

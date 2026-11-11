@@ -1,0 +1,10 @@
+{
+  "name": "GET /web/loginDone before any authorization fails with 500 'No access token for the default user'",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "userLoginDoneFlow", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml (http:request on HTTP_Request_Configuration_HTTPS with oauth2:authorization-code-grant-type); Mule 3.8 DefaultAuthorizationCodeGrantType#authenticate throws RequestAuthenticationException 'No access token for the %s user...' for resource owner 'default'; HttpMessageProcessorTemplate#sendFailureResponseToClient answers 500 with the exception message" },
+  "request": { "method": "GET", "path": "/web/loginDone" },
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "~.*No access token for the default user\\. Verify that you have authenticated the user before trying to execute an operation to the API\\..*"
+  }
+}

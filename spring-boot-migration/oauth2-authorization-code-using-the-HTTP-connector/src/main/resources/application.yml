@@ -1,0 +1,35 @@
+# Mule: http-authorization-code-web.xml / mule-app.properties
+server:
+  # HTTP_Listener_Configuration (localhost:8081)
+  port: ${http.port:8081}
+
+# Mule property names kept so existing mule-app.properties values carry over.
+box:
+  id: ${box.id:}
+  secret: ${box.secret:}
+  # HTTP_Request_Configuration_HTTPS: https://api.box.com:443, basePath /2.0
+  api-base-url: https://api.box.com/2.0
+  # oauth2:authorization-request / oauth2:token-request
+  authorization-url: https://www.box.com/api/oauth2/authorize
+  token-url: https://www.box.com/api/oauth2/token
+
+oauth:
+  # oauth2:authorization-code-grant-type redirectionUrl / localAuthorizationUrl. Mule opens a listener
+  # on the host:port of these URLs; Spring adds a second Tomcat connector for that port.
+  redirection-url: https://localhost:8082/redirectUrl
+  local-authorization-url: https://localhost:8082/authorization
+  callback:
+    connector-enabled: true
+    # tls:context key-store (keystore.jks). Without a key store the callback connector is plain HTTP.
+    ssl:
+      key-store: ${keystore.path:}
+      key-store-password: ${keystore.password:}
+      key-password: ${keystore.keyPassword:}
+
+web:
+  # boxUserLoginFlow response-builder Location header
+  login-redirect-location: https://localhost:8082/authorization?onCompleteRedirectTo=http://localhost:8081/web/loginDone
+
+spring:
+  application:
+    name: oauth2-authorization-code-using-the-HTTP-connector

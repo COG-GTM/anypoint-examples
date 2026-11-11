@@ -1,0 +1,16 @@
+{
+  "name": "GET /web/loginDone when Box search answers 500 fails with 500 'Response code 500 mapped as failure'",
+  "source": { "muleApp": "oauth2-authorization-code-using-the-HTTP-connector", "flow": "userLoginDoneFlow", "evidence": "documented", "reference": "oauth2-authorization-code-using-the-HTTP-connector/src/main/app/http-authorization-code-web.xml; Mule 3.8 SuccessStatusCodeValidator (success 0..399, ResponseValidatorException 'Response code %d mapped as failure') and HttpMessageProcessorTemplate#sendFailureResponseToClient (500, exception message); 500 does not match the default refreshTokenWhen (401/403)" },
+  "request": { "method": "GET", "path": "/web/loginDone" },
+  "downstream": [
+    { "method": "GET", "urlPath": "/2.0/search", "queryParams": { "query": "mule" }, "status": 500, "body": "box down" }
+  ],
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "~Response code 500 mapped as failure\\..*"
+  },
+  "expectedOutbound": [
+    { "method": "GET", "urlPath": "/2.0/search", "queryParams": { "query": "mule" }, "headers": { "Authorization": "Bearer box-access-1" } }
+  ]
+}

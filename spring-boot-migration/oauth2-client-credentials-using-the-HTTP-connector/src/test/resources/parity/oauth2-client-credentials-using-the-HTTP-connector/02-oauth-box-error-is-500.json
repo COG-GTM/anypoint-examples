@@ -1,0 +1,21 @@
+{
+  "name": "GET /oauth when Box answers 404 fails the flow with 500 'Response code 404 mapped as failure'",
+  "source": {
+    "muleApp": "oauth2-client-credentials-using-the-HTTP-connector",
+    "flow": "httpclientcredentialsFlow",
+    "evidence": "documented",
+    "reference": "oauth2-client-credentials-using-the-HTTP-connector/src/main/app/http-client-credentials.xml (rollback-exception-strategy only logs); Mule 3.8 SuccessStatusCodeValidator (success 0..399) throws ResponseValidatorException 'Response code %d mapped as failure'; HttpMessageProcessorTemplate#sendFailureResponseToClient answers 500 with the exception message as payload"
+  },
+  "request": { "method": "GET", "path": "/oauth" },
+  "downstream": [
+    { "method": "GET", "urlPath": "/api/oauth2/authorize/", "status": 404, "body": "not found" }
+  ],
+  "expected": {
+    "status": 500,
+    "bodyFormat": "TEXT",
+    "body": "~Response code 404 mapped as failure\\..*"
+  },
+  "expectedOutbound": [
+    { "method": "GET", "urlPath": "/api/oauth2/authorize/", "headers": { "Authorization": "Bearer cc-token-1" } }
+  ]
+}

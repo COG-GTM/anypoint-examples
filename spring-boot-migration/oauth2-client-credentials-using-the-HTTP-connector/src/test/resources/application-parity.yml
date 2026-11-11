@@ -1,0 +1,11 @@
+oauth:
+  client:
+    id: parity-client
+    secret: parity-secret
+client:
+  id: parity-fim-client
+box:
+  base-url: ${parity.downstream.base-url}
+  token-url: ${parity.downstream.base-url}/api/oauth2/token
+fim:
+  base-url: ${parity.downstream.base-url}

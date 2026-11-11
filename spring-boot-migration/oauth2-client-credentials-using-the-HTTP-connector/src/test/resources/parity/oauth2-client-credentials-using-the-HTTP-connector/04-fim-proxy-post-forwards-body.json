@@ -1,0 +1,29 @@
+{
+  "name": "POST /FIM/sps/oauth/token is proxied with the same method, body and Content-Type",
+  "source": {
+    "muleApp": "oauth2-client-credentials-using-the-HTTP-connector",
+    "flow": "http-client-credentialsFlow",
+    "evidence": "documented",
+    "reference": "oauth2-client-credentials-using-the-HTTP-connector/src/main/app/http-client-credentials.xml (http:request method=#[message.inboundProperties.'http.method'], payload sent as request body with its mime type)"
+  },
+  "request": {
+    "method": "POST", "path": "/FIM/sps/oauth/token",
+    "headers": { "Content-Type": "application/x-www-form-urlencoded" },
+    "body": "grant_type=password&username=demo"
+  },
+  "downstream": [
+    { "method": "POST", "urlPath": "/FIM/sps/oauth/token", "status": 200,
+      "headers": { "Content-Type": "application/json" }, "body": { "access_token": "fim-token" } }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "~application/json.*" },
+    "bodyFormat": "JSON",
+    "body": { "access_token": "fim-token" }
+  },
+  "expectedOutbound": [
+    { "method": "POST", "urlPath": "/FIM/sps/oauth/token",
+      "headers": { "Content-Type": "~application/x-www-form-urlencoded.*" },
+      "bodyFormat": "TEXT", "body": "grant_type=password&username=demo" }
+  ]
+}

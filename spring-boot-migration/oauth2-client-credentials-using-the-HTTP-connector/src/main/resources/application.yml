@@ -1,0 +1,26 @@
+# Mule: http-client-credentials.xml / mule-app.properties
+server:
+  port: ${http.port:8081}
+
+# Mule property names kept so existing mule-app.properties values carry over.
+oauth:
+  client:
+    id: ${oauth.client.id:}
+    secret: ${oauth.client.secret:}
+client:
+  id: ${client.id:}
+
+box:
+  # HTTP_Request_Configuration: https://app.box.com:443, basePath /api/oauth2/authorize
+  base-url: https://app.box.com
+  base-path: /api/oauth2/authorize
+  # oauth2:token-request tokenUrl
+  token-url: https://app.box.com/api/oauth2/token
+
+fim:
+  # HTTP_Request_Configuration1: https://tfim01.demos.ibm.com:443
+  base-url: https://tfim01.demos.ibm.com
+
+spring:
+  application:
+    name: oauth2-client-credentials-using-the-HTTP-connector
