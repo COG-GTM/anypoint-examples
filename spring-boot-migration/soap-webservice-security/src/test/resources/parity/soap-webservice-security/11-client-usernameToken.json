@@ -1,0 +1,22 @@
+{
+  "name": "client-usernameToken",
+  "description": "SecurityClients flow with clientType=usernameToken calls the matching secured service and returns its greeting as text/plain.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "SecurityClients",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/service-clients.xml (choice on clientType, set-property Content-Type text/plain); soap-webservice-security/src/main/app/mule-config.xml"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/client?clientType=usernameToken&name=Mule"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/plain.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "Hello Mule"
+  }
+}

@@ -1,0 +1,1 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sec="http://security.example.mule.mulesoft.com/"><soapenv:Header/><soapenv:Body><sec:greet><name>Mule</name></sec:greet></soapenv:Body></soapenv:Envelope>

@@ -56,11 +56,11 @@ GreenMail, LDAP, SFTP).
 | [`http-request-response-with-logger`](../http-request-response-with-logger) | [`spring-boot-migration/http-request-response-with-logger`](./http-request-response-with-logger) | 1 | Planned |
 | [`http-multipart-request`](../http-multipart-request) | [`spring-boot-migration/http-multipart-request`](./http-multipart-request) | 1 | Planned |
 | [`login-form-using-the-http-connector`](../login-form-using-the-http-connector) | [`spring-boot-migration/login-form-using-the-http-connector`](./login-form-using-the-http-connector) | 1 | Planned |
-| [`xml-only-soap-webservice`](../xml-only-soap-webservice) | [`spring-boot-migration/xml-only-soap-webservice`](./xml-only-soap-webservice) | 2 | Planned |
-| [`soap-webservice-security`](../soap-webservice-security) | [`spring-boot-migration/soap-webservice-security`](./soap-webservice-security) | 2 | Planned |
-| [`web-service-consumer`](../web-service-consumer) | [`spring-boot-migration/web-service-consumer`](./web-service-consumer) | 2 | Planned |
-| [`proxying-a-soap-api`](../proxying-a-soap-api) | [`spring-boot-migration/proxying-a-soap-api`](./proxying-a-soap-api) | 2 | Planned |
-| [`proxying-a-rest-api`](../proxying-a-rest-api) | [`spring-boot-migration/proxying-a-rest-api`](./proxying-a-rest-api) | 2 | Planned |
+| [`xml-only-soap-webservice`](../xml-only-soap-webservice) | [`spring-boot-migration/xml-only-soap-webservice`](./xml-only-soap-webservice) | 2 | Migrated (deltas) |
+| [`soap-webservice-security`](../soap-webservice-security) | [`spring-boot-migration/soap-webservice-security`](./soap-webservice-security) | 2 | Migrated (deltas) |
+| [`web-service-consumer`](../web-service-consumer) | [`spring-boot-migration/web-service-consumer`](./web-service-consumer) | 2 | Migrated (deltas) |
+| [`proxying-a-soap-api`](../proxying-a-soap-api) | [`spring-boot-migration/proxying-a-soap-api`](./proxying-a-soap-api) | 2 | Migrated (deltas) |
+| [`proxying-a-rest-api`](../proxying-a-rest-api) | [`spring-boot-migration/proxying-a-rest-api`](./proxying-a-rest-api) | 2 | Migrated (deltas) |
 | [`sending-json-data-to-a-jms-queue`](../sending-json-data-to-a-jms-queue) | [`spring-boot-migration/sending-json-data-to-a-jms-queue`](./sending-json-data-to-a-jms-queue) | 3 | Planned |
 | [`sending-json-data-to-a-amqp-queue`](../sending-json-data-to-a-amqp-queue) | [`spring-boot-migration/sending-json-data-to-a-amqp-queue`](./sending-json-data-to-a-amqp-queue) | 3 | Planned |
 | [`jms-message-rollback-and-redelivery`](../jms-message-rollback-and-redelivery) | [`spring-boot-migration/jms-message-rollback-and-redelivery`](./jms-message-rollback-and-redelivery) | 3 | Planned |

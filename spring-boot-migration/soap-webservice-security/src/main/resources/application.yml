@@ -1,0 +1,18 @@
+# Mule: HTTP_Listener_Configuration1 (port 63081, basePath "services") serves the six Greeter services.
+server:
+  port: ${http.port:63081}
+
+security:
+  # Mule: HTTP_Listener_Configuration (port 63080) serves the SecurityClients flow at /client.
+  # -1 = no extra connector (/client is then served on server.port only).
+  client:
+    port: 63080
+  # Mule: HTTP_Request_Configuration (0.0.0.0:63081, basePath "services") used by the client sub-flows.
+  # Blank = http://localhost:<server port>/services.
+  services:
+    base-url: ""
+  # Mule: wssecurity.properties (Merlin crypto) - the original keystore, unchanged.
+  keystore:
+    file: keystore.jks
+    password: keyStorePassword
+    alias: joe

@@ -1,0 +1,1 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><soap:Fault><faultcode>~(.+:)?InvalidSecurity</faultcode><faultstring>~.*&lt;wsse:Security&gt; header.*</faultstring></soap:Fault></soap:Body></soap:Envelope>

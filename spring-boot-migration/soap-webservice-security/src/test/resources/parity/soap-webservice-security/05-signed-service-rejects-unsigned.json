@@ -1,0 +1,28 @@
+{
+  "name": "signed-service-rejects-unsigned",
+  "description": "The signed service rejects a message without a Signature with a <wsse:Security> header fault.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "UsernameTokenSignedServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testUsernameTokenUnsignedError (fault message contains \"<wsse:Security> header\")"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/signed",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "usernameTokenUnsigned"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 500,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/fault-invalid-security.xml"
+  }
+}

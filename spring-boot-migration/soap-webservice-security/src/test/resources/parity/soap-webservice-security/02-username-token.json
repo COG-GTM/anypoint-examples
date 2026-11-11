@@ -1,0 +1,28 @@
+{
+  "name": "username-token",
+  "description": "UsernameToken (joe/secret, digest) + Timestamp accepted.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "UsernameTokenServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (action UsernameToken Timestamp, PasswordCallback); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testUsernameToken"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/username",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "usernameToken"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}

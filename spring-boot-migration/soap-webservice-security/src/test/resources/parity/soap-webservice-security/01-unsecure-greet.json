@@ -1,0 +1,27 @@
+{
+  "name": "unsecure-greet",
+  "description": "No WS-Security: greet(Mule) returns Hello Mule.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "UnsecureServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (UnsecureServiceFlow); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testUnsecure"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/unsecure",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\""
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "username-token-signed",
+  "description": "UsernameToken + Signature (joe key from keystore.jks) + Timestamp accepted.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "UsernameTokenSignedServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (action UsernameToken Signature Timestamp, wssecurity.properties); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testUsernameTokenSigned"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/signed",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "usernameTokenSigned"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}

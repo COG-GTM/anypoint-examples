@@ -1,0 +1,28 @@
+{
+  "name": "saml-token",
+  "description": "Unsigned SAML 2.0 sender-vouches assertion (issuer self, subject AllowGreetingServices) + Timestamp passes SAMLCustomValidator.",
+  "source": {
+    "muleApp": "soap-webservice-security",
+    "flow": "SamlTokenServiceFlow",
+    "evidence": "documented",
+    "reference": "soap-webservice-security/src/main/app/mule-config.xml (action SAMLTokenUnsigned Timestamp, saml2-token-validator samlCustomValidator); soap-webservice-security/src/test/java/com/mulesoft/mule/example/security/SoapWebserviceSecurityIT.java#testSamlToken"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/services/saml",
+    "headers": {
+      "Content-Type": "text/xml;charset=UTF-8",
+      "SOAPAction": "\"\"",
+      "X-Parity-WSS": "samlToken"
+    },
+    "bodyFile": "bodies/greet-request.xml"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/xml.*"
+    },
+    "bodyFormat": "XML",
+    "bodyFile": "bodies/greet-response.xml"
+  }
+}
