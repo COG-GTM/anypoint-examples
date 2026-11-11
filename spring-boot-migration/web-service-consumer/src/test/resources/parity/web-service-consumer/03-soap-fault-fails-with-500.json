@@ -1,0 +1,48 @@
+{
+  "name": "soap-fault-fails-with-500",
+  "description": "A SOAP fault from the T-shirt service makes ws:consumer throw a SoapFaultException; the flow has no exception strategy, so the listener answers 500.",
+  "source": {
+    "muleApp": "web-service-consumer",
+    "flow": "orderTshirt",
+    "evidence": "documented",
+    "reference": "web-service-consumer/src/main/app/tshirt-service-consumer.xml (no exception strategy around ws:consumer); tshirt.wsdl (TshirtFault)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/orders",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "customerID@gmail.com",
+      "address1": "Corrientes 316",
+      "address2": "EP",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "name": "MuleSoft Argentina",
+      "postalCode": "C1043AAQ",
+      "size": "L",
+      "stateOrProvince": "CABA"
+    }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/",
+      "status": 500,
+      "headers": {
+        "Content-Type": "text/xml;charset=UTF-8"
+      },
+      "body": "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><soap:Fault><faultcode>soap:Server</faultcode><faultstring>Invalid API key</faultstring><detail><ns2:TshirtFault xmlns:ns2=\"http://mulesoft.org/tshirt-service\"><errorMessage>Invalid API key</errorMessage></ns2:TshirtFault></detail></soap:Fault></soap:Body></soap:Envelope>"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/"
+    }
+  ],
+  "expected": {
+    "status": 500
+  }
+}

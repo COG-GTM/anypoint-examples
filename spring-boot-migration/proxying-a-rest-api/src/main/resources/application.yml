@@ -1,0 +1,16 @@
+# Mule: http:listener-config port="${http.port}" (documented as 8081), path="/*"
+server:
+  port: ${http.port:8081}
+
+spring:
+  main:
+    web-application-type: servlet
+
+# Mule: http:request-config host="api.box.com" port="443" protocol="HTTPS" with a tls:key-store
+proxy:
+  target:
+    base-url: https://api.box.com
+
+# Optional client key store, same keys as the Mule app
+# (tls:key-store path="keystore.jks" keyPassword="${keystore.password}" password="${keystore.key}"):
+#   keystore.path, keystore.key, keystore.password. Blank keystore.path = no key store.

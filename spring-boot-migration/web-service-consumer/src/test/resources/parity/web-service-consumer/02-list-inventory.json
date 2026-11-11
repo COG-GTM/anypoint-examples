@@ -1,0 +1,48 @@
+{
+  "name": "list-inventory",
+  "description": "POST /inventory invokes ListInventory (generated empty request, SOAPAction list-inventory) and returns payload.ns0#ListInventoryResponse as JSON. DataWeave 1.0 keeps every repeated <inventory> element as a repeated \"inventory\" key, so the body is compared as text (a JSON parser would drop the duplicates).",
+  "source": {
+    "muleApp": "web-service-consumer",
+    "flow": "listInventory",
+    "evidence": "documented",
+    "reference": "web-service-consumer/src/main/app/tshirt-service-consumer.xml (ws:consumer operation=ListInventory; dw %output application/json payload.ns0#ListInventoryResponse); tshirt.wsdl (ListInventory empty sequence, soapAction list-inventory); sample_data/ListInventoryResponse.xml; WebServiceConsumerIT asserts '\"productCode\": \"1412\"', '\"description\": \"Prueba2\"', '\"count\": \"5\"'"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/inventory",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/xml;charset=UTF-8"
+      },
+      "bodyFile": "bodies/list-inventory-response.xml"
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/",
+      "headers": {
+        "Content-Type": "~text/xml.*",
+        "SOAPAction": "~\"?http://mulesoft\\.org/tshirt-service/list-inventory\"?"
+      },
+      "bodyFormat": "XML",
+      "bodyFile": "bodies/list-inventory-request.xml"
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~\\s*\\{\\s*\"inventory\":\\s*\\{\\s*\"productCode\":\\s*\"4102\",\\s*\"size\":\\s*\"L\",\\s*\"description\":\\s*\"Prueba\",\\s*\"count\":\\s*\"2\"\\s*\\},\\s*\"inventory\":\\s*\\{\\s*\"productCode\":\\s*\"1412\",\\s*\"size\":\\s*\"L\",\\s*\"description\":\\s*\"Foo\",\\s*\"count\":\\s*\"9\"\\s*\\},\\s*\"inventory\":\\s*\\{\\s*\"productCode\":\\s*\"5656\",\\s*\"size\":\\s*\"S\",\\s*\"description\":\\s*\"Bar\",\\s*\"count\":\\s*\"2\"\\s*\\},\\s*\"inventory\":\\s*\\{\\s*\"productCode\":\\s*\"5657\",\\s*\"size\":\\s*\"M\",\\s*\"description\":\\s*\"Prueba2\",\\s*\"count\":\\s*\"3\"\\s*\\},\\s*\"inventory\":\\s*\\{\\s*\"productCode\":\\s*\"1411\",\\s*\"size\":\\s*\"M\",\\s*\"description\":\\s*\"Awesome\\ Tshirt\",\\s*\"count\":\\s*\"5\"\\s*\\}\\s*\\}\\s*"
+  }
+}

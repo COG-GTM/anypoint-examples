@@ -1,0 +1,9 @@
+# Mule: http:listener-config port="${http.port}", listener path="/"
+server:
+  port: ${http.port:8081}
+
+# Mule: http:request-config host="www.predic8.com" port="8080", http:request path="shop/ShopService"
+soap:
+  target:
+    base-url: http://www.predic8.com:8080
+    path: /shop/ShopService

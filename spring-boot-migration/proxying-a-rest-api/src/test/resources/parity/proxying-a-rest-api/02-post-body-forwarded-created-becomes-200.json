@@ -1,0 +1,40 @@
+{
+  "name": "post-body-forwarded-created-becomes-200",
+  "description": "POST body is forwarded verbatim. The API answers 201, but copy-headers removes the http.* properties (including http.status) from the response, so the Mule listener answers with its default 200 and the API body.",
+  "source": {
+    "muleApp": "proxying-a-rest-api",
+    "flow": "rest-api-proxy / copy-headers",
+    "evidence": "documented",
+    "reference": "proxying-a-rest-api/src/main/app/proxying-a-rest-api.xml (second flow-ref copy-headers after http:request removes propertyName=\"http.*\"; http:listener has no response-builder statusCode, default 200)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/2.0/folders",
+    "headers": { "Authorization": "Bearer test-token", "Content-Type": "application/json" },
+    "body": { "name": "New Folder", "parent": { "id": "0" } }
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/2.0/folders",
+      "status": 201,
+      "headers": { "Content-Type": "application/json" },
+      "body": { "type": "folder", "id": "11446498", "name": "New Folder" }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/2.0/folders",
+      "headers": { "Authorization": "Bearer test-token", "Content-Type": "~application/json.*" },
+      "bodyFormat": "JSON",
+      "body": { "name": "New Folder", "parent": { "id": "0" } }
+    }
+  ],
+  "expected": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "bodyFormat": "JSON",
+    "body": { "type": "folder", "id": "11446498", "name": "New Folder" }
+  }
+}

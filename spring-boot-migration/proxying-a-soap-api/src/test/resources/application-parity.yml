@@ -1,0 +1,3 @@
+soap:
+  target:
+    base-url: ${parity.downstream.base-url}
