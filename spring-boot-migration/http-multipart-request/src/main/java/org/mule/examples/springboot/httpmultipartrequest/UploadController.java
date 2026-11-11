@@ -3,8 +3,10 @@ package org.mule.examples.springboot.httpmultipartrequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +52,8 @@ public class UploadController {
         byte[] content = file.getBytes();
         String fileName = Paths.get(file.getOriginalFilename()).getFileName().toString();
         Files.createDirectories(uploadDirectory);
-        Files.write(uploadDirectory.resolve(fileName), content);
+        Files.write(uploadDirectory.resolve(fileName), content, StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS);
         return ResponseEntity.ok().body(content);
     }
 }
