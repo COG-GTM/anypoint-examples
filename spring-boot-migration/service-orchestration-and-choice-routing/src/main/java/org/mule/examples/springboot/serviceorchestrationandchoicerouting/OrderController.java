@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,11 +33,14 @@ public class OrderController {
 
     private final OrderOrchestrationFlowConfig.OrderServiceGateway gateway;
     private final OrderRepository repository;
+    private final MessageChannel audit;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public OrderController(OrderOrchestrationFlowConfig.OrderServiceGateway gateway, OrderRepository repository) {
+    public OrderController(OrderOrchestrationFlowConfig.OrderServiceGateway gateway, OrderRepository repository,
+            @Qualifier(OrderOrchestrationFlowConfig.AUDIT) MessageChannel audit) {
         this.gateway = gateway;
         this.repository = repository;
+        this.audit = audit;
     }
 
     @PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
@@ -100,7 +106,12 @@ public class OrderController {
         return "[\"Samsung\",\"Philips\",\"Sony\"]";
     }
 
+    /** A splitter emits nothing for an empty list, so an order without items goes straight to the audit. */
     private Model.Order process(Model.Order order) {
-        return order.orderItems().isEmpty() ? order : gateway.processOrder(order);
+        if (order.orderItems().isEmpty()) {
+            audit.send(MessageBuilder.withPayload(order).build());
+            return order;
+        }
+        return gateway.processOrder(order);
     }
 }

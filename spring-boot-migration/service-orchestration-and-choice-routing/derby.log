@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Nov 11 22:43:21 UTC 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-01a1-ccc7-b16b-00000c5d78b8 
+Wed Nov 11 22:48:56 UTC 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-01a1-cccc-cb8d-000002fb1308 
 on database directory memory:/home/ubuntu/repos/anypoint-examples/spring-boot-migration/service-orchestration-and-choice-routing/sideEffectsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48 
 Loaded from file:/home/ubuntu/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
 java.vendor=Ubuntu
@@ -12,8 +12,8 @@ os.version=6.8.0-1061-aws
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Wed Nov 11 22:43:23 UTC 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance cb76c10e-01a1-ccc7-b16b-00000c5d78b8 
+Wed Nov 11 22:48:57 UTC 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance c4cac113-01a1-cccc-cb8d-000002fb1308 
 on database directory memory:/home/ubuntu/repos/anypoint-examples/spring-boot-migration/service-orchestration-and-choice-routing/muleEmbeddedDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48 
 Loaded from file:/home/ubuntu/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
 java.vendor=Ubuntu

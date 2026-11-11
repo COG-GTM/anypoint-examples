@@ -50,6 +50,7 @@ Other tests: `OrderRoutingTableTest`, `OrderSideEffectsTest`, `ServiceOrchestrat
 - The AJAX (CometD) channels on port 8090 are now plain HTTP endpoints, and the bundled `docroot` demo page is not ported.
 - JMS/XA transactions and ActiveMQ became one local `@Transactional` call. JMS redelivery (`maxRedeliveryAttempts=3`) is not reproduced; an in-house failure returns a SOAP fault (500).
 - Derby runs in memory, not on disk.
+- An order with no items is audited (total 0) directly. A Spring Integration splitter emits nothing for an empty list, while Mule's foreach just fell through to the audit.
 - Mule's `priceService` listener allows only POST, even though `inhouseOrder` calls it with GET. The bundled price service here answers GET so the in-house branch works.
 - `totalValue` is added up as a number. MEL coerced the Samsung `price` string.
 - The Mule IT's `reply.xml` is empty, and `sample-response.json` copies the Samsung receipt onto the Philips item. Fixtures follow the flow logic and the `summary.xml` shape instead.

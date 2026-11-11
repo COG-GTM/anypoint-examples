@@ -56,5 +56,18 @@ class OrderSideEffectsTest {
         }
         assertThat(audits).hasSize(1);
         assertThat(audits.get(0)).containsEntry("ORDER_ID", "77").containsEntry("TOTAL_VALUE", 6690);
+
+        String empty = soap.replaceAll("<orderId>77</orderId>", "<orderId>78</orderId>")
+                .replaceAll("<orderItems>.*</orderItems>", "<orderItems/>");
+        assertThat(http.postForObject("/orders", new HttpEntity<>(empty, headers), String.class))
+                .contains("<orderId>78</orderId>");
+        List<Map<String, Object>> emptyAudit = List.of();
+        for (int i = 0; i < 50 && emptyAudit.isEmpty(); i++) {
+            emptyAudit = jdbc.queryForList("select total_value from order_audits where order_id = '78'");
+            Thread.sleep(100);
+        }
+        assertThat(emptyAudit).hasSize(1);
+        assertThat(emptyAudit.get(0)).containsEntry("TOTAL_VALUE", 0);
+        assertThat(jdbc.queryForObject("select count(*) from orders", Integer.class)).isEqualTo(1);
     }
 }
