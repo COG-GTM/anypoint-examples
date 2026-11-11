@@ -21,7 +21,8 @@ import java.util.Set;
 /**
  * Mule serves the provider (/authorize, /token) on {@code http.provider.port} and the resource
  * listener (/resources, /redirect) on {@code http.listener.port}. Spring adds a second Tomcat
- * connector for the provider port and keeps each path on its Mule port.
+ * connector for the provider port and keeps each path on its Mule port. The listener port serves
+ * only the listener flows, so Spring Authorization Server's extra endpoints stay off it.
  */
 @Configuration
 @ConditionalOnProperty(name = "provider.connector-enabled", havingValue = "true", matchIfMissing = true)
@@ -53,7 +54,7 @@ class ProviderConnectorConfig {
                     throws ServletException, IOException {
                 boolean onProviderPort = request.getLocalPort() == providerPort;
                 String path = request.getRequestURI();
-                if ((onProviderPort && LISTENER_PATHS.contains(path)) || (!onProviderPort && PROVIDER_PATHS.contains(path))) {
+                if ((onProviderPort && LISTENER_PATHS.contains(path)) || (!onProviderPort && !LISTENER_PATHS.contains(path))) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 }

@@ -41,5 +41,8 @@ class ProviderConnectorTest {
         assertThat(status(port, ProviderGrantFlowTest.AUTHORIZE)).isEqualTo(404);
         assertThat(status(PROVIDER_PORT, "/redirect?code=x")).isEqualTo(404);
         assertThat(status(PROVIDER_PORT, "/resources")).isEqualTo(404);
+        assertThat(status(port, "/token")).isEqualTo(404);
+        assertThat(status(port, "/oauth2/introspect")).isEqualTo(404);
+        assertThat(status(port, "/.well-known/oauth-authorization-server")).isEqualTo(404);
     }
 }
