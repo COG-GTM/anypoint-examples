@@ -11,7 +11,7 @@
 | `http:listener path="/api/*"` + `apikit:router config-ref="api-config"` (`api-main`) | `MunitResourceController` (`@RequestMapping("/api/munit")`), the RAML is kept as `src/main/resources/api.raml` | Routes are declared statically instead of being generated from the RAML at runtime |
 | `get/post/put/delete:/munit:api-config` flows with `set-payload` | `MunitResourceController#get/post/put/delete` | 201 for POST/PUT via `@ResponseStatus(CREATED)`, as declared in the RAML |
 | `apikit:mapping-exception-strategy` 404 / 405 / 415 / 406 / 400 | `ApiExceptionMapping` (`@RestControllerAdvice`) for `NoResourceFoundException` / `HttpRequestMethodNotSupportedException` / `HttpMediaTypeNotSupportedException` / `HttpMediaTypeNotAcceptableException` | Same JSON bodies, `Content-Type: application/json` |
-| `apikit:console` (`api-console` flow) | Not migrated | See behavioural deltas |
+| `apikit:console` (`api-console` flow) | springdoc OpenAPI document (`/v3/api-docs`) and Swagger UI (`/swagger-ui.html`) | Generated from the controllers; see behavioural deltas |
 | MUnit `api-test-suite.xml` (`http:request` + `assert-on-equals http.status` + `assert-payload-equals`) | Parity fixtures `01`–`04` (`TestingApikitWithMunitParityTest`) |  |
 
 ## Configuration
@@ -34,5 +34,5 @@
 
 ## Behavioural deltas
 
-- The APIkit console (`/console`) is not migrated.
+- The APIkit console (`/console`) is replaced by springdoc: the OpenAPI document is served at `/v3/api-docs` and Swagger UI at `/swagger-ui.html`. The OpenAPI document is generated from the controllers, not converted from the RAML.
 - Requests are not validated against the RAML at runtime. The RAML declares no request bodies, query parameters or headers, so the only validations APIkit could apply (resource, method, `Accept`) are covered by the controller mappings. The 400 mapping has no Spring trigger, and nothing in the RAML can produce a 415.

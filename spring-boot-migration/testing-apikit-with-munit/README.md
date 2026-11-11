@@ -28,5 +28,5 @@ The parity fixtures under `src/test/resources/parity/testing-apikit-with-munit/`
 
 ## Behavioural deltas
 
-- The APIkit console (`/console`) is not migrated.
+- The APIkit console (`/console`) is replaced by springdoc: the OpenAPI document is served at `/v3/api-docs` and Swagger UI at `/swagger-ui.html`. The OpenAPI document is generated from the controllers, not converted from the RAML.
 - Requests are not validated against the RAML at runtime. The RAML declares no request bodies, query parameters or headers, so the only validations APIkit could apply (resource, method, `Accept`) are covered by the controller mappings. The 400 mapping has no Spring trigger, and nothing in the RAML can produce a 415.
