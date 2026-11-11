@@ -1,0 +1,16 @@
+# Embedded UnboundID directory loaded with the Mule project's src/main/resources/ldap.ldif, bound as the README's
+# cn=Manager/root (the Mule IT starts the same in-memory server). spring.ldap.urls is cleared so the client follows the
+# embedded server's random port.
+spring:
+  ldap:
+    urls: ""
+    embedded:
+      base-dn: dc=my-domain,dc=com
+      ldif: classpath:ldap.ldif
+      port: 0
+      credential:
+        username: cn=Manager,dc=my-domain,dc=com
+        password: root
+ldap:
+  dn: cn=Manager,dc=my-domain,dc=com
+  password: root

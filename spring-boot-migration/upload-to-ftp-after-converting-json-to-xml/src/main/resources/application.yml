@@ -1,0 +1,15 @@
+server:
+  port: ${http.port:8081}
+
+# Values of the Mule ftp:outbound-endpoint "Upload to FTP" (upload-to-ftp.xml); the Mule IT overrides them with the
+# same ftp.* keys.
+ftp:
+  protocol: ftp
+  host: ftp-server.demo.solarwinds.com
+  port: 21
+  user: demo
+  password: demo
+  path: /Upload/
+  output-pattern: muleExample.xml
+  passive: true
+  allow-unknown-keys: false

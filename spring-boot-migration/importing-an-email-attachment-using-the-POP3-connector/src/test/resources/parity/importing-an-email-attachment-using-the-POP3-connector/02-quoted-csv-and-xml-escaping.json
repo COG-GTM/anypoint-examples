@@ -1,0 +1,29 @@
+{
+  "name": "quoted-csv-and-xml-escaping",
+  "description": "A text/csv attachment with a quoted value containing a comma and XML special characters: DataWeave's CSV reader unquotes the value and the XML writer escapes '&', '<' and '>'. orders.xml is overwritten by the newest message.",
+  "source": {
+    "muleApp": "importing-an-email-attachment-using-the-POP3-connector",
+    "flow": "pop-to-xmlFlow1",
+    "evidence": "documented",
+    "reference": "importing-an-email-attachment-using-the-POP3-connector/src/main/app/pop-to-xml.xml dw:transform-message 'Map CSV to XML' and file:outbound-endpoint outputPattern=\"orders.xml\""
+  },
+  "request": {
+    "method": "EMAIL",
+    "path": "INBOX",
+    "headers": {
+      "From": "sender@localhost",
+      "Subject": "This is the POP Subject Line!",
+      "Attachment-Name": "orders.csv",
+      "Attachment-Content-Type": "text/csv"
+    },
+    "body": "orderId,name,units,pricePerUnit\n10,\"Widget, large\",1,99.90\n11,Gadget & Co,3,7\n12,<Thing>,0.5,12.25\n"
+  },
+  "expected": {
+    "headers": {
+      "File-Name": "orders.xml",
+      "Messages-Left-In-Inbox": "0"
+    },
+    "bodyFormat": "XML",
+    "body": "<?xml version='1.0' encoding='UTF-8'?><orders><order><orderId>10</orderId><name>Widget, large</name><units>1</units><pricePerUnit>99.90</pricePerUnit></order><order><orderId>11</orderId><name>Gadget &amp; Co</name><units>3</units><pricePerUnit>7</pricePerUnit></order><order><orderId>12</orderId><name>&lt;Thing&gt;</name><units>0.5</units><pricePerUnit>12.25</pricePerUnit></order></orders>"
+  }
+}

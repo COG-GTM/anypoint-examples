@@ -1,0 +1,31 @@
+server:
+  port: ${http.port:8081}
+
+# Mule db:generic-config "MySQL_Configuration" url="${jdbc.url}" (README: jdbc:mysql://localhost:3306/company?user=...).
+jdbc:
+  url: jdbc:mysql://localhost:3306/company
+
+# smtp:outbound-endpoint "Send an email" on the Gmail connector (STARTTLS); mail.* as in the Mule IT.
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  user: ""
+  password: ""
+  auth: true
+  starttls: true
+mail:
+  from: ""
+  to: ""
+  subject: ""
+
+spring:
+  datasource:
+    url: ${jdbc.url}
+  mail:
+    host: ${smtp.host}
+    port: ${smtp.port}
+    username: ${smtp.user}
+    password: ${smtp.password}
+    properties:
+      mail.smtp.auth: ${smtp.auth}
+      mail.smtp.starttls.enable: ${smtp.starttls}

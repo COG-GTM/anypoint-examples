@@ -1,0 +1,33 @@
+{
+  "name": "post-uploads-logo-and-returns-object-id",
+  "description": "POST /cmis uploads src/main/resources/mulesoft-logo.jpg to /okm:root/ as pic<currentTimeMillis>.jpg (image/jpg, cmis:document, versioning NONE) and returns the created ObjectId as JSON. The Mule IT asserts the body starts with {\"id\":\"/okm:root/pic.",
+  "source": {
+    "muleApp": "document-integration-using-the-cmis-connector",
+    "flow": "CMIS",
+    "evidence": "munit",
+    "reference": "document-integration-using-the-cmis-connector/src/test/java/org/mule/examples/DocumentIntegrationUsingTheCmisConnectorIT.java#httpGetToFlowUrlSentMessage (POST, startsWith {\"id\":\"/okm:root/pic); call attributes from src/main/app/cmis-document-integration.xml cmis:create-document-by-path-from-content; file from the Groovy 'Load file' script"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/cmis"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~\\{\"id\":\"/okm:root/pic\\d+\\.jpg\"\\}"
+  },
+  "expectedCmisCall": {
+    "headers": {
+      "Folder-Path": "/okm:root/",
+      "File-Name": "~pic\\d+\\.jpg",
+      "Mime-Type": "image/jpg",
+      "Object-Type": "cmis:document",
+      "Versioning-State": "NONE",
+      "Content-SHA-256": "b4cc3e7753bf0481a5b5ae744d67e67dd84f71351e2ec3bfc3db65a08380c1f8"
+    },
+    "bodyFormat": "IGNORE"
+  }
+}

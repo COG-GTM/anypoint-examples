@@ -1,0 +1,16 @@
+server:
+  port: ${http.port:8081}
+
+# Mule ldap:config "LDAP": authDn="${ldap.dn}" authPassword="${ldap.password}"
+# url="ldap://localhost:${ldap.port}/dc=my-domain,dc=com" (README: cn=Manager,dc=my-domain,dc=com / root / 389).
+ldap:
+  dn: ""
+  password: ""
+  port: 389
+
+spring:
+  ldap:
+    urls: ldap://localhost:${ldap.port}
+    base: dc=my-domain,dc=com
+    username: ${ldap.dn}
+    password: ${ldap.password}

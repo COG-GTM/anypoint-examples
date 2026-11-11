@@ -1,0 +1,94 @@
+{
+  "name": "any-input-file-name-is-stored-as-contacts-csv",
+  "description": "The SharePoint file name is fixed in the flow (fileServerRelativeUrl ends in /contacts.csv), so a file with another name is still stored as contacts.csv (overwriting it), while the local file keeps its own name in the output folder.",
+  "source": {
+    "muleApp": "importing-a-csv-file-into-ms-sharepoint",
+    "flow": "importing-a-csv-file-into-ms-sharepointFlow",
+    "evidence": "documented",
+    "reference": "importing-a-csv-file-into-ms-sharepoint/src/main/app/importing-a-csv-file-into-ms-sharepoint.xml sharepoint:file-add fileServerRelativeUrl=\"/Shared Documents/${csvImportFolder}/contacts.csv\""
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "new-hires.csv"
+    },
+    "body": "firstname;surname;phone;email\nAda;Lovelace;090000001;ada@texasComp.com\n"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/folders",
+      "status": 201,
+      "headers": {
+        "Content-Type": "application/json;odata=verbose"
+      },
+      "body": {
+        "d": {
+          "__metadata": {
+            "type": "SP.Folder"
+          },
+          "ServerRelativeUrl": "/Shared Documents/parity-import"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/GetFolderByServerRelativeUrl(@folder)/Files/add(url=@file,overwrite=true)",
+      "queryParams": {
+        "@folder": "'/Shared Documents/parity-import'",
+        "@file": "'contacts.csv'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json;odata=verbose"
+      },
+      "body": {
+        "d": {
+          "Name": "contacts.csv",
+          "ServerRelativeUrl": "/Shared Documents/parity-import/contacts.csv"
+        }
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/folders",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/json;odata=verbose.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "__metadata": {
+          "type": "SP.Folder"
+        },
+        "ServerRelativeUrl": "/Shared Documents/parity-import"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/GetFolderByServerRelativeUrl(@folder)/Files/add(url=@file,overwrite=true)",
+      "queryParams": {
+        "@folder": "'/Shared Documents/parity-import'",
+        "@file": "'contacts.csv'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "TEXT",
+      "body": "firstname;surname;phone;email\nAda;Lovelace;090000001;ada@texasComp.com\n"
+    }
+  ],
+  "expected": {
+    "headers": {
+      "File-Name": "new-hires.csv",
+      "Input-File-Remaining": "false"
+    },
+    "bodyFormat": "TEXT",
+    "body": "firstname;surname;phone;email\nAda;Lovelace;090000001;ada@texasComp.com\n"
+  }
+}

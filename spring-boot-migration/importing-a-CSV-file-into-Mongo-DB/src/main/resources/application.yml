@@ -1,0 +1,20 @@
+# Mule mongo:config "Mongo_DB" keys (database.name / database.user / database.password); host/port are the Mule
+# connector defaults (localhost:27017).
+database:
+  name: customers
+  host: localhost
+  port: 27017
+  user: ""
+  password: ""
+
+# file:inbound-endpoint "Poll files": path="src/main/resources/input", Mule default pollingFrequency 1000 ms.
+file:
+  input-dir: src/main/resources/input
+  polling-frequency: 1000
+
+spring:
+  data:
+    mongodb:
+      host: ${database.host}
+      port: ${database.port}
+      database: ${database.name}

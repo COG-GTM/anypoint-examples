@@ -1,0 +1,44 @@
+{
+  "name": "three-employees-queried-and-emailed-as-csv",
+  "description": "The README/IT request names three employees; each is looked up by first and last name, the results are aggregated in request order and written as CSV with a header row and ISO dates (2-digit years stored by MySQL as 20xx). The CSV is the HTTP response, the email's text body and the 'employees.csv' text/plain attachment. Line separators are matched as \\r?\\n because only line contents are documented.",
+  "source": {
+    "muleApp": "querying-a-db-and-attaching-results-to-an-email",
+    "flow": "attachmentsFlow1",
+    "evidence": "munit",
+    "reference": "querying-a-db-and-attaching-results-to-an-email/src/test/java/org/mule/examples/QueryingDbAndAttachingResultsToAnEmailIT.java#attachmentsTest (request src/test/resources/message.xml, DB rows from MySQLDbCreator, asserts the email text part contains 'Chava,Puckett,F,1985-09-02,2008-10-12' and 'Mona,Sosa,M,1950-09-26,2007-11-27'); header row/columns from src/main/app/attachments.xml dw 'Map Collection to CSV' (header=true); set-attachment attachmentName=\"employees.csv\" contentType=\"text/plain\"; object-to-string mimeType=\"text/csv\""
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/xml"
+    },
+    "body": "<root><employees><employee>Chava Puckett</employee><employee>Quentin Puckett</employee><employee>Mona Sosa</employee></employees></root>"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~text/csv.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nChava,Puckett,F,1985-09-02,2008-10-12\\r?\\nQuentin,Puckett,F,1971-10-21,2008-09-15\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  },
+  "expectedEmail": {
+    "headers": {
+      "Subject": "Mule flow completed!",
+      "From": "sender@localhost",
+      "To": "receiver@localhost",
+      "Content-Type": "~multipart/mixed.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nChava,Puckett,F,1985-09-02,2008-10-12\\r?\\nQuentin,Puckett,F,1971-10-21,2008-09-15\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  },
+  "expectedAttachment": {
+    "headers": {
+      "File-Name": "employees.csv",
+      "Content-Type": "~text/plain.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~first_name,last_name,gender,dob,hire_date\\r?\\nChava,Puckett,F,1985-09-02,2008-10-12\\r?\\nQuentin,Puckett,F,1971-10-21,2008-09-15\\r?\\nMona,Sosa,M,1950-09-26,2007-11-27(\\r?\\n)?"
+  }
+}

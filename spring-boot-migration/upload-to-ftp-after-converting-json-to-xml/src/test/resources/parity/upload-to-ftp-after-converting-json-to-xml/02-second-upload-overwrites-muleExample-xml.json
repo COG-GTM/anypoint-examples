@@ -1,0 +1,45 @@
+{
+  "name": "second-upload-overwrites-muleExample-xml",
+  "description": "A second request replaces /Upload/muleExample.xml (fixed outputPattern). DataWeave 'map' over a single object behaves like a one-element array, every address field is copied ('address: $'), and XML special characters are escaped.",
+  "source": {
+    "muleApp": "upload-to-ftp-after-converting-json-to-xml",
+    "flow": "main",
+    "evidence": "documented",
+    "reference": "upload-to-ftp-after-converting-json-to-xml/src/main/app/upload-to-ftp.xml dw:transform-message 'JSON to XML' (address: $) and ftp:outbound-endpoint outputPattern=\"muleExample.xml\""
+  },
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "employees": {
+        "employee": {
+          "name": "Ada & Co",
+          "lastName": "<Lovelace>",
+          "addresses": {
+            "address": {
+              "street": "1 Analytical Engine Way",
+              "zipCode": "999",
+              "country": "UK"
+            }
+          }
+        }
+      }
+    }
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/xml; ?charset=UTF-8"
+    },
+    "bodyFormat": "XML",
+    "body": "<?xml version='1.0' encoding='UTF-8'?><employees><employee><name>Ada &amp; Co</name><lastName>&lt;Lovelace&gt;</lastName><addresses><address><street>1 Analytical Engine Way</street><zipCode>999</zipCode><country>UK</country></address></addresses></employee></employees>"
+  },
+  "expectedUpload": {
+    "path": "/Upload/muleExample.xml",
+    "bodyFormat": "XML",
+    "body": "<?xml version='1.0' encoding='UTF-8'?><employees><employee><name>Ada &amp; Co</name><lastName>&lt;Lovelace&gt;</lastName><addresses><address><street>1 Analytical Engine Way</street><zipCode>999</zipCode><country>UK</country></address></addresses></employee></employees>"
+  }
+}

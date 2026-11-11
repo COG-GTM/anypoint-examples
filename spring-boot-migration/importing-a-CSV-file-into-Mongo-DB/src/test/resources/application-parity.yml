@@ -1,0 +1,3 @@
+# database.host / database.port / file.input-dir come from the test (MongoDB Testcontainer, temp directory).
+file:
+  polling-frequency: 100

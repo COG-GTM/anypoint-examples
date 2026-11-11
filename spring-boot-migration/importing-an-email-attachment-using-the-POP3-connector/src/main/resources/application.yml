@@ -1,0 +1,15 @@
+# Mule pop3s:inbound-endpoint "Poll emails": host/user/password from ${pop3.*}, port="995" over POP3S,
+# pop3s:connector checkFrequency="100".
+pop3:
+  protocol: pop3s
+  host: ""
+  port: 995
+  user: ""
+  password: ""
+  folder: INBOX
+  check-frequency: 100
+
+# file:outbound-endpoint path="src/test/resources/output" outputPattern="orders.xml".
+file:
+  output-dir: src/test/resources/output
+  output-pattern: orders.xml

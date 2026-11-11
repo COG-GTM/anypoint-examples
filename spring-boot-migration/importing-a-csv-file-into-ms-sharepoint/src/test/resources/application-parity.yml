@@ -1,0 +1,6 @@
+# Sharepoint.SiteUrl and the file.* directories are set by the test (WireMock, temp directories).
+csvImportFolder: parity-import
+sharepoint:
+  access-token: parity-token
+file:
+  polling-frequency: 100

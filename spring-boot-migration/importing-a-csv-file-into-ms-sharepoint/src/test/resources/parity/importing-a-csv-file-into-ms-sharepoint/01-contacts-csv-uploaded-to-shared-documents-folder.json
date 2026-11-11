@@ -1,0 +1,94 @@
+{
+  "name": "contacts-csv-uploaded-to-shared-documents-folder",
+  "description": "The sample contacts.csv dropped into the input folder is moved to the output folder; the flow creates '/Shared Documents/${csvImportFolder}' and adds the file content as '/Shared Documents/${csvImportFolder}/contacts.csv' with overwrite=true. The Mule IT reads the file back from SharePoint and asserts it equals the local contacts.csv.",
+  "source": {
+    "muleApp": "importing-a-csv-file-into-ms-sharepoint",
+    "flow": "importing-a-csv-file-into-ms-sharepointFlow",
+    "evidence": "munit",
+    "reference": "importing-a-csv-file-into-ms-sharepoint/src/test/java/org/mule/examples/ImportingCsvFileIntoMSSharepointIT.java#testImport (assertEquals local contacts.csv vs SharePoint content); operations from src/main/app/importing-a-csv-file-into-ms-sharepoint.xml sharepoint:folder-create / sharepoint:file-add overwrite=\"true\"; move from file:inbound-endpoint moveToDirectory"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "contacts.csv"
+    },
+    "body": "firstname;surname;phone;email\nJohn;Doe;096548763;john.doe@texasComp.com\nJane;Doe;091558780;jane.doe@texasComp.com\nBob;Doe;094758360;bob.doe@texasComp.com\nWill;Doe;097858712;will.doe@texasComp.com\nTim;Doe;099658784;tim.doe@texasComp.com"
+  },
+  "downstream": [
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/folders",
+      "status": 201,
+      "headers": {
+        "Content-Type": "application/json;odata=verbose"
+      },
+      "body": {
+        "d": {
+          "__metadata": {
+            "type": "SP.Folder"
+          },
+          "ServerRelativeUrl": "/Shared Documents/parity-import"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/GetFolderByServerRelativeUrl(@folder)/Files/add(url=@file,overwrite=true)",
+      "queryParams": {
+        "@folder": "'/Shared Documents/parity-import'",
+        "@file": "'contacts.csv'"
+      },
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json;odata=verbose"
+      },
+      "body": {
+        "d": {
+          "Name": "contacts.csv",
+          "ServerRelativeUrl": "/Shared Documents/parity-import/contacts.csv"
+        }
+      }
+    }
+  ],
+  "expectedOutbound": [
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/folders",
+      "count": 1,
+      "headers": {
+        "Content-Type": "~application/json;odata=verbose.*",
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "JSON",
+      "body": {
+        "__metadata": {
+          "type": "SP.Folder"
+        },
+        "ServerRelativeUrl": "/Shared Documents/parity-import"
+      }
+    },
+    {
+      "method": "POST",
+      "urlPath": "/_api/web/GetFolderByServerRelativeUrl(@folder)/Files/add(url=@file,overwrite=true)",
+      "queryParams": {
+        "@folder": "'/Shared Documents/parity-import'",
+        "@file": "'contacts.csv'"
+      },
+      "count": 1,
+      "headers": {
+        "Authorization": "Bearer parity-token"
+      },
+      "bodyFormat": "TEXT",
+      "body": "firstname;surname;phone;email\nJohn;Doe;096548763;john.doe@texasComp.com\nJane;Doe;091558780;jane.doe@texasComp.com\nBob;Doe;094758360;bob.doe@texasComp.com\nWill;Doe;097858712;will.doe@texasComp.com\nTim;Doe;099658784;tim.doe@texasComp.com"
+    }
+  ],
+  "expected": {
+    "headers": {
+      "File-Name": "contacts.csv",
+      "Input-File-Remaining": "false"
+    },
+    "bodyFormat": "TEXT",
+    "body": "firstname;surname;phone;email\nJohn;Doe;096548763;john.doe@texasComp.com\nJane;Doe;091558780;jane.doe@texasComp.com\nBob;Doe;094758360;bob.doe@texasComp.com\nWill;Doe;097858712;will.doe@texasComp.com\nTim;Doe;099658784;tim.doe@texasComp.com"
+  }
+}

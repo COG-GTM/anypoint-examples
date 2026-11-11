@@ -1,0 +1,33 @@
+{
+  "name": "browser-get-also-uploads",
+  "description": "The http:listener has no method restriction; the README opens http://localhost:8081/cmis in a browser (GET), which runs the same upload.",
+  "source": {
+    "muleApp": "document-integration-using-the-cmis-connector",
+    "flow": "CMIS",
+    "evidence": "documented",
+    "reference": "document-integration-using-the-cmis-connector/README.md 'Set Up and Run the Example' steps 4-6 and src/main/app/cmis-document-integration.xml http:listener path=\"cmis\" (no allowedMethods)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/cmis"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "TEXT",
+    "body": "~\\{\"id\":\"/okm:root/pic\\d+\\.jpg\"\\}"
+  },
+  "expectedCmisCall": {
+    "headers": {
+      "Folder-Path": "/okm:root/",
+      "File-Name": "~pic\\d+\\.jpg",
+      "Mime-Type": "image/jpg",
+      "Object-Type": "cmis:document",
+      "Versioning-State": "NONE",
+      "Content-SHA-256": "b4cc3e7753bf0481a5b5ae744d67e67dd84f71351e2ec3bfc3db65a08380c1f8"
+    },
+    "bodyFormat": "IGNORE"
+  }
+}

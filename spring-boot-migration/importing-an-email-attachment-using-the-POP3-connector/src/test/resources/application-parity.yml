@@ -1,0 +1,3 @@
+# pop3.* and file.output-dir come from the test (GreenMail Testcontainer over plain POP3, temp directory).
+pop3:
+  check-frequency: 100

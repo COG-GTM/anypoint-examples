@@ -1,0 +1,29 @@
+{
+  "name": "decimal-totals-and-single-email-per-file",
+  "description": "One email per polled file, containing every row. totalPrice = units * pricePerUnit as a number: integral results print without decimals (10 * 0.1 -> 1), others keep their decimals (1.5 * 2.5 -> 3.75); name and orderId stay strings.",
+  "source": {
+    "muleApp": "sending-a-csv-file-through-email-using-smtp",
+    "flow": "csv-to-smtpFlow",
+    "evidence": "documented",
+    "reference": "sending-a-csv-file-through-email-using-smtp/src/main/app/csv-to-smtp.xml dw:transform-message 'Transform CSV to Map' (as :number) and smtp:outbound-endpoint; number rendering as in src/main/resources/email.txt (2.0 -> 2, 2.0*10 -> 20)"
+  },
+  "request": {
+    "method": "FILE",
+    "path": "src/main/resources/input",
+    "headers": {
+      "File-Name": "more-orders.csv"
+    },
+    "body": "orderId,name,units,pricePerUnit\n3,ccc,1.5,2.5\n4,ddd,10,0.1\n5,eee,3,4\n"
+  },
+  "expected": {
+    "headers": {
+      "Subject": "Mule flow completed!",
+      "From": "sender@localhost",
+      "To": "receiver@localhost",
+      "Content-Type": "~text/plain.*",
+      "Input-File-Deleted": "true"
+    },
+    "bodyFormat": "TEXT",
+    "body": "[{name=ccc, orderId=3, pricePerUnit=2.5, units=1.5, totalPrice=3.75}, {name=ddd, orderId=4, pricePerUnit=0.1, units=10, totalPrice=1}, {name=eee, orderId=5, pricePerUnit=4, units=3, totalPrice=12}]"
+  }
+}
