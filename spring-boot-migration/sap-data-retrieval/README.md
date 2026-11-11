@@ -31,7 +31,7 @@ curl 'http://localhost:8081/api/materials?name=Steel&max_count=10'
 | Property | Env var | Default |
 |---|---|---|
 | `server.port` | `-Dhttp.port` | `8081` |
-| `sap.gateway-base-url` | `SAP_GATEWAY_BASE_URL` | `http://${sap.jco.ashost}:8000/sap/bapi` |
+| `sap.gateway-base-url` | `SAP_GATEWAY_BASE_URL` | `https://${sap.jco.ashost}:44300/sap/bapi` |
 | `sap.jco.ashost` / `sap.jco.sysnr` | `SAP_JCO_ASHOST` / `SAP_JCO_SYSNR` | `localhost` / `00` |
 | `sap.jco.client` / `sap.jco.lang` | `SAP_JCO_CLIENT` / `SAP_JCO_LANG` | `800` / `EN` |
 | `sap.jco.user` / `sap.jco.passwd` | `SAP_JCO_USER` / `SAP_JCO_PASSWD` | empty |

@@ -3,7 +3,7 @@ server:
 
 # Mule sap:connector (sap.jco.* in mule-app.properties) + the HTTP gateway that executes the BAPIs.
 sap:
-  gateway-base-url: ${SAP_GATEWAY_BASE_URL:http://${sap.jco.ashost}:8000/sap/bapi}
+  gateway-base-url: ${SAP_GATEWAY_BASE_URL:https://${sap.jco.ashost}:44300/sap/bapi}
   jco:
     ashost: ${SAP_JCO_ASHOST:localhost}
     client: ${SAP_JCO_CLIENT:800}

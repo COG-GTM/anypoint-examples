@@ -32,7 +32,7 @@
 | `sap.jco.client` | `sap.jco.client` (`sap-client` header) | `800` |
 | `sap.jco.lang` | `sap.jco.lang` (`sap-language` header) | `EN` |
 | `sap.jco.user` / `sap.jco.passwd` | `sap.jco.user` / `sap.jco.passwd` (Basic auth) | empty |
-| (none; JCo RFC) | `sap.gateway-base-url` | `http://${sap.jco.ashost}:8000/sap/bapi` |
+| (none; JCo RFC) | `sap.gateway-base-url` | `https://${sap.jco.ashost}:44300/sap/bapi` |
 
 ## Parity coverage
 
