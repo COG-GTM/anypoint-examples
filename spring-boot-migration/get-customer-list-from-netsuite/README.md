@@ -7,7 +7,8 @@ queries NetSuite for customers whose last name starts with the prefix (ordered b
 
 The Mule NetSuite connector (`netsuite:query`) is replaced by `NetSuiteQueryClient`, a typed `WebClient` that POSTs the
 same DSQL query string to NetSuite's SuiteQL REST endpoint (`/services/rest/query/v1/suiteql`, `Prefer: transient`) and
-maps the rows onto `NetSuiteCustomer(email, firstName, lastName)`.
+maps the rows onto `NetSuiteCustomer(email, firstName, lastName)`. It follows SuiteQL paging (`hasMore`/`offset`), so
+every matching customer is returned, as the connector did.
 
 ## Run
 

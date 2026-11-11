@@ -33,6 +33,7 @@
 |---|---|---|
 | `01-customers-by-last-name` | DSQL query + credentials sent to NetSuite; every record rendered as a row, in returned order | documented |
 | `02-no-customers-found` | empty result renders the `No customers found` row | documented |
+| `04-customers-across-result-pages` | all NetSuite result pages are fetched (`hasMore`/`offset`) and rendered in order | documented |
 | `03-missing-last-name-is-filtered` | no `lastName` → empty 200, zero NetSuite calls | documented |
 
 ## Behavioural deltas
