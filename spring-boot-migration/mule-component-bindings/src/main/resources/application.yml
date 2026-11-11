@@ -10,8 +10,8 @@ twitter:
   bearer-token: ${TWITTER_BEARER_TOKEN:}
 stockstats:
   stocklytics:
-    base-url: http://api.stocklytics.com
+    base-url: https://api.stocklytics.com
     api-key: ${STOCKLYTICS_API_KEY:}
   sentiment140:
-    base-url: http://www.sentiment140.com
+    base-url: https://www.sentiment140.com
     app-id: ${SENTIMENT140_APP_ID:}
