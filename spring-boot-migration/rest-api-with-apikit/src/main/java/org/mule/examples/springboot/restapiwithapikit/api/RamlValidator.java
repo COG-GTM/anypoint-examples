@@ -24,9 +24,10 @@ final class RamlValidator {
         return body;
     }
 
+    /** Absent → null; present values (including JSON null) must match the schema's {@code type: string}. */
     static String optionalString(JsonNode body, String field) {
         JsonNode v = body.get(field);
-        if (v == null || v.isNull()) {
+        if (v == null) {
             return null;
         }
         if (!v.isTextual()) {
@@ -35,10 +36,14 @@ final class RamlValidator {
         return v.asText();
     }
 
-    static Integer optionalInteger(JsonNode body, String field) {
+    /**
+     * Absent → 0, the default of the primitive {@code int} fields of {@code org.mule.examples.leagues.request.Score};
+     * present values (including JSON null) must match the schema's {@code type: integer}.
+     */
+    static int integerOrZero(JsonNode body, String field) {
         JsonNode v = body.get(field);
-        if (v == null || v.isNull()) {
-            return null;
+        if (v == null) {
+            return 0;
         }
         if (!v.isIntegralNumber()) {
             throw new BadRequestException(field + " must be an integer");

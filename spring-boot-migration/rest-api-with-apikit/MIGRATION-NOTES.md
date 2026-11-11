@@ -39,6 +39,8 @@
 | 19 unknown-resource-404 | Resource not in RAML | documented |
 | 06-07 create-team / get-created-team | 201 + Location, then visible | documented |
 | 12-14 match | First-round match read, score update 204, updated score | documented |
+| 25-26 partial score | Omitted score stored as 0 (primitive `int` in `Score`) | documented |
+| 27-28 *-null-400 | Explicit JSON null fails the schema `type` → 400 | documented |
 | `LeagueInvariantsTest` | Fixture/positions invariants for random data | documented |
 
 ## Behavioural deltas

@@ -1,0 +1,31 @@
+{
+  "name": "26-get-partial-score-match",
+  "description": "The omitted score reads back as 0, not as missing.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/fixture/{homeTeamId}/{awayTeamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "LeagueAPI.updateScore (match.setAwayTeamScore(score.getAwayTeamScore()) with int 0); response/Match.java"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/fixture/SEV/ATL"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "homeTeam": "SEV",
+      "awayTeam": "ATL",
+      "date": "x",
+      "homeTeamScore": 2,
+      "awayTeamScore": 0
+    },
+    "ignorePaths": [
+      "date"
+    ]
+  }
+}

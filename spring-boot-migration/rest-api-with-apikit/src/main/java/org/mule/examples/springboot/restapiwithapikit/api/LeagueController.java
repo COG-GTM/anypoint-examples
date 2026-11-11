@@ -107,8 +107,8 @@ public class LeagueController {
         RamlValidator.teamCode("homeTeamId", homeTeamId);
         RamlValidator.teamCode("awayTeamId", awayTeamId);
         RamlValidator.object(body);
-        league.updateScore(homeTeamId, awayTeamId, RamlValidator.optionalInteger(body, "homeTeamScore"),
-                RamlValidator.optionalInteger(body, "awayTeamScore"));
+        league.updateScore(homeTeamId, awayTeamId, RamlValidator.integerOrZero(body, "homeTeamScore"),
+                RamlValidator.integerOrZero(body, "awayTeamScore"));
         return ResponseEntity.noContent().build();
     }
 
