@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -27,8 +28,11 @@ class RestApiProxyController {
     private static final Logger log = LoggerFactory.getLogger(RestApiProxyController.class);
 
     private final WebClient api;
+    private final String baseUrl;
 
-    RestApiProxyController(WebClient proxyWebClient) {
+    RestApiProxyController(WebClient proxyWebClient,
+                           @org.springframework.beans.factory.annotation.Value("${proxy.target.base-url}") String baseUrl) {
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         this.api = proxyWebClient;
     }
 
@@ -43,7 +47,8 @@ class RestApiProxyController {
         String uri = request.getRequestURI() + Optional.ofNullable(request.getQueryString()).map(q -> "?" + q).orElse("");
 
         WebClient.RequestBodySpec spec = api.method(HttpMethod.valueOf(request.getMethod()))
-                .uri(uri)
+                // Absolute, already-encoded URI: the String overload would re-encode '%' (e.g. %20 -> %2520).
+                .uri(URI.create(baseUrl + uri))
                 .headers(h -> h.addAll(outbound));
         if (body != null && body.length > 0) {
             spec.bodyValue(body);
