@@ -1,0 +1,5 @@
+springdoc:
+  swagger-ui:
+    enabled: false
+orders:
+  polling-frequency: 200

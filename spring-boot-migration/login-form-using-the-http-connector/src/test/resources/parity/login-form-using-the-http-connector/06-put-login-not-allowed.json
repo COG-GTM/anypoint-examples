@@ -1,0 +1,17 @@
+{
+  "name": "06-put-login-not-allowed",
+  "description": "/login only has GET and POST listeners, so PUT is 405.",
+  "source": {
+    "muleApp": "login-form-using-the-http-connector",
+    "flow": "loginPage/doLogin",
+    "evidence": "documented",
+    "reference": "login-form-using-the-http-connector/src/main/app/login-form-using-the-http-connector.xml (http:listener allowedMethods=GET / allowedMethods=POST on path=/login)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/login"
+  },
+  "expected": {
+    "status": 405
+  }
+}

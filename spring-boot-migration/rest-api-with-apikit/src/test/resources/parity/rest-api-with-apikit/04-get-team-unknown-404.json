@@ -1,0 +1,24 @@
+{
+  "name": "04-get-team-unknown-404",
+  "description": "Unknown team: LeagueAPI throws NotFoundException, mapped to 404 'Resource not found'.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=404 NotFoundException); LeagueAPI.getTeam"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams/XXX"
+  },
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

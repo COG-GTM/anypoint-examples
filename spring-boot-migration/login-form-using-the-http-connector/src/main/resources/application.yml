@@ -1,0 +1,10 @@
+server:
+  port: ${http.port:8081}
+spring:
+  application:
+    name: login-form-using-the-http-connector
+# Mule http:request-config host="0.0.0.0" port="${http.port}": requesterLogin calls this app's own /login.
+# Leave blank to use the actual local server port.
+login:
+  request:
+    base-url:

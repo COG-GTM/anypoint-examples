@@ -1,0 +1,22 @@
+{
+  "name": "01-get-currencies",
+  "description": "GET /api/currencies returns currency.json (USD ratios to EUR, ARS, GBP).",
+  "source": {
+    "muleApp": "processing-orders-with-dataweave-and-APIkit",
+    "flow": "get:/currencies:currency-config",
+    "evidence": "documented",
+    "reference": "processing-orders-with-dataweave-and-APIkit/src/main/app/currency.xml (get:/currencies:currency-config: parse-template location=currency.json); processing-orders-with-dataweave-and-APIkit/src/main/api/currency.raml (/currencies get 200 application/json); processing-orders-with-dataweave-and-APIkit/src/main/app/currency.json"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/currencies"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "bodyFile": "currency.body.json.txt"
+  }
+}

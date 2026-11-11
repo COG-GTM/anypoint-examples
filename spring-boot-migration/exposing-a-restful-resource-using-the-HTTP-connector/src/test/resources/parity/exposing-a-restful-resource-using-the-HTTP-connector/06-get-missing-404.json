@@ -1,0 +1,19 @@
+{
+  "name": "06-get-missing-404",
+  "description": "GET for an unknown id fails the message-filter and the rollback strategy answers 404.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (message-filter throwOnUnaccepted=true; rollback-exception-strategy sets errorStatusCode=404, errorReasonPhrase='Not Found'; http:error-response-builder); exposing-a-restful-resource-using-the-HTTP-connector/README.md (retrievePersonFlow: 'Message has been rejected by filter. Message payload is of type: NullPayload')"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person/99"
+  },
+  "expected": {
+    "status": 404,
+    "bodyFormat": "TEXT",
+    "body": "Message has been rejected by filter. Message payload is of type: NullPayload"
+  }
+}

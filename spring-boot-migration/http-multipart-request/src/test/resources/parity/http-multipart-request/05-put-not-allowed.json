@@ -1,0 +1,17 @@
+{
+  "name": "05-put-not-allowed",
+  "description": "Only GET and POST listeners exist on /uploadFile, so PUT is 405.",
+  "source": {
+    "muleApp": "http-multipart-request",
+    "flow": "uploadFileFlow/processFileFlow",
+    "evidence": "documented",
+    "reference": "http-multipart-request/src/main/app/http-multipart-request.xml (http:listener allowedMethods=GET / allowedMethods=POST on path=/uploadFile)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/uploadFile"
+  },
+  "expected": {
+    "status": 405
+  }
+}

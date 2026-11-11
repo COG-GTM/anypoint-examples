@@ -1,0 +1,19 @@
+{
+  "name": "02-echo-echo",
+  "description": "GET /echo echoes /echo.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "documented",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); http-request-response-with-logger/README.md (Run it!: /echo returns /echo)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/echo"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/echo"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "02-upload-text-file",
+  "description": "POST multipart part 'file' (test.txt): status 200, body is the file content, file written as <upload dir>/test.txt.",
+  "source": {
+    "muleApp": "http-multipart-request",
+    "flow": "processFileFlow",
+    "evidence": "munit",
+    "reference": "http-multipart-request/src/test/java/org/mule/examples/HttpMultpartRequestIT.java (uploads src/test/resources/test.txt, content 'file uploaded', asserts the file exists under /tmp); http-multipart-request/src/main/app/http-multipart-request.xml (expression-component extracts filename from Content-Disposition; set-payload dataSource.content; file:outbound-endpoint path=/tmp outputPattern=#[attachmentFileName]; http:response-builder statusCode=200)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/uploadFile",
+    "headers": {
+      "Content-Type": "multipart/form-data; boundary=PARITYBOUNDARY"
+    },
+    "body": "--PARITYBOUNDARY\r\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\r\nContent-Type: text/plain\r\n\r\nfile uploaded\r\n--PARITYBOUNDARY--\r\n"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "file uploaded"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "01-get-team-bar",
+  "description": "GET /api/teams/BAR returns the team with 19 matches played (first round only).",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/teams/{teamId}:leagues-config",
+    "evidence": "munit",
+    "reference": "rest-api-with-apikit/src/test/java/org/mule/examples/RestApiWithApiKitTest.java (GET /api/teams/BAR equals src/test/resources/reply.json); rest-api-with-apikit/src/main/java/org/mule/examples/leagues/LeagueAPI.java (getTeam)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams/BAR"
+  },
+  "expected": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "name": "Barcelona",
+      "id": "BAR",
+      "homeCity": "Barcelona",
+      "stadium": "Camp Nou",
+      "matches": 19
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "04-create-second-string-age",
+  "description": "A second POST gets id 2; json-to-object coerces a string age to the int field.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "storePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (json:json-to-object-transformer returnClass=org.mule.examples.Person, int age; AtomicInteger personId)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "firstname": "John",
+      "lastname": "Doe",
+      "address": {
+        "streetAddress": "Main St.",
+        "city": "Springfield",
+        "state": "IL",
+        "zipCode": "62701"
+      },
+      "age": "34"
+    }
+  },
+  "expected": {
+    "status": 201,
+    "headers": {
+      "Location": "http://0.0.0.0:8081/person/2"
+    },
+    "bodyFormat": "TEXT",
+    "body": "{ \"status\": \"success\", \"statusDescription\": \"person created successfully\"}"
+  }
+}

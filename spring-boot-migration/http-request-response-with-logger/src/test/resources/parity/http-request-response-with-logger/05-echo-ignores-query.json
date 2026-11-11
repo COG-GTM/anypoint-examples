@@ -1,0 +1,19 @@
+{
+  "name": "05-echo-ignores-query",
+  "description": "http.request.path does not include the query string.",
+  "source": {
+    "muleApp": "http-request-response-with-logger",
+    "flow": "EchoFlow",
+    "evidence": "documented",
+    "reference": "http-request-response-with-logger/src/main/app/echo.xml (flow EchoFlow: http:listener path='/*'; set-payload value='#[message.inboundProperties['http.request.path']]'); Mule 3.8 HTTP listener inbound properties: query string is exposed separately as http.query.string"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/echo?planet=moon"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "TEXT",
+    "body": "/echo"
+  }
+}

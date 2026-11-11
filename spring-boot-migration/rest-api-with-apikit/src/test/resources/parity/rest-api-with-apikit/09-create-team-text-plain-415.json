@@ -1,0 +1,28 @@
+{
+  "name": "09-create-team-text-plain-415",
+  "description": "POST with a media type not declared in the RAML body (only application/json) is 415.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "main (apikit:router)",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (post body: application/json only); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=415 UnsupportedMediaTypeException)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/teams",
+    "headers": {
+      "Content-Type": "text/plain"
+    },
+    "body": "CEL"
+  },
+  "expected": {
+    "status": 415,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Unsupported media type"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "08-put-not-allowed",
+  "description": "Listeners only allow GET/POST on /person, so PUT is 405.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonsFlow/storePersonFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (http:listener allowedMethods='GET' and allowedMethods='POST' on path=/person)"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/person",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "firstname": "Tito",
+      "lastname": "Lamela",
+      "address": {
+        "streetAddress": "Lincoln St.",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "90401"
+      },
+      "age": 12
+    }
+  },
+  "expected": {
+    "status": 405
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "22-delete-unknown-team-404",
+  "description": "Deleting an unknown team is 404.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "delete:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "LeagueAPI.deleteTeam throws NotFoundException; rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=404)"
+  },
+  "request": {
+    "method": "DELETE",
+    "path": "/api/teams/XXX"
+  },
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

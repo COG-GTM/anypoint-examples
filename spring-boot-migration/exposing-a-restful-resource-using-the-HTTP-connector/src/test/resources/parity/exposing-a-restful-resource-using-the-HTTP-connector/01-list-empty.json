@@ -1,0 +1,19 @@
+{
+  "name": "01-list-empty",
+  "description": "Before any POST the store is empty: GET /person returns an empty JSON array.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonsFlow",
+    "evidence": "documented",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/main/app/http-restful-resource.xml (retrievePersonsFlow: set-payload personDataStore.values() + json:object-to-json-transformer; spring bean personDataStore is an empty HashMap)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": []
+  }
+}

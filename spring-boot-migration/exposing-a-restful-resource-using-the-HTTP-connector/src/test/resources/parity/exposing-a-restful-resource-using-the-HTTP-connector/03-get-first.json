@@ -1,0 +1,29 @@
+{
+  "name": "03-get-first",
+  "description": "GET /person/1 returns exactly the stored person JSON.",
+  "source": {
+    "muleApp": "exposing-a-restful-resource-using-the-HTTP-connector",
+    "flow": "retrievePersonFlow",
+    "evidence": "munit",
+    "reference": "exposing-a-restful-resource-using-the-HTTP-connector/src/test/java/org/mule/examples/HttpRestfulResourceIT.java (getPerson: GET /person/1 payload equals src/test/resources/person.json)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/person/1"
+  },
+  "expected": {
+    "status": 200,
+    "bodyFormat": "JSON",
+    "body": {
+      "firstname": "Tito",
+      "lastname": "Lamela",
+      "address": {
+        "streetAddress": "Lincoln St.",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "90401"
+      },
+      "age": 12
+    }
+  }
+}

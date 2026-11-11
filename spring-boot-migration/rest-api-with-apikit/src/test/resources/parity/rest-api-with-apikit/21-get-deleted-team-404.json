@@ -1,0 +1,24 @@
+{
+  "name": "21-get-deleted-team-404",
+  "description": "The deleted team is gone.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "get:/teams/{teamId}:leagues-config",
+    "evidence": "documented",
+    "reference": "League.deleteTeam (teams.remove); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=404)"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/api/teams/ZAR"
+  },
+  "expected": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Resource not found"
+    }
+  }
+}

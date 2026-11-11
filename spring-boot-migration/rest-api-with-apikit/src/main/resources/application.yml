@@ -1,0 +1,15 @@
+server:
+  port: ${http.port:8080}
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: rest-api-with-apikit
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+springdoc:
+  api-docs:
+    path: /v3/api-docs

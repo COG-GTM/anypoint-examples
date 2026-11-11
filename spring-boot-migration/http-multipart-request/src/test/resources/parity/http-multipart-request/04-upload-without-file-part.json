@@ -1,0 +1,21 @@
+{
+  "name": "04-upload-without-file-part",
+  "description": "Without a 'file' part, inboundAttachments['file'] is null and the expression-component fails: default exception strategy answers 500 and nothing is written.",
+  "source": {
+    "muleApp": "http-multipart-request",
+    "flow": "processFileFlow",
+    "evidence": "documented",
+    "reference": "http-multipart-request/src/main/app/http-multipart-request.xml (message.inboundAttachments['file'].dataSource... on a missing attachment throws; no exception strategy in processFileFlow)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/uploadFile",
+    "headers": {
+      "Content-Type": "multipart/form-data; boundary=PARITYBOUNDARY"
+    },
+    "body": "--PARITYBOUNDARY\r\nContent-Disposition: form-data; name=\"other\"; filename=\"other.txt\"\r\nContent-Type: text/plain\r\n\r\nfile uploaded\r\n--PARITYBOUNDARY--\r\n"
+  },
+  "expected": {
+    "status": 500
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "18-post-positions-405",
+  "description": "/positions only declares GET: 405.",
+  "source": {
+    "muleApp": "rest-api-with-apikit",
+    "flow": "main (apikit:router)",
+    "evidence": "documented",
+    "reference": "rest-api-with-apikit/src/main/resources/leagues.raml (/positions: get only); rest-api-with-apikit/src/main/app/rest-api-with-apikit.xml (apikit:mapping-exception-strategy leagues-apiKitGlobalExceptionMapping: statusCode=405 MethodNotAllowedException)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/api/positions",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  },
+  "expected": {
+    "status": 405,
+    "headers": {
+      "Content-Type": "~application/json.*"
+    },
+    "bodyFormat": "JSON",
+    "body": {
+      "message": "Method not allowed"
+    }
+  }
+}

@@ -50,12 +50,12 @@ GreenMail, LDAP, SFTP).
 
 | Mule 3.8 app | Spring Boot module | Ticket | Status |
 |---|---|---|---|
-| [`rest-api-with-apikit`](../rest-api-with-apikit) | [`spring-boot-migration/rest-api-with-apikit`](./rest-api-with-apikit) | 1 | Planned |
-| [`processing-orders-with-dataweave-and-APIkit`](../processing-orders-with-dataweave-and-APIkit) | [`spring-boot-migration/processing-orders-with-dataweave-and-APIkit`](./processing-orders-with-dataweave-and-APIkit) | 1 | Planned |
-| [`exposing-a-restful-resource-using-the-HTTP-connector`](../exposing-a-restful-resource-using-the-HTTP-connector) | [`spring-boot-migration/exposing-a-restful-resource-using-the-HTTP-connector`](./exposing-a-restful-resource-using-the-HTTP-connector) | 1 | Planned |
-| [`http-request-response-with-logger`](../http-request-response-with-logger) | [`spring-boot-migration/http-request-response-with-logger`](./http-request-response-with-logger) | 1 | Planned |
-| [`http-multipart-request`](../http-multipart-request) | [`spring-boot-migration/http-multipart-request`](./http-multipart-request) | 1 | Planned |
-| [`login-form-using-the-http-connector`](../login-form-using-the-http-connector) | [`spring-boot-migration/login-form-using-the-http-connector`](./login-form-using-the-http-connector) | 1 | Planned |
+| [`rest-api-with-apikit`](../rest-api-with-apikit) | [`spring-boot-migration/rest-api-with-apikit`](./rest-api-with-apikit) | 1 | Migrated (deltas) |
+| [`processing-orders-with-dataweave-and-APIkit`](../processing-orders-with-dataweave-and-APIkit) | [`spring-boot-migration/processing-orders-with-dataweave-and-APIkit`](./processing-orders-with-dataweave-and-APIkit) | 1 | Migrated (deltas) |
+| [`exposing-a-restful-resource-using-the-HTTP-connector`](../exposing-a-restful-resource-using-the-HTTP-connector) | [`spring-boot-migration/exposing-a-restful-resource-using-the-HTTP-connector`](./exposing-a-restful-resource-using-the-HTTP-connector) | 1 | Migrated (deltas) |
+| [`http-request-response-with-logger`](../http-request-response-with-logger) | [`spring-boot-migration/http-request-response-with-logger`](./http-request-response-with-logger) | 1 | Migrated (deltas) |
+| [`http-multipart-request`](../http-multipart-request) | [`spring-boot-migration/http-multipart-request`](./http-multipart-request) | 1 | Migrated (deltas) |
+| [`login-form-using-the-http-connector`](../login-form-using-the-http-connector) | [`spring-boot-migration/login-form-using-the-http-connector`](./login-form-using-the-http-connector) | 1 | Migrated (deltas) |
 | [`xml-only-soap-webservice`](../xml-only-soap-webservice) | [`spring-boot-migration/xml-only-soap-webservice`](./xml-only-soap-webservice) | 2 | Planned |
 | [`soap-webservice-security`](../soap-webservice-security) | [`spring-boot-migration/soap-webservice-security`](./soap-webservice-security) | 2 | Planned |
 | [`web-service-consumer`](../web-service-consumer) | [`spring-boot-migration/web-service-consumer`](./web-service-consumer) | 2 | Planned |
