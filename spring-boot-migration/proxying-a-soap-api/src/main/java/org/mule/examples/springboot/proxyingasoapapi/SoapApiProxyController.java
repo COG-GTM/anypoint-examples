@@ -64,7 +64,9 @@ class SoapApiProxyController {
             return fault("Server", "Response code " + status + " mapped as failure.");
         }
         HttpHeaders headers = MuleHeaderFilter.copy(upstream.getHeaders());
-        headers.setContentType(SOAP11);
+        MediaType upstreamType = upstream.getHeaders().getContentType();
+        headers.setContentType(upstreamType != null && upstreamType.getCharset() != null
+                ? new MediaType(SOAP11, upstreamType.getCharset()) : SOAP11);
         return ResponseEntity.ok().headers(headers).body(upstream.getBody() == null ? new byte[0] : upstream.getBody());
     }
 
